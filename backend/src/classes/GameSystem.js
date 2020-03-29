@@ -40,6 +40,10 @@ class GameSystem {
         return this.actors[id]
     }
 
+    getActorByName(name) {
+        return Object.values(this.actors).find( actor => actor.name == name )
+    }
+
     getCaster() {
         return this.getActor(this.lastCasterId)
     }
