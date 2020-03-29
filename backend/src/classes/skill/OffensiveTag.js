@@ -21,24 +21,8 @@ class OffensiveTag extends SkillTag {
 
         console.log(`${caster.name} is casting ${skill.name} on ${subject.name}`);
 
-        // Deal the damage
         if (subject instanceof Party) {
-            const members = subject.getMembers();
-            if (extraDamageHitAnotherEnemy) {
-                for (let subject of members) {
-                    console.log(`${caster.name} deals ${damageAmount} damage to ${subject.name}`);
-                    damageAmount = target.takeDamage(damageAmount);
-                    
-                    if (!damageAmount)
-                        break;
-                }
-            }
-            else {
-                members.forEach(target => {
-                    console.log(`${caster.name} deals ${damageAmount} damage to ${target.name}`);
-                    target.takeDamage(damageAmount);
-                });
-            }
+            this.attackParty(damageAmount, subject, caster, extraDamageHitAnotherEnemy)
         }
         else {
             console.log(`${caster.name} deals ${damageAmount} damage to ${target.name}`);
@@ -70,6 +54,36 @@ class OffensiveTag extends SkillTag {
         }
 
         return damageAmount;
+    }
+
+    attackParty(damageAmount, party, attacker, extraDamageHitAnotherEnemy) {
+        if (extraDamageHitAnotherEnemy) {
+            this.distributeDamageToParty(damageAmount, party, attacker)                
+        }
+        else {
+            this.dealSameDamageToParty(damageAmount, party, attacker)
+        }
+    }
+
+    distributeDamageToParty(damageAmount, party, attacker) {
+        const members = party.getCalculationFunction()
+
+        for (let subject of members) {
+            console.log(`${attacker.name} deals ${damageAmount} damage to ${subject.name}`);
+            damageAmount = target.takeDamage(damageAmount);
+            
+            if (!damageAmount)
+                break;
+        }
+    }
+
+    dealSameDamageToParty(damageAmount, party, attacker) {
+        const members = party.getMembers()
+
+        members.forEach(target => {
+            console.log(`${attacker.name} deals ${damageAmount} damage to ${target.name}`);
+            target.takeDamage(damageAmount);
+        });
     }
 }
 exports.OffensiveTag = OffensiveTag;
