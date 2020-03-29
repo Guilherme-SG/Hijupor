@@ -12,6 +12,8 @@ class Unit {
         this.name = name ? name : `Nameless#${id}`
         this.stats = stats
 
+        this.status = []
+
         this.currentHP = 0
         this.totalHP = 100
 
@@ -125,6 +127,10 @@ class Unit {
 
     addSkill(skillId) {
         this.skills.push(skillId)
+    }
+
+    addStatus(status) {
+        this.status.push(status)
     }
 }
 

@@ -1,12 +1,12 @@
 class Stats {
     constructor() {
-        this.for = 0
-        this.dex = 0
-        this.aim = 0
-        this.int = 0
-        this.wis = 0
-        this.mr = 0
-        this.res = 0
+        this.for = 100
+        this.dex = 100
+        this.aim = 100
+        this.int = 100
+        this.wis = 100
+        this.mr = 100
+        this.res = 100
         this.car = 100
         this.faith = 100
     }

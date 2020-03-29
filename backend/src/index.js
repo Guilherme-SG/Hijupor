@@ -7,7 +7,7 @@ const Party = require("./classes/Party")
 const Skill = require("./classes/skill/Skill")
 
 function showRelevanteInfo(actor) {
-    return `===== ${actor.name} =====\nHP: ${actor.currentHP}/${actor.totalHP}\nStamina: ${actor.currentStamina}/${actor.totalStamina}\n`
+    return `===== ${actor.name} =====\nHP: ${actor.currentHP}/${actor.totalHP}\nStamina: ${actor.currentStamina}/${actor.totalStamina}\nStatus: ${actor.status.length > 0 ? actor.status : "nenhum"}`
 }
 
 const players = new Party("Players")
@@ -58,6 +58,7 @@ gameSystem.registerSkill(
 gameSystem.registerSkill(
     new Skill("Sugar Vida!", {
         offensive: {
+            damageType: "magic",
             target: yendros,
             damageFunction: "byFormula",
             formula: "25 + Math.floor(caster.stats.car / 2)"
@@ -95,6 +96,7 @@ gameSystem.registerSkill(
 gameSystem.registerSkill(
     new Skill("Punição Divina", {
         offensive: {
+            damageType: "magic",
             target: players,
             extraDamageHitAnotherEnemy: true,
             damageFunction: "byFormula",
@@ -106,6 +108,7 @@ gameSystem.registerSkill(
 gameSystem.registerSkill(
     new Skill("Palavra da Morte", {
         offensive: {
+            damageType: "magic",
             target: jane,
             damageFunction: "byFormula",
             formula: "25 + Math.floor(caster.stats.car / 2)",
@@ -126,6 +129,29 @@ gameSystem.registerSkill(
     })
 )
 
+gameSystem.registerSkill(
+    new Skill("Investida", {
+        offensive: {
+            damageType: "physic",
+            target: yendros,
+            damageFunction: "byFormula",
+            formula: "25 + Math.floor(caster.stats.for / 7)"
+        },
+        disruptive: {
+            statusList: [
+                {
+                    name: "stunned"
+                }
+            ]
+        }
+    },
+    null,
+    "",
+    1,
+    0,
+    8)
+)
+
 aaron.addSkill(gameSystem.getSkillByName("A Fé é o Melhor Remédio").id)
 aaron.addSkill(gameSystem.getSkillByName("Cura Todos").id)
 
@@ -133,6 +159,8 @@ ravni.addSkill(gameSystem.getSkillByName("Sugar Vida!").id)
 ravni.addSkill(gameSystem.getSkillByName("Palavra da Morte").id)
 
 jane.addSkill(gameSystem.getSkillByName("Punição Divina").id)
+
+groknak.addSkill(gameSystem.getSkillByName("Investida").id)
 
 const skillSystem = new SkillSystem()
 
@@ -152,3 +180,6 @@ players.getMembers().forEach( member => console.log(showRelevanteInfo(member)))
 
 gameSystem.useSkill(ravni.id, "Palavra da Morte", skillSystem)
 console.log(showRelevanteInfo(jane), showRelevanteInfo(ravni))
+
+gameSystem.useSkill(groknak.id, "Investida", skillSystem)
+console.log(showRelevanteInfo(yendros))

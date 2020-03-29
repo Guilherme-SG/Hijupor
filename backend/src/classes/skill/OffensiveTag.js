@@ -33,11 +33,7 @@ class OffensiveTag extends SkillTag {
         skill.tags.offensive.damage = damageAmount;
     }
 
-    evaluateTarget(target) {
-        gameSystem.setSelectedActor(target.id)
-        gameSystem.setSelectedParty(target.id)
-        return target
-    }
+    
 
     calculateDamage(damageFunction, caster, skill, target) {
         return this.getCalculationFunction(damageFunction)({ caster, skill, target, tag: "offensive" });

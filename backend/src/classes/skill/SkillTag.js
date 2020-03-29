@@ -1,9 +1,11 @@
 const ConditionalSystem = require("../ConditionalSystem");
+const gameSystem = require("../GameSystem")
 
 class SkillTag {
     constructor() {
         this.conditionalSystem = new ConditionalSystem();
     }
+    
     getCalculationFunction(nameFunction) {
         const functions = {
             byFixedValue: ({ skill }) => skill.tags.healing.fixedValue,
@@ -17,10 +19,9 @@ class SkillTag {
     }
 
     evaluateTarget(target) {
-        if (typeof target == "string") {
-            target = eval(target);
-        }
-        return target;
+        gameSystem.setSelectedActor(target.id)
+        gameSystem.setSelectedParty(target.id)
+        return target
     }
 
     active(caster, skill) { }
