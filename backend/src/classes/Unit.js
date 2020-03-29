@@ -5,6 +5,7 @@ class Unit {
     constructor(name, stats = new Stats(), id = createId()) {
         this.id = id
         this.partyId = -1
+        this.temporaryPartyId = -1
 
         this.allies = {}
 
@@ -22,6 +23,10 @@ class Unit {
 
     setParty(partyId) {
         this.partyId = partyId
+    }
+
+    setTemporaryParty(partyId) {
+        this.temporaryPartyId = partyId
     }
 
     regenateHPFully() {
@@ -108,11 +113,13 @@ class Unit {
         this.currentHP = 0
     }
 
-    addAlly(ally) {
+    addTemporaryAlly(ally) {
+        ally.setTemporaryParty(this.partyId)
         this.allies[ally.id] = ally
     }
 
-    removeAlly(id) {
+    removeTemporaryAlly(id) {
+        ally.setTemporaryParty(-1)
         delete this.allies[id]
     }
 
