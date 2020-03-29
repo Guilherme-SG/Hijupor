@@ -6,6 +6,8 @@ class Unit {
         this.id = id
         this.partyId = -1
 
+        this.allies = {}
+
         this.name = name ? name : `Nameless#${id}`
         this.stats = stats
 
@@ -104,6 +106,14 @@ class Unit {
 
     die() {
         this.currentHP = 0
+    }
+
+    addAlly(ally) {
+        this.allies[ally.id] = ally
+    }
+
+    removeAlly(id) {
+        delete this.allies[id]
     }
 
     addSkill(skillId) {

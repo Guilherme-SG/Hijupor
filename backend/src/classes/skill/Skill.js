@@ -1,10 +1,27 @@
 const { createId } = require("../../util")
 
 class Skill {
-    constructor(name, tags = {}, id = createId()) {        
-        this.name = name
-        this.tags = tags
+    constructor(
+        name, 
+        tags = {}, 
+        id = createId(), 
+        description,
+
+        paCost = 1,
+        duration = 0,
+        cooldown = -1,
+    ) {        
         this.id = id
+        this.name = name
+        this.description = description
+        
+        this.tags = tags
+        
+        this.paCost = paCost
+        this.duration = duration
+
+        this.currentCooldown = 0
+        this.cooldown = cooldown
     }
 }
 
