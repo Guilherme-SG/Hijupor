@@ -31,13 +31,6 @@ class OffensiveTag extends SkillTag {
         skill.tags.offensive.damage = damageAmount;
     }
 
-    evaluateTarget(target) {
-        if (typeof target == "string") {
-            target = eval(target);
-        }
-        return target;
-    }
-
     calculateDamage(damageFunction, caster, skill, target) {
         return this.getCalculationFunction(damageFunction)({ caster, skill, target, tag: "offensive" });
     }
@@ -46,8 +39,9 @@ class OffensiveTag extends SkillTag {
         if (damageBonus) {
             console.log("Before bonus", damageAmount);
             damageBonus.forEach(bonus => {
-                if (bonus.trigger && !this.conditionalSystem.trigger(bonus.trigger))
+                if (bonus.trigger && this.conditionalSystem.trigger(bonus.trigger))
                     return;
+                    
                 damageAmount *= 1 + bonus.multipler;
             });
             console.log("After Bonus", damageAmount);
@@ -66,10 +60,10 @@ class OffensiveTag extends SkillTag {
     }
 
     distributeDamageToParty(damageAmount, party, attacker) {
-        const members = party.getCalculationFunction()
+        const members = party.getMembers()
 
-        for (let subject of members) {
-            console.log(`${attacker.name} deals ${damageAmount} damage to ${subject.name}`);
+        for (let target of members) {
+            console.log(`${attacker.name} deals ${damageAmount} damage to ${target.name}`);
             damageAmount = target.takeDamage(damageAmount);
             
             if (!damageAmount)

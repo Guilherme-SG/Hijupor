@@ -1,4 +1,4 @@
-const GameSystem = new require('./classes/GameSystem')
+const gameSystem = new require('./classes/GameSystem')
 const Unit = require("./classes/Unit")
 const Party = require("./classes/Party")
 const Skill = require("./classes/skill/Skill")
@@ -22,7 +22,7 @@ players.addMember(ravni)
 players.addMember(groknak)
 players.addMember(tenshinhan)
 
-const gameSystem = new GameSystem()
+console.log("index", gameSystem)
 
 gameSystem.addParty(players)
 
@@ -148,3 +148,4 @@ gameSystem.useSkill(jane.id, "Punição Divina")
 players.getMembers().forEach( member => console.log(showRelevanteInfo(member)))
 
 gameSystem.useSkill(ravni.id, "Palavra da Morte")
+console.log(showRelevanteInfo(jane), showRelevanteInfo(ravni))

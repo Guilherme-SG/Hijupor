@@ -1,25 +1,26 @@
 const ConditionalSystem = require('./ConditionalSystem')
 const SkillSystem = require('./skill/SkillSystem')
 
-class GameSystem {
+const Singleton = require("./Singleton")
+
+class GameSystem extends Singleton {
     constructor() {
+        const self = super()
+
         this.actors = {}
         this.parties = {}
 
+        this.selectedActorId = -1
+        this.selectedPartyId = -1
+
+        this.lastCasterId = -1
+
         this.skillList = {}
-/*
+
         this.conditionalSystem = new ConditionalSystem()
         this.skillSystem = new SkillSystem()
-*/
-        return this.getInstance()
-    }
 
-    getInstance() {
-        if(!GameSystem.instance) {
-            GameSystem.instance = new GameSystem()
-        }
-
-        return GameSystem.instance
+        return self
     }
 
     addActor(actor) {
@@ -30,12 +31,32 @@ class GameSystem {
         return this.actors[id]
     }
 
+    getCaster() {
+        return this.getActor(this.lastCasterId)
+    }
+
+    setSelectedActor(id) {
+        this.selectedActorId = id
+    }
+
+    getSelectedActor() {
+        return this.getActor(this.selectedActorId)
+    }
+
     addParty(party) {
         this.parties[party.id] = party
     }
 
     getParty(id) {
         return this.parties[id]
+    }
+
+    setSelectedParty(id) {
+        this.selectedPartyId = id
+    }
+
+    getSelectedParty() {
+        return this.getParty(this.selectedPartyId)
     }
 
     registerSkill(skill) {
@@ -58,9 +79,14 @@ class GameSystem {
         const caster = this.getActor(casterId)
         const skill = typeof skillReference == "string" ? 
             this.getSkillByName(skillReference) : this.getSkillById(skillReference)
+
+        this.lastCasterId = casterId
         
         this.skillSystem.activeTags(caster, skill)
     }
 }
 
-module.exports = GameSystem
+const instance = new GameSystem()
+//Object.freeze(instance)
+
+module.exports = instance
