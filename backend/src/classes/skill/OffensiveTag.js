@@ -1,6 +1,8 @@
 const Party = require("../Party");
 const { SkillTag } = require("./SkillTag");
 
+const gameSystem = require("../GameSystem")
+
 class OffensiveTag extends SkillTag {
     constructor() {
         super();
@@ -31,6 +33,12 @@ class OffensiveTag extends SkillTag {
         skill.tags.offensive.damage = damageAmount;
     }
 
+    evaluateTarget(target) {
+        gameSystem.setSelectedActor(target.id)
+        gameSystem.setSelectedParty(target.id)
+        return target
+    }
+
     calculateDamage(damageFunction, caster, skill, target) {
         return this.getCalculationFunction(damageFunction)({ caster, skill, target, tag: "offensive" });
     }
@@ -39,7 +47,7 @@ class OffensiveTag extends SkillTag {
         if (damageBonus) {
             console.log("Before bonus", damageAmount);
             damageBonus.forEach(bonus => {
-                if (bonus.trigger && this.conditionalSystem.trigger(bonus.trigger))
+                if (bonus.trigger && !this.conditionalSystem.trigger(bonus.trigger))
                     return;
                     
                 damageAmount *= 1 + bonus.multipler;

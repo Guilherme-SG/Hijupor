@@ -1,5 +1,4 @@
 const gameSystem = require("./GameSystem")
-console.log("conditional", gameSystem)
 
 class ConditionalSystem {
 
@@ -12,14 +11,14 @@ class ConditionalSystem {
 
     trigger({ subject, fn, params }) {
         const { attribute, reference } = params
+        
         const target = this.evaluateTarget(subject)
-
-        console.log({ subject, fn, attribute, reference })
-        return true //this[fn](attribute, reference)
+        let value = this.evaluateAttribute(target, attribute)
+        
+        return this[fn](value, reference)
     }
 
     evaluateTarget(subject) {
-        console.log(gameSystem)
         let targets = {
             caster: () => gameSystem.getCaster(),
             skillTarget: () => gameSystem.getSelectedActor(),
@@ -27,7 +26,15 @@ class ConditionalSystem {
         }
 
         return targets[subject]()
-    } 
+    }
+
+    evaluateAttribute(subject, attribute) {
+        if(attribute.startsWith("get")) {
+            return subject[attribute]()
+        }
+
+        return subject[attribute]
+    }
 }
 
 module.exports = ConditionalSystem

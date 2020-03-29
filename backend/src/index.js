@@ -1,4 +1,7 @@
-const gameSystem = new require('./classes/GameSystem')
+
+const SkillSystem = require("./classes/skill/SkillSystem")
+const gameSystem = require('./classes/GameSystem')
+
 const Unit = require("./classes/Unit")
 const Party = require("./classes/Party")
 const Skill = require("./classes/skill/Skill")
@@ -21,8 +24,6 @@ players.addMember(yendros)
 players.addMember(ravni)
 players.addMember(groknak)
 players.addMember(tenshinhan)
-
-console.log("index", gameSystem)
 
 gameSystem.addParty(players)
 
@@ -115,7 +116,7 @@ gameSystem.registerSkill(
                         subject: "skillTarget",
                         fn: "isLessThanOrEqual",
                         params: {
-                            attribute: "percentualHP",
+                            attribute: "getPercentualHP",
                             reference: 0.25
                         }
                     }
@@ -133,19 +134,21 @@ ravni.addSkill(gameSystem.getSkillByName("Palavra da Morte").id)
 
 jane.addSkill(gameSystem.getSkillByName("Punição Divina").id)
 
+const skillSystem = new SkillSystem()
+
 console.log("Pré cura", showRelevanteInfo(yendros), showRelevanteInfo(aaron))
 
-gameSystem.useSkill(aaron.id, "A Fé é o Melhor Remédio")
+gameSystem.useSkill(aaron.id, "A Fé é o Melhor Remédio", skillSystem)
 console.log(showRelevanteInfo(yendros), showRelevanteInfo(aaron))
 
-gameSystem.useSkill(aaron.id, "Cura Todos")
+gameSystem.useSkill(aaron.id, "Cura Todos", skillSystem)
 console.log(showRelevanteInfo(yendros), showRelevanteInfo(ravni))
 
-gameSystem.useSkill(ravni.id, "Sugar Vida!")
+gameSystem.useSkill(ravni.id, "Sugar Vida!", skillSystem)
 console.log(showRelevanteInfo(yendros), showRelevanteInfo(ravni))
 
-gameSystem.useSkill(jane.id, "Punição Divina")
+gameSystem.useSkill(jane.id, "Punição Divina", skillSystem)
 players.getMembers().forEach( member => console.log(showRelevanteInfo(member)))
 
-gameSystem.useSkill(ravni.id, "Palavra da Morte")
+gameSystem.useSkill(ravni.id, "Palavra da Morte", skillSystem)
 console.log(showRelevanteInfo(jane), showRelevanteInfo(ravni))
