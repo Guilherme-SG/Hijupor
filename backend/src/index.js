@@ -143,14 +143,16 @@ gameSystem.registerSkill(
             damageBonus: [
                 {
                     multipler: 0.5,
-                    trigger: {
-                        subject: "skillTarget",
-                        fn: "isLessThanOrEqual",
-                        params: {
-                            attribute: "getPercentualHP",
-                            reference: 0.25
+                    triggers: [
+                        {
+                            subject: "skillTarget",
+                            fn: "isLessThanOrEqual",
+                            params: {
+                                attribute: "getPercentualHP",
+                                reference: 0.25
+                            }
                         }
-                    }
+                    ]
                 }
             ]
         }

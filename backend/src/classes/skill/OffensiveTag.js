@@ -43,8 +43,8 @@ class OffensiveTag extends SkillTag {
 
     applyBonus(damageBonus, damageAmount) {
         damageBonus.forEach(bonus => {
-            if (bonus.trigger 
-                && !this.conditionalSystem.trigger(bonus.trigger)) return
+            if (bonus.triggers 
+                && !this.conditionalSystem.trigger(bonus.triggers)) return
                 
             damageAmount *= 1 + bonus.multipler;
         });
@@ -91,7 +91,7 @@ class OffensiveTag extends SkillTag {
 
         return this.evaluateTarget({
             type: "party",
-            filter: [                
+            filters: [                
                 {
                     fn: "isNotEqual",
                     params: {

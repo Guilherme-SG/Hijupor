@@ -12,13 +12,16 @@ class ConditionalSystem {
     minValueInArray = array => Math.min(...array)
     maxValueInArray = array => Math.max(...array)
 
-    trigger({ subject, fn, params }) {
-        const { attribute, reference } = params
-        
-        const target = this.evaluateTarget(subject)
-        let value = this.evaluateAttribute(target, attribute)
-        
-        return this[fn](value, reference)
+    trigger(triggerList) {
+        return triggerList.every(trigger => {
+            const { subject, fn, params } = trigger
+            const { attribute, reference } = params
+
+            const target = this.evaluateTarget(subject)
+            const value = this.evaluateAttribute(target, attribute)
+
+            return this[fn](value, reference)
+        })
     }
 
     filter(array, filterList) {

@@ -23,12 +23,12 @@ class SkillTag {
         const targetTypes = {
             caster: () => gameSystem.getCaster(),
             actor: () => gameSystem.getSelectedActor(),
-            party: ({ filter }) => {                
+            party: ({ filters }) => {                
                 const party = gameSystem.getSelectedParty()
 
-                if(!filter) return party.getMembers()
+                if(!filters) return party.getMembers()
                 
-                return this.conditionalSystem.filter(party.getMembers(), filter)
+                return this.conditionalSystem.filter(party.getMembers(), filters)
                 
             }
         }
