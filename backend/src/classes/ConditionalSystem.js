@@ -21,12 +21,15 @@ class ConditionalSystem {
         return this[fn](value, reference)
     }
 
-    filter(array, {fn, params}) {
-        const { many } = params
-
-        if(many == 1) {
-            return array.find()
-        }
+    filter(array, filterList) {
+        return array.filter( item => {
+            return filterList.every( filter => {
+                const { attribute, reference } = filter.params
+                let value = this.evaluateAttribute(item, attribute)
+                return this[filter.fn](value, reference)
+            })
+            
+        })
     }
 
     evaluateTarget(subject) {
@@ -40,7 +43,7 @@ class ConditionalSystem {
     }
 
     evaluateAttribute(subject, attribute) {
-        if(attribute.startsWith("get")) {
+        if(attribute.startsWith("get") || attribute.startsWith("is")) {
             return subject[attribute]()
         }
 

@@ -113,6 +113,8 @@ class Actor {
 
     die() {
         this.currentHP = 0
+        this.cleanStatusList()
+        this.addStatus("dead")
     }
 
     addTemporaryAlly(ally) {
@@ -131,6 +133,10 @@ class Actor {
 
     addStatus(status) {
         this.status.push(status)
+    }
+
+    cleanStatusList() {
+        this.status = []
     }
 }
 

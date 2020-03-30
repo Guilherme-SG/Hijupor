@@ -194,22 +194,31 @@ groknak.addSkill(gameSystem.getSkillByName("Investida").id)
 
 const skillSystem = new SkillSystem()
 
-console.log("Pré cura", showRelevanteInfo(yendros), showRelevanteInfo(aaron))
+console.log("Pré cura", showRelevanteInfo(gameSystem.getSelectedActor()), showRelevanteInfo(aaron))
 
 gameSystem.useSkill(aaron.id, "A Fé é o Melhor Remédio", skillSystem)
-console.log(showRelevanteInfo(yendros), showRelevanteInfo(aaron))
+console.log(showRelevanteInfo(gameSystem.getSelectedActor()), showRelevanteInfo(aaron))
 
 gameSystem.useSkill(aaron.id, "Cura Todos", skillSystem)
-console.log(showRelevanteInfo(yendros), showRelevanteInfo(ravni))
+console.log(showRelevanteInfo(gameSystem.getSelectedActor()), showRelevanteInfo(ravni))
 
 gameSystem.useSkill(ravni.id, "Sugar Vida!", skillSystem)
-console.log(showRelevanteInfo(yendros), showRelevanteInfo(ravni))
+console.log(showRelevanteInfo(gameSystem.getSelectedActor()), showRelevanteInfo(ravni))
 
 gameSystem.useSkill(jane.id, "Punição Divina", skillSystem)
 players.getMembers().forEach( member => console.log(showRelevanteInfo(member)))
 
 gameSystem.useSkill(ravni.id, "Palavra da Morte", skillSystem)
-console.log(showRelevanteInfo(jane), showRelevanteInfo(ravni))
+console.log(showRelevanteInfo(gameSystem.getSelectedActor()), showRelevanteInfo(ravni))
 
 gameSystem.useSkill(groknak.id, "Investida", skillSystem)
-console.log(showRelevanteInfo(yendros))
+console.log(showRelevanteInfo(gameSystem.getSelectedActor()))
+
+gameSystem.useSkill(jane.id, "Punição Divina", skillSystem)
+players.getMembers().forEach( member => console.log(showRelevanteInfo(member)))
+
+gameSystem.useSkill(jane.id, "Punição Divina", skillSystem)
+players.getMembers().forEach( member => console.log(showRelevanteInfo(member)))
+
+gameSystem.useSkill(jane.id, "Punição Divina", skillSystem)
+players.getMembers().forEach( member => console.log(showRelevanteInfo(member)))

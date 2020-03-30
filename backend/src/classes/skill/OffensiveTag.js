@@ -21,25 +21,21 @@ class OffensiveTag extends SkillTag {
         let damageAmount = this.calculateDamage(damageFunction, caster, skill, target)
         if(damageBonus) damageAmount = this.applyBonus(damageBonus, damageAmount)
 
-        if (subject instanceof Party) {
-            this.attackParty(damageAmount, subject, caster, extraDamageHitAnotherEnemy)
+        skill.tags.offensive.damage = damageAmount
+
+        if (Array.isArray(target)) {
+            this.attackParty(damageAmount, target, caster, extraDamageHitAnotherEnemy)
         }
         else {
             console.log(`${caster.name} deals ${damageAmount} damage to ${target.name}`);
             damageAmount = target.takeDamage(damageAmount);
 
             if(extraDamageHitAnotherEnemy && damageAmount > 0) {
-                const targetParty = gameSystem.getParty(target.id)
-                let members = targetParty.getMembers().filter( member => member.id != subject.id)
-
-                this.attackParty(damageAmount, members, caster, extraDamageHitAnotherEnemy)
-            }
-            
+                let members = this.getOthersMembersInSameParty(target)
+                damageAmount = this.attackParty(damageAmount, members, caster, extraDamageHitAnotherEnemy)
+            }            
         }
-        skill.tags.offensive.damage = damageAmount;
     }
-
-    
 
     calculateDamage(damageFunction, caster, skill, target) {
         return this.getCalculationFunction(damageFunction)({ caster, skill, target, tag: "offensive" });
@@ -58,32 +54,60 @@ class OffensiveTag extends SkillTag {
 
     attackParty(damageAmount, party, attacker, extraDamageHitAnotherEnemy) {
         if (extraDamageHitAnotherEnemy) {
-            this.distributeDamageToParty(damageAmount, party, attacker)                
+            return this.distributeDamageToParty(damageAmount, party, attacker)                
         }
         else {
-            this.dealSameDamageToParty(damageAmount, party, attacker)
+            return this.dealSameDamageToParty(damageAmount, party, attacker)
         }
     }
 
     distributeDamageToParty(damageAmount, party, attacker) {
-        const members = party.getMembers()
-
-        for (let target of members) {
+        for (let target of party) {
             console.log(`${attacker.name} deals ${damageAmount} damage to ${target.name}`);
             damageAmount = target.takeDamage(damageAmount);
             
             if (!damageAmount)
                 break;
         }
+
+        return damageAmount
     }
 
     dealSameDamageToParty(damageAmount, party, attacker) {
         const members = party.getMembers()
+        let lastDamageTaked  = 0
 
         members.forEach(target => {
             console.log(`${attacker.name} deals ${damageAmount} damage to ${target.name}`);
-            target.takeDamage(damageAmount);
+            lastDamageTaked = target.takeDamage(damageAmount);
         });
+
+        return lastDamageTaked
+    }
+
+    getOthersMembersInSameParty(actorReference) {
+        const actorParty = gameSystem.getParty(actorReference.partyId)
+        gameSystem.setSelectedParty(actorParty.id)
+
+        return this.evaluateTarget({
+            type: "party",
+            filter: [                
+                {
+                    fn: "isNotEqual",
+                    params: {
+                        attribute: "id",
+                        reference: actorParty.id
+                    }
+                },
+                {
+                    fn: "isEqual",
+                    params: {
+                        attribute: "isAlive",
+                        reference: true
+                    }
+                }          
+            ]
+        })
     }
 }
 exports.OffensiveTag = OffensiveTag;

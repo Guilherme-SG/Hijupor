@@ -20,16 +20,15 @@ class SkillTag {
 
     evaluateTarget(target) {
         const { type } = target
-
         const targetTypes = {
             caster: () => gameSystem.getCaster(),
             actor: () => gameSystem.getSelectedActor(),
-            party: ({ filtrable, filter }) => {
+            party: ({ filter }) => {                
                 const party = gameSystem.getSelectedParty()
 
-                if(!filtrable) return party.getMembers()
-
-                this.conditionalSystem.filter()
+                if(!filter) return party.getMembers()
+                
+                return this.conditionalSystem.filter(party.getMembers(), filter)
                 
             }
         }
