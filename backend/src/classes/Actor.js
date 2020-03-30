@@ -1,7 +1,7 @@
 const { createId } = require("../util")
 const Stats = require("./Stats")
 
-class Unit {
+class Actor {
     constructor(name, stats = new Stats(), id = createId()) {
         this.id = id
         this.partyId = -1
@@ -134,4 +134,4 @@ class Unit {
     }
 }
 
-module.exports = Unit
+module.exports = Actor

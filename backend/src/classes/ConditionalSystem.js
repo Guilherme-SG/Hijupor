@@ -9,6 +9,9 @@ class ConditionalSystem {
     isLessThan = (value, reference) => value < reference
     isLessThanOrEqual = (value, reference) => value <= reference
 
+    minValueInArray = array => Math.min(...array)
+    maxValueInArray = array => Math.max(...array)
+
     trigger({ subject, fn, params }) {
         const { attribute, reference } = params
         
@@ -16,6 +19,14 @@ class ConditionalSystem {
         let value = this.evaluateAttribute(target, attribute)
         
         return this[fn](value, reference)
+    }
+
+    filter(array, {fn, params}) {
+        const { many } = params
+
+        if(many == 1) {
+            return array.find()
+        }
     }
 
     evaluateTarget(subject) {

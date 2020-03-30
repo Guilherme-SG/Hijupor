@@ -94,7 +94,8 @@ class GameSystem {
             this.getSkillByName(skillReference) : this.getSkillById(skillReference)
 
         this.lastCasterId = casterId
-        
+
+        console.log(`${caster.name} is casting ${skill.name}`);
         skillSystem.activeTags(caster, skill)
     }
 }

@@ -14,23 +14,31 @@ class HealingTag extends SkillTag {
         do actor referencial
     */
     active(caster, skill) {
-        const { turnExtraHPToStamina, healFunction } = skill.tags.healing;
-        let { target } = skill.tags.healing;
-        const healSingleTarget = (caster, skill, target) => {
-            healAmount = this.getCalculationFunction(healFunction)({ caster, skill, target, tag: "healing" });
-            target.healHP(healAmount, turnExtraHPToStamina);
-            console.log(`${caster.name} heals ${healAmount} HP of ${target.name}`);
-        };
-        if (typeof target == "string") {
-            target = eval(target);
-        }
-        let healAmount;
-        if (target instanceof Party) {
-            target.getMembers().forEach(target => healSingleTarget(caster, skill, target));
+        const { 
+            turnExtraHPToStamina,
+            healFunction,
+            subject
+        } = skill.tags.healing;
+        
+        let target = this.evaluateTarget(subject)
+        let healAmount = this.calculateHeal(healFunction, caster, skill, target)
+       
+        if (Array.isArray(target)) {
+            target.forEach(target => this.healActor(target, healAmount, turnExtraHPToStamina))
         }
         else {
-            healSingleTarget(caster, skill, target);
+            this.healActor(target, healAmount, turnExtraHPToStamina)
+            console.log(`${caster.name} heals ${healAmount} HP of ${target.name}`)
         }
     }
+
+    calculateHeal(healFunction, caster, skill, target) {
+        return this.getCalculationFunction(healFunction)({ caster, skill, target, tag: "healing" })
+    }
+
+    healActor(actor, healAmount, turnExtraHPToStamina) {
+        actor.healHP(healAmount, turnExtraHPToStamina)
+    }
 }
+
 exports.HealingTag = HealingTag;

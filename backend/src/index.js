@@ -11,22 +11,22 @@ app.listen(3333)
 const SkillSystem = require("./classes/skill/SkillSystem")
 const gameSystem = require('./classes/GameSystem')
 
-const Unit = require("./classes/Unit")
+const Actor = require("./classes/Actor")
 const Party = require("./classes/Party")
 const Skill = require("./classes/skill/Skill")
 
 function showRelevanteInfo(actor) {
-    return `===== ${actor.name} =====\nHP: ${actor.currentHP}/${actor.totalHP}\nStamina: ${actor.currentStamina}/${actor.totalStamina}\nStatus: ${actor.status.length > 0 ? actor.status : "nenhum"}`
+    return `===== ${actor.name} =====\nHP: ${actor.currentHP}/${actor.totalHP}\nStamina: ${actor.currentStamina}/${actor.totalStamina}\nStatus: ${actor.status.length > 0 ? actor.status : "nenhum"}\n`
 }
 
 const players = new Party("Players")
 
-const aaron = new Unit("Aaron")
-const yendros = new Unit("Yendros")
-const ravni = new Unit("Ravni")
-const groknak = new Unit("Groknak")
-const tenshinhan = new Unit("Tenshinhan")
-const jane = new Unit("Jane")
+const aaron = new Actor("Aaron")
+const yendros = new Actor("Yendros")
+const ravni = new Actor("Ravni")
+const groknak = new Actor("Groknak")
+const tenshinhan = new Actor("Tenshinhan")
+const jane = new Actor("Jane")
 
 players.addMember(aaron)
 players.addMember(yendros)
@@ -43,10 +43,15 @@ gameSystem.addActor(groknak)
 gameSystem.addActor(tenshinhan)
 gameSystem.addActor(jane)
 
+gameSystem.setSelectedActor(yendros.id),
+gameSystem.setSelectedParty(players.id)
+
 gameSystem.registerSkill(
     new Skill("Cura Todos", {
         healing: {
-            target: players,
+            subject: {
+                type: "party",
+            },
             healFunction: "byFixedValue",
             fixedValue: 100,
             turnExtraHPToStamina: true
@@ -57,7 +62,9 @@ gameSystem.registerSkill(
 gameSystem.registerSkill(
     new Skill("A Fé é para Todos", {
         healing: {
-            target: players,
+            subject: {
+                type: "party",
+            },
             healFunction: "byFormula",
             formula: "10 + Math.floor(caster.stats.faith / 2)"
         }
@@ -68,12 +75,16 @@ gameSystem.registerSkill(
     new Skill("Sugar Vida!", {
         offensive: {
             damageType: "magic",
-            target: yendros,
+            subject: {
+                type: "actor",
+            },yendros,
             damageFunction: "byFormula",
             formula: "25 + Math.floor(caster.stats.car / 2)"
         },
         healing: {
-            target: "caster",
+            subject: {
+                type: "caster",
+            },
             turnExtraHPToStamina: true,
             healFunction: "byPercentualOf",
             percentual: 0.5,
@@ -85,7 +96,9 @@ gameSystem.registerSkill(
 gameSystem.registerSkill(
     new Skill("Harmonia", {
         healing: {
-            target: players,
+            subject: {
+                type: "actor",
+            },
             healFunction: "byFormula",
             formula: "25 + Math.floor(caster.stats.car / 2)"
         }
@@ -95,7 +108,9 @@ gameSystem.registerSkill(
 gameSystem.registerSkill(
     new Skill("A Fé é o Melhor Remédio", {
         healing: {
-            target: yendros,
+            subject: {
+                type: "actor",
+            },yendros,
             healFunction: "byFormula",
             formula: "25 + caster.stats.faith"
         }
@@ -106,7 +121,9 @@ gameSystem.registerSkill(
     new Skill("Punição Divina", {
         offensive: {
             damageType: "magic",
-            target: players,
+            subject: {
+                type: "actor",
+            },
             extraDamageHitAnotherEnemy: true,
             damageFunction: "byFormula",
             formula: "55 + Math.floor(caster.stats.faith / 2)"
@@ -118,7 +135,9 @@ gameSystem.registerSkill(
     new Skill("Palavra da Morte", {
         offensive: {
             damageType: "magic",
-            target: jane,
+            subject: {
+                type: "actor",
+            },
             damageFunction: "byFormula",
             formula: "25 + Math.floor(caster.stats.car / 2)",
             damageBonus: [
@@ -142,7 +161,9 @@ gameSystem.registerSkill(
     new Skill("Investida", {
         offensive: {
             damageType: "physic",
-            target: yendros,
+            subject: {
+                type: "actor",
+            },
             damageFunction: "byFormula",
             formula: "25 + Math.floor(caster.stats.for / 7)"
         },

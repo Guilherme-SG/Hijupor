@@ -19,9 +19,22 @@ class SkillTag {
     }
 
     evaluateTarget(target) {
-        gameSystem.setSelectedActor(target.id)
-        gameSystem.setSelectedParty(target.id)
-        return target
+        const { type } = target
+
+        const targetTypes = {
+            caster: () => gameSystem.getCaster(),
+            actor: () => gameSystem.getSelectedActor(),
+            party: ({ filtrable, filter }) => {
+                const party = gameSystem.getSelectedParty()
+
+                if(!filtrable) return party.getMembers()
+
+                this.conditionalSystem.filter()
+                
+            }
+        }
+        
+        return targetTypes[type](target)
     }
 
     active(caster, skill) { }

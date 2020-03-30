@@ -13,22 +13,28 @@ class OffensiveTag extends SkillTag {
             damageFunction,
             extraDamageHitAnotherEnemy,
             damageBonus,
-            target
+            subject
         } = skill.tags.offensive;       
         
-        let subject = this.evaluateTarget(target);
+        let target = this.evaluateTarget(subject);
 
         let damageAmount = this.calculateDamage(damageFunction, caster, skill, target)
-        damageAmount = this.applyBonus(damageBonus, damageAmount)
-
-        console.log(`${caster.name} is casting ${skill.name} on ${subject.name}`);
+        if(damageBonus) damageAmount = this.applyBonus(damageBonus, damageAmount)
 
         if (subject instanceof Party) {
             this.attackParty(damageAmount, subject, caster, extraDamageHitAnotherEnemy)
         }
         else {
             console.log(`${caster.name} deals ${damageAmount} damage to ${target.name}`);
-            subject.takeDamage(damageAmount);
+            damageAmount = target.takeDamage(damageAmount);
+
+            if(extraDamageHitAnotherEnemy && damageAmount > 0) {
+                const targetParty = gameSystem.getParty(target.id)
+                let members = targetParty.getMembers().filter( member => member.id != subject.id)
+
+                this.attackParty(damageAmount, members, caster, extraDamageHitAnotherEnemy)
+            }
+            
         }
         skill.tags.offensive.damage = damageAmount;
     }
@@ -40,16 +46,12 @@ class OffensiveTag extends SkillTag {
     }
 
     applyBonus(damageBonus, damageAmount) {
-        if (damageBonus) {
-            console.log("Before bonus", damageAmount);
-            damageBonus.forEach(bonus => {
-                if (bonus.trigger && !this.conditionalSystem.trigger(bonus.trigger))
-                    return;
-                    
-                damageAmount *= 1 + bonus.multipler;
-            });
-            console.log("After Bonus", damageAmount);
-        }
+        damageBonus.forEach(bonus => {
+            if (bonus.trigger 
+                && !this.conditionalSystem.trigger(bonus.trigger)) return
+                
+            damageAmount *= 1 + bonus.multipler;
+        });
 
         return damageAmount;
     }
