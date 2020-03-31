@@ -8,6 +8,8 @@ const { DeffensiveTag } = require("./DeffensiveTag")
 const { OffensiveTag } = require("./OffensiveTag")
 const { HealingTag } = require("./HealingTag")
 
+const gameSystem = require('../GameSystem')
+
 class SkillSystem {
 
     constructor() {
@@ -24,7 +26,12 @@ class SkillSystem {
         }
     }
 
-    activeTags(caster, skill) {
+    useSkill(casterId, skillId) {        
+        const caster = gameSystem.getActor(casterId)
+        const skill = gameSystem.getSkillById(skillId)
+        gameSystem.setCaster(casterId)
+
+        console.log(`${caster.name} is casting ${skill.name}`);        
         Object.keys(skill.tags).forEach( tag => this.tags[tag].active(caster, skill) )
     }
 }

@@ -1,8 +1,4 @@
-/*
-const ConditionalSystem = require('./ConditionalSystem')
-const SkillSystem = require('./skill/SkillSystem')
-
-const Singleton = require("./Singleton")*/
+//const Singleton = require("./Singleton")*/
 
 class GameSystem {
     constructor() {
@@ -17,9 +13,6 @@ class GameSystem {
         this.lastCasterId = -1
 
         this.skillList = {}
-/*
-        this.conditionalSystem = new ConditionalSystem()
-        this.skillSystem = new SkillSystem()*/
 
         return this.getInstance()
     }
@@ -42,6 +35,10 @@ class GameSystem {
 
     getActorByName(name) {
         return Object.values(this.actors).find( actor => actor.name == name )
+    }
+
+    setCaster(id) {
+        this.lastCasterId = id
     }
 
     getCaster() {
@@ -87,19 +84,6 @@ class GameSystem {
     getSkillById(id) {
         return this.skillList[id]
     }
-
-    useSkill(casterId, skillReference, skillSystem) {
-        const caster = this.getActor(casterId)
-        const skill = typeof skillReference == "string" ? 
-            this.getSkillByName(skillReference) : this.getSkillById(skillReference)
-
-        this.lastCasterId = casterId
-
-        console.log(`${caster.name} is casting ${skill.name}`);
-        skillSystem.activeTags(caster, skill)
-    }
 }
 
-const gameSystem = new GameSystem()
-
-module.exports = gameSystem
+module.exports = new GameSystem()

@@ -2,14 +2,15 @@ const { createId } = require("../../util")
 
 class Skill {
     constructor(
-        name, 
-        tags = {}, 
-        id = createId(), 
-        description,
+        {
+            name,
+            tags = {},
+            id = createId(),
+            description,
 
-        paCost = 1,
-        duration = 0,
-        cooldown = -1,
+            paCost = 1,
+            cooldown = -1,
+        }
     ) {        
         this.id = id
         this.name = name
@@ -18,7 +19,6 @@ class Skill {
         this.tags = tags
         
         this.paCost = paCost
-        this.duration = duration
 
         this.currentCooldown = 0
         this.cooldown = cooldown

@@ -13,9 +13,9 @@ class Actor {
         this.stats = stats
 
         this.status = []
-
-        this.currentHP = 0
-        this.totalHP = 100
+        
+        this.calculateTotalHPByStats()
+        this.regenateHPFully()
 
         this.currentStamina = 0
         this.totalStamina = 0
@@ -36,7 +36,7 @@ class Actor {
     }
 
     calculateTotalHPByStats() {
-        this.totalHP = 100 + Math.floor(this.stats.vit / 5)
+        this.totalHP = 100 + this.stats.vit * 5
     }
 
     getPercentualHP() {

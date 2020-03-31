@@ -1,4 +1,3 @@
-const Party = require("../Party");
 const { SkillTag } = require("./SkillTag");
 
 const gameSystem = require("../GameSystem")
@@ -110,4 +109,5 @@ class OffensiveTag extends SkillTag {
         })
     }
 }
+
 exports.OffensiveTag = OffensiveTag;

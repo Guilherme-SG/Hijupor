@@ -27,12 +27,22 @@ class ConditionalSystem {
     filter(array, filterList) {
         return array.filter( item => {
             return filterList.every( filter => {
-                const { attribute, reference } = filter.params
+                const { fn, params } = filter
+                const { attribute, reference } = params
+
                 let value = this.evaluateAttribute(item, attribute)
-                return this[filter.fn](value, reference)
+
+                return this[fn](value, reference)
             })
             
         })
+    }
+
+    duration(durationOptions) {
+        if(Number.isInteger(durationOptions)) return durationOptions
+
+        const { whileTrue } = durationOptions
+        return whileTrue.every( this.trigger )
     }
 
     evaluateTarget(subject) {
