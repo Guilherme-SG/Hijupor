@@ -21,6 +21,10 @@ const SkillSchema = new mongoose.Schema({
     tags: {
         type: mongoose.Schema.Types.Mixed,
         required: false
+    },
+    createdAt: {
+        type: Date,
+        default: Date.now
     }
 })
 

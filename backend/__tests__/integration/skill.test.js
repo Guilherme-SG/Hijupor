@@ -1,6 +1,8 @@
 const request = require("supertest")
 const app = require("../../src/app")
 
+const SkillModel = require("../../src/models/Skill")
+
 describe("Skill API", () => {
     const skillObj = {
         "name": "Investida",
@@ -26,7 +28,20 @@ describe("Skill API", () => {
         }
     }
 
-    it("Should receive skill", async () => {
+    beforeAll(async () => {
+        await SkillModel.remove({})
+    })
+
+    afterEach(async () => {
+        await SkillModel.remove({})
+    })
+
+    it("Has a module", () => {
+        console.log(process.env.DATABASE)
+        expect(SkillModel).toBeDefined()
+    })
+
+    it("Should register a skill", async () => {
         const response = await request(app)
             .post("/skill")
             .send(skillObj)
@@ -34,11 +49,11 @@ describe("Skill API", () => {
         expect(response.status).toBe(200)    
     })
 
-    it("Should return skill name", async () => {
+    it("Should return it id on registration", async () => {
         const response = await request(app)
             .post("/skill")
             .send(skillObj)
 
-        expect(response.body.name).toBe(skillObj.name)    
+        expect(response.body).toHaveProperty("_id")
     })
 })
