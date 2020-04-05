@@ -29,31 +29,37 @@ describe("Skill API", () => {
     }
 
     beforeAll(async () => {
-        await SkillModel.remove({})
+        await SkillModel.deleteMany({})
     })
 
     afterEach(async () => {
-        await SkillModel.remove({})
+        await SkillModel.deleteMany({})
     })
 
     it("Has a module", () => {
-        console.log(process.env.DATABASE)
         expect(SkillModel).toBeDefined()
     })
 
-    it("Should register a skill", async () => {
+    it("Should register a skill and return it id- POST /skill", async () => {
         const response = await request(app)
             .post("/skill")
             .send(skillObj)
 
-        expect(response.status).toBe(200)    
+        expect(response.status).toBe(200)  
+        expect(response.body).toHaveProperty("_id")  
     })
 
-    it("Should return it id on registration", async () => {
-        const response = await request(app)
+    it("Should find skill by name - GET /skill:name", async () => {
+        await request(app)
             .post("/skill")
             .send(skillObj)
 
+        const response = await request(app)
+            .get("/skill/" + skillObj.name)
+
         expect(response.body).toHaveProperty("_id")
+        expect(response.body).toHaveProperty("name")
+
+        expect(response.body.name).toBe(skillObj.name)
     })
 })

@@ -8,13 +8,15 @@ class SkillController {
     }
 
     async findByName(req, res) {
-        const { name } = request.params
-        return response.json({ name })
+        const { name } = req.params
+
+        const skill = await SkillModel.findOne({ name })
+        return res.json(skill)
     }
 
     async findById(req, res) {
         const { id } = request.params
-        return response.json({ id })
+        return res.json({ id })
     }
 
     async use(req, res) {
