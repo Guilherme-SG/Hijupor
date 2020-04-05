@@ -8,21 +8,6 @@ const PassiveSchema = new mongoose.Schema({
     description: {
         type: String,
         required: true
-    },
-    category: {
-        type: String
-    },
-    conditions: {
-        type: mongoose.Schema.Types.Mixed
-    },
-    actions: {
-        type: Array
-    },
-    onBattleBegin: {
-        type: mongoose.Schema.Types.Mixed
-    },
-    onTurnBegin: {
-        type: mongoose.Schema.Types.Mixed
     }
 })
 
