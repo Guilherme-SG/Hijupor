@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "set NODE_ENV=test&&jest --detectOpenHandles",
+    "test": "set NODE_ENV=test&&jest --detectOpenHandles --watchAll",
     "start": "nodemon src/server.js --ignore __test__"
   },
   "keywords": [],

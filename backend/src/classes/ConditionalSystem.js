@@ -13,6 +13,8 @@ class ConditionalSystem {
     maxValueInArray = array => Math.max(...array)
 
     trigger(triggerList) {
+        if(!triggerList) return true
+
         return triggerList.every(trigger => {
             const { subject, fn, params } = trigger
             const { attribute, reference } = params

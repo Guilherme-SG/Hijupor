@@ -1,9 +1,5 @@
-//const Singleton = require("./Singleton")*/
-
 class GameSystem {
     constructor() {
-        //const self = super()
-
         this.actors = {}
         this.parties = {}
 

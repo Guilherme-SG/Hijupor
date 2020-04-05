@@ -40,7 +40,7 @@ describe("Skill API", () => {
         expect(SkillModel).toBeDefined()
     })
 
-    it("Should register a skill and return it id- POST /skill", async () => {
+    it("Should register a skill and return it id - POST /skill", async () => {
         const response = await request(app)
             .post("/skill")
             .send(skillObj)
@@ -49,13 +49,28 @@ describe("Skill API", () => {
         expect(response.body).toHaveProperty("_id")  
     })
 
-    it("Should find skill by name - GET /skill:name", async () => {
+    it("Should find skill by name - GET /skill?name=", async () => {
         await request(app)
             .post("/skill")
             .send(skillObj)
 
         const response = await request(app)
-            .get("/skill/" + skillObj.name)
+            .get("/skill?name=" + skillObj.name)
+
+        expect(response.body).toHaveProperty("_id")
+        expect(response.body).toHaveProperty("name")
+
+        expect(response.body.name).toBe(skillObj.name)
+    })
+
+    it("Should find skill by id - GET /skill:id", async () => {
+        const responseSkill = await request(app)
+            .post("/skill")
+            .send(skillObj)
+
+        const skill = responseSkill.body
+        const response = await request(app)
+            .get("/skill/" + skill._id)
 
         expect(response.body).toHaveProperty("_id")
         expect(response.body).toHaveProperty("name")
