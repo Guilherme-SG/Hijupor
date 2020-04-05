@@ -1,0 +1,17 @@
+{
+    "weapons": [
+        {
+            "id": 1,
+            "name": "Espada de Duas Mãos",
+            "type": "arma",
+            "baseDamage": 30,
+            "description": "(30 de dano base) +3% cada 1 ponto de For. (+285% atualmente);",
+            "passives": [
+                {
+                    "name": "Passiva Ataque Básico",
+                    "descritpion": "Ao acertar um ataque, realiza um golpe complementar que causa 50% do primeiro."
+                }
+            ]
+        }
+    ]
+}

@@ -1,0 +1,862 @@
+{
+    "class": {
+        "Bardo": [
+            {
+                "name": "Inspiração",
+                "description": " Uma vez por rodada, permite que um Aliado receba um Dado adicional em um dos seguintes efeitos: Dano Causado; Vida recuperada; Resistência à Debuffs Mentais. (1D10. (2%*Nº do Dado)).\n",
+                "category": "inata",
+                "conditions": {
+                    "self": {
+                        "alreadyUsedInTurn": { "_$eq": false }
+                    }
+                },
+                "actions": []
+            },
+            {
+                "name": "Charme",
+                "description": " Desbloqueia a chance de tentar acalmar alguém que esteja sendo Agressivo contra o Grupo.\n",
+                "category": "classe",
+                "conditions": {
+                    "caster": {
+                        "currentPA": {
+                            "gte": 1
+                        }
+                    }
+                },
+                "actions": [
+                    {
+                        "conditions": {
+                            "target": {
+                                "inBattle": {"_$eq": true}    
+                            }
+                        },
+                        "effects": [
+                            {
+                                "caster": {
+                                    "nextTurnPA": {
+                                        "_$decrement": 1
+                                    }
+                                }
+                            }
+                        ]
+                    }
+                ]
+            },
+            {
+                "name": "Rivalidade Musical",
+                "description": " Bardos não gostam de ouvir críticas das sua músicas. Possui +10% a resistência a Debuffs Mentais.\n",
+                "category": "classe"
+            },
+            {
+                "name": "Estância",
+                "description": " No começo do combate consegue escolher entre 3 notas, Ofensivo, Curativo, Utilitário. O Acorde escolhido melhora as Habilidades desse tipo.\n",
+                "category": "classe"
+            },
+            {
+                "name": "Acordes",
+                "description": " Quando 3 notas são tocadas, um acorde é criado. O Efeito do Acorde varia dependendo das últimas 3 notas tocadas.\n",
+                "category": "classe"
+            },
+            {
+                "name": "Poliglota",
+                "description": " Consegue falar 1 Língua adicional.\n",
+                "category": "classe"
+            },
+            {
+                "name": "Conhecedor do Mundo",
+                "description": " Recebe do GM informações sobre os lugares já visitados.\n",
+                "category": "classe"
+            }
+        ],
+        "Bárbaro": [
+            {
+                "name": "Vivo pelo Ódio",
+                "description": " Ao chegar em 0Hp, consegue manter-se vivo por 1 (+1 cada 25 de Raiva) rodadas adicionais.\n",
+                "category": "inata"
+            },
+            {
+                "name": "Intimidador Nato",
+                "description": " Os Bárbaros possuem uma Chance adicional de 10% na hora de tentarem intimidar seus inimigos.\n",
+                "category": "classe"
+            },
+            {
+                "name": "Sortudos",
+                "description": " Toda vez que um Bárbaro rolar um 19, ele é considerado um Crítico.\n",
+                "category": "classe"
+            },
+            {
+                "name": "Massacre",
+                "description": " Os Críticos dos Bárbaros causam 200% do Dano, ao invés de 150%.\n",
+                "category": "classe"
+            },
+            {
+                "name": "Longevidade",
+                "description": " Recebem um Bônus constante de +10% de Vitalidade.\n",
+                "category": "classe"
+            },
+            {
+                "name": "Protegendo os Aliados",
+                "description": " Ao bloquearem ataques pelos seus aliados, eles recebem 50% do Dano apenas.\n",
+                "category": "classe"
+            },
+            {
+                "name": "Faro de Perigo",
+                "description": " Conseguem sentir a presença de armadilhas, mas não sabem da Localização exata.\n",
+                "category": "classe"
+            }
+        ],
+        "Bruxo": [
+            {
+                "name": "Patrono",
+                "description": " Todas as Habilidades e ataques tem suas aparências e efeitos secundários definidos pelo Patrono do Bruxo.\n",
+                "category": "inata"
+            },
+            {
+                "name": "Ajuda dos Universitários",
+                "description": " Consegue pedir opiniões de seu Patrono.\n",
+                "category": "classe"
+            },
+            {
+                "name": "Maldição",
+                "description": " No início de todo combate escolhe um inimigo e marca-o, amplificando o efeito e/ou dano que afetar ele.\n",
+                "category": "classe"
+            },
+            {
+                "name": "Visão Perfeita",
+                "description": " Consegue ver através de coisas Físicas, Mágicas e Falta de Luminosidade.\n",
+                "category": "classe"
+            },
+            {
+                "name": "Ilusões",
+                "description": " Consegue alterar a aparência Física de 1 (+1 cada 11 de Carisma) enquanto estiverem fora de combate.\n",
+                "category": "classe"
+            },
+            {
+                "name": "Stalker Much?",
+                "description": " Consegue observar qualquer pessoa que já tenha visto claramente.\n",
+                "category": "classe"
+            },
+            {
+                "name": "Tal Mestre, Tal Aprendiz",
+                "description": " Conforme utiliza seus Poderes começa a receber características de seu Patrono.\n",
+                "category": "classe"
+            }
+        ],
+        "Clérigo": [
+            {
+                "name": "Benção",
+                "description": " Uma vez por turno, permite que um Aliado joguem um dado adicional de Defesa, que é somado ou substituído pelo 1º jogado.\n",
+                "category": "inata"
+            },
+            {
+                "name": "Sentir Pecadores",
+                "description": " Consegue sentir a presença de quaisquer criaturas mágicas e aberrações.\n",
+                "category": "classe"
+            },
+            {
+                "name": "Poupar os Mortos",
+                "description": " Consegue impedir que um aliado com 0 de Hp morra, porém caso o aliado seja atacado, a ação tem que ser refeita.\n",
+                "category": "classe"
+            },
+            {
+                "name": "Proteção",
+                "description": " Uma vez por turno, o Clérigo pode escolher um aliado com menos de 50% do Hp e impedir que ele seja alvo de ataques inimigos. Caso o Aliado ataque um inimigo, a marca é Desfeita.\n",
+                "category": "classe"
+            },
+            {
+                "name": "Confessionário",
+                "description": " O Clérigo cria uma pequena área à seu redor, onde ele consegue saber se as pessoas estão mentindo.\n",
+                "category": "classe"
+            },
+            {
+                "name": "Orar por Orientação",
+                "description": " O Clérigo, enquanto fora de combate, pode pedir orientação para seu Deus.\n",
+                "category": "classe"
+            },
+            {
+                "name": "Deuses Falsos",
+                "description": " O Clérigo tem conhecimento sobre todos os Deuses cultuados em Hijupor, porém tem apenas conhecimentos mais específicos sobre seu Deus apenas.\n",
+                "category": "classe"
+            }
+        ],
+        "Druída": [
+            {
+                "name": "Forma Bestial",
+                "description": " Consegue se transformar em Animais.\n",
+                "category": "inata"
+            },
+            {
+                "name": "Ser de Humanas",
+                "description": " Consegue falar e entender as Linguagens ‘Bestia’ e ‘Herbae’.\n",
+                "category": "classe"
+            },
+            {
+                "name": "Conhecimento Herbáceo",
+                "description": " Consegue coletar ingredientes para Poções e Elixires de todos os lugares.\n",
+                "category": "classe"
+            },
+            {
+                "name": "Coberto de Espinhos",
+                "description": " Inimigos que causarem Dano Físico recebem 25% do dano causado ao atacarem. \n",
+                "category": "classe"
+            },
+            {
+                "name": "Fada da Floresta",
+                "description": " Ao começo do Combate cria uma Fada, que pode realizar apenas uma tarefa, seja atacar ou curar. \n",
+                "category": "classe"
+            },
+            {
+                "name": "Tô com Fome",
+                "description": " Invoca 1d20 de pequenas frutas para alimentar a si mesmo. Cada uma recupera 1Hp\n",
+                "category": "classe"
+            },
+            {
+                "name": "Eu sei o Caminho",
+                "description": " É capaz de Pedir Direções para Plantas.\n",
+                "category": "classe"
+            }
+        ],
+        "Feiticeiro": [
+            {
+                "name": "Customização",
+                "description": " É capaz de escolher efeitos secundários para suas magias, definidas no começo da campanha.\n",
+                "category": "inata"
+            },
+            {
+                "name": "Roleta Elemental",
+                "description": " Uma vez por rodada, um aliado é escolhido para receber um Elemento, variando entre os 4 Básicos, para melhorar seus próximo ataque.\n",
+                "category": "classe"
+            },
+            {
+                "name": "Hereditariedade",
+                "description": " Ao continuamente usar seus poderes, começa a desenvolver características de sua Origem Mágica.\n",
+                "category": "classe"
+            },
+            {
+                "name": "Poder Demais",
+                "description": " O Poder do Feiticeiro é alto demais para ele conter, manifestando-se e danificando todos os inimigos por rodada. \n",
+                "category": "classe"
+            },
+            {
+                "name": "Neblina Constante",
+                "description": " O Poder do Feiticeiro faz ele criar uma Neblina ao redor de si. +10% chance de Desvio.\n",
+                "category": "classe"
+            },
+            {
+                "name": "Pele de Pedra",
+                "description": " Recebe uma Resistência adicional à Armas Cortantes. +15% Resistência.\n",
+                "category": "classe"
+            },
+            {
+                "name": "Vitalidade Adicional",
+                "description": " Metade da Sabedoria do Feiticeiro é transferida para Vitalidade.\n",
+                "category": "classe"
+            }
+        ],
+        "Lutador": [
+            {
+                "name": "Empunhadura Dupla Perfeita",
+                "description": " Ao empunhar 2 armas, ambas causam 100% de seu dano, não sofrendo redução.\n",
+                "category": "inata"
+            },
+            {
+                "name": "Combatente Perfeito",
+                "description": " Possui a mesma Proficiência de Combate com todas as armas.\n",
+                "category": "classe"
+            },
+            {
+                "name": "Aparar Golpe",
+                "description": " A cada 4 rodadas consegue negar totalmente o dano de um golpe físico.\n",
+                "category": "classe"
+            },
+            {
+                "name": "Ripostar",
+                "description": " Ao ser atingido por uma Habilidade, nega o dano dela totalmente e, caso ela fosse infligir um Status negativo, atordoa o inimigo. Esse efeito possui 5 rodadas de recarga.\n",
+                "category": "classe"
+            },
+            {
+                "name": "Larga isso aí!",
+                "description": " Ataques críticos dos Lutadores, além de causar dano bônus, desarmam os inimigos, fazendo-os perder 1 turno.\n",
+                "category": "classe"
+            },
+            {
+                "name": "Tá fora de posição!",
+                "description": " Ao custo de 1 Ponto de Ação, consegue retirar um aliado de um ataque.\n",
+                "category": "classe"
+            },
+            {
+                "name": "Disciplina de Batalha",
+                "description": " Recupera 5% do Hp passivamente.\n",
+                "category": "classe"
+            }
+        ],
+        "Mago": [
+            {
+                "name": "Ser Implacável",
+                "description": " Todas suas Habilidades são melhoradas ao consumo de sua Vida. \n",
+                "category": "inata"
+            },
+            {
+                "name": "Sentidos Compartilhados",
+                "description": " Consegue trocar seus sentidos pelos de seus Familiares, tornando-se incapaz de usar os Seus pelo tempo que a troca estiver sendo feita.\n",
+                "category": "classe"
+            },
+            {
+                "name": "Frutos do Estudo",
+                "description": " Consegue identificar um Feitiço ao ver ele sendo lançado, ou, ao custo de tempo, à partir de seus restos.\n",
+                "category": "classe"
+            },
+            {
+                "name": "Telecinese",
+                "description": " Capaz de mover objetos com o poder de sua Mente. A potência escala com Inteligência.\n",
+                "category": "classe"
+            },
+            {
+                "name": "Telepatia",
+                "description": " Comunica-se Telepaticamente com aliados, as línguas faladas são escolhidas por cada um.\n",
+                "category": "classe"
+            },
+            {
+                "name": "Movimento espacial rápido",
+                "description": " Teleporta-se por curtos espaços. Essa Passiva pode ser usada em Batalha para desviar de ataques, ao custo de 1 Ponto de Ação do turno seguinte.\n",
+                "category": "classe"
+            },
+            {
+                "name": "Lanterna Humana",
+                "description": " Fora de combate pode emitir uma esfera de luz de sua mão, iluminando o caminho e evitando ataques Furtivos\n",
+                "category": "classe"
+            }
+        ],
+        "Monge": [
+            {
+                "name": "Meditação",
+                "description": " Toda rodada o Monge recebe 2 pontos de Ki. Ao não realizar ações em sua rodada ele recebe 10, até um máximo de 100.\n",
+                "category": "inata"
+            },
+            {
+                "name": "Retornar ao Remetente",
+                "description": " Ao custo de 15 pontos de Ki, consegue parar Projéteis que iriam te acertar. Gastando mais 35 pontos consegue fazer ele voltar ao remetente.\n",
+                "category": "classe"
+            },
+            {
+                "name": "Homem-Aranha",
+                "description": " Consegue escalar paredes e tetos.\n",
+                "category": "classe"
+            },
+            {
+                "name": "Peso Pena",
+                "description": " A velocidade de caída dele é menor que a dos outros.\n",
+                "category": "classe"
+            },
+            {
+                "name": "Desprovido de Peso",
+                "description": " Ao não usar armadura, recebe um Bônus de Agilidade de 15%\n",
+                "category": "classe"
+            },
+            {
+                "name": "Mestre Acrobata",
+                "description": " A Cada 6 rodadas, os Monges são capazes de realizarem um desvio perfeito.\n",
+                "category": "classe"
+            },
+            {
+                "name": "Pés Ágeis",
+                "description": " Foge mais facilmente de combates.\n",
+                "category": "classe"
+            }
+        ],
+        "Paladino": [
+            {
+                "name": "Ascensão Divina",
+                "description": " Ao atingir 30% da sua vida máxima, o Paladino entra no modo ascendido, melhorando todas as suas habilidades e recebendo características, que variam com o Deus.\n",
+                "category": "inata"
+            },
+            {
+                "name": "Saúde Perfeita",
+                "description": " Imune a Doenças.\n",
+                "category": "classe"
+            },
+            {
+                "name": "Auras Poderosas",
+                "description": " Ao Começo de todo Combate o Paladino libera uma Aura que pode aumentar os poderes ofensivos ou defensivos deles.\n",
+                "category": "classe"
+            },
+            {
+                "name": "Deuses Falsos",
+                "description": " O Paladino tem conhecimento sobre todos os Deuses cultuados em Hijupor, porém tem apenas conhecimentos mais específicos sobre seu Deus apenas.\n",
+                "category": "classe"
+            },
+            {
+                "name": "Aspecto Divino",
+                "description": " Enquanto fora de combate, consegue pedir para seu Deus uma melhoria em seus poderes, variando com a Divindade, que podem ser utilizadas em combate.\n",
+                "category": "classe"
+            },
+            {
+                "name": "Temam a Inquisição!",
+                "description": " A Presença dos Paladinos assusta Mortos-Vivos e Demônios, facilitando a Intimidação.\n",
+                "category": "classe"
+            },
+            {
+                "name": "O Enviado de Deus",
+                "description": " Recupera 5% do seu Hp toda rodada.\n",
+                "category": "classe"
+            }
+        ],
+        "Patrulheiro": [
+            {
+                "name": "Favoritismo",
+                "description": " Dano Bônus contra categorias específicas de Inimigos e em um Terreno específico.\n",
+                "category": "inata"
+            },
+            {
+                "name": "Surpresa!",
+                "description": " Ao sair de Furtividade, seu próximo ataque causa 20% de Dano Bônus.\n",
+                "category": "classe"
+            },
+            {
+                "name": "Camuflagem",
+                "description": " Recebe +10 pontos de Furtividade enquanto em seu Terreno favorito.\n",
+                "category": "classe"
+            },
+            {
+                "name": "Faro Sobrenatural",
+                "description": " Consegue sentir a presença de inimigos/feras/seres invisíveis\n",
+                "category": "classe"
+            },
+            {
+                "name": "Adestrador",
+                "description": " Ao passar tempo com um animal, consegue adestrá-lo para ser seu companheiro.\n",
+                "category": "classe"
+            },
+            {
+                "name": "Rastreio",
+                "description": " Enquanto em seu terreno favorito ou caso seja uma criatura da categoria escolhida, consegue encontrar rastros de criaturas e seguí-los.\n",
+                "category": "classe"
+            },
+            {
+                "name": "Arqueiro Nato",
+                "description": " Possui uma perícia adicional com Arcos ou Bestas.\n",
+                "category": "classe"
+            }
+        ],
+        "Trapaceiro": [
+            {
+                "name": "Frenesi do Assassino",
+                "description": " Ao matar um inimigo reduz o cd de suas skills em 1.\n",
+                "category": "inata"
+            },
+            {
+                "name": "Surpresa!",
+                "description": " Ao sair de Furtividade, seu próximo ataque causa 20% de Dano Bônus.\n",
+                "category": "classe"
+            },
+            {
+                "name": "Mãos Hábeis",
+                "description": " Permite que o personagem tente arrombar fechaduras e bater carteira.\n",
+                "category": "classe"
+            },
+            {
+                "name": "Um com as Sombras",
+                "description": " Ao não gastar Pontos de Ação entra em Furtividade.\n",
+                "category": "classe"
+            },
+            {
+                "name": "Pés Leves",
+                "description": " Não ativa armadilhas ao andar.\n",
+                "category": "classe"
+            },
+            {
+                "name": "Mestre do x1",
+                "description": " Dano bônus de 10% em combates 1x1.\n",
+                "category": "classe"
+            },
+            {
+                "name": "Velocista",
+                "description": " Recebe um Bônus constante de +10% de Agilidade.\n",
+                "category": "classe"
+            }
+        ]
+    },
+    "race": {
+        "Arikis": [
+            {
+                "name": "Descendência Animal",
+                "description": "Ser meio animal permite que herde características daquele que o representa.",
+                "category": "raça"
+            },
+            {
+                "name": "Camuflagem",
+                "description": "Consegue esconder suas partes animais por um curto período de tempo, camuflando-se de Humano comum.",
+                "category": "raça"
+            },
+            {
+                "name": "Adestramento",
+                "description": "Consegue adestrar pequenos animais, ao passar um certo tempo com eles ou ao entregar sua comida favorita.",
+                "category": "raça"
+            },
+            {
+                "name": "Comunicação Bestial",
+                "description": "Aprende ‘Bestia’ naturalmente.",
+                "category": "raça"
+            }
+        ],
+        "Gantris": [
+            {
+                "name": "Arqueólogo",
+                "description": "Conseguem pedir ao GM informações sobre os locais.",
+                "category": "raça"
+            },
+            {
+                "name": "Aprendizado Mágico",
+                "description": "Começam com 1 Feitiço adicional.",
+                "category": "raça"
+            },
+            {
+                "name": "Estudioso",
+                "description": "Recebe um Bônus constante de 10% de Sabedoria.",
+                "category": "raça"
+            },
+            {
+                "name": "Essa é minha Casta",
+                "description": "Recebe um ataque adicional, variando de acordo com sua classee social.",
+                "category": "raça"
+            }
+        ],
+        "Karateris": [
+            {
+                "name": "Corpo Flamejante",
+                "description": "Incendeia suas armas na hora de realizar ataques.",
+                "category": "raça"
+            },
+            {
+                "name": "“I’m Flaming Hot”",
+                "description": "Todos os atacantes que entrarem em contato com seu Sangue, sofrem queimadura.",
+                "category": "raça"
+            },
+            {
+                "name": "Duro como Pedra",
+                "description": "Recebe um Bônus constante de 15% de Resistência.",
+                "category": "raça"
+            },
+            {
+                "name": "Pedra não corta",
+                "description": "Imunidade à Dano Cortante.",
+                "category": "raça"
+            }
+        ],
+        "Martaris": [
+            {
+                "name": "Traidores",
+                "description": "Os Subterrâneos e os Celestiais possuem uma Rivalidade milenar, causando dano adicional um contra o outro.",
+                "category": "raça"
+            },
+            {
+                "name": "Servos dos Deuses",
+                "description": "Possuem amplo conhecimento sobre a Mitologia.",
+                "category": "raça"
+            }
+        ],
+        "Celestiais": [
+            {
+                "name": "Seres Alados",
+                "description": "Os Celestiais ainda possuem suas asas, que podem ser ocultas ou deixadas à mostra.",
+                "category": "raça"
+            },
+            {
+                "name": "Habilidade Angelical",
+                "description": "Os Celestiais possuem todas as suas habilidades curativas amplificadas.",
+                "category": "raça"
+            }
+        ],
+        "Subterrâneos": [
+            {
+                "name": "Poder Realocado",
+                "description": "Com o Corte das Asas, os Subterrâneos possuem poder acumulado. +15% no Stat Principal de Dano.",
+                "category": "raça"
+            },
+            {
+                "name": "Ferreiros Natos",
+                "description": "Todos os artigos criados pelos Subterrâneos tem uma Qualidade ótima. +10% Efeitos.",
+                "category": "raça"
+            }
+        ],
+        "Nereteris": [
+            {
+                "name": "Telepatia Aquática",
+                "description": "Comunica-se com os animais aquáticos.",
+                "category": "raça"
+            },
+            {
+                "name": "Colheita Marinha",
+                "description": "Coleta comidas de Plantas aquáticas e de Ostras/Mexilhões.",
+                "category": "raça"
+            },
+            {
+                "name": "Música Apaixonante",
+                "description": "Todos os Nereteris conseguem disfarçar sua voz, fazendo-a ficar Suave e apaixonar quem à ouvir.",
+                "category": "raça"
+            },
+            {
+                "name": "Dobradores de Água",
+                "description": "Conseguem manipular e controlar água, fazendo-a ficar totalmente em seu controle.",
+                "category": "raça"
+            }
+        ],
+        "Pagrius": [
+            {
+                "name": "Religiosidade",
+                "description": "Tem conhecimento extra sobre 1 Deus.",
+                "category": "raça"
+            },
+            {
+                "name": "Tiranos",
+                "description": "Causam Danos Bônus contra todas as outras espécies.",
+                "category": "raça"
+            },
+            {
+                "name": "Aprendizado Linguístico",
+                "description": "Conhece uma Linguagem adicional.",
+                "category": "raça"
+            },
+            {
+                "name": "Ecléticos",
+                "description": "Conseguem escolher uma Passiva Adicional de outra Raça.",
+                "category": "raça"
+            }
+        ],
+        "Titaris": [
+            {
+                "name": "Fotossíntese",
+                "description": "Recupera 5% de seu Hp máximo por rodada enquanto em contato com a Luz do Sol.",
+                "category": "raça",
+                "onTurnBegin": {
+                    "actions": [
+                        {
+                            "conditions": {
+                                "caster": {
+                                    "currentHP": { "_$lte": "caster.totalHP * 0.95" },
+                                    "onSunlight": { "_$eq": true }
+                                }
+                            },
+                            "effects": [
+                                {
+                                    "caster": {
+                                        "currentHP": {
+                                            "_$increase": "caster.totalHP * 0.05"
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    ]
+                }
+            },
+            {
+                "name": "Produção de Súber",
+                "description": "No começo de todo combate cria uma camada de Madeira, capaz de bloquear dano equivalente à 10% de seu Hp máximo.",
+                "category": "raça",
+                "onBattleBegin": {
+                    "actions": [
+                        {
+                            "caster": {
+                                "totalStamina": {"_$increment": "caster.totalHP * 0.1"}
+                            }
+                        }
+                    ]
+                }
+            },
+            {
+                "name": "Conhecimento Herbáceo",
+                "description": "Consegue coletar ingredientes para Poções e Elixires de todos os lugares.",
+                "category": "raça"
+            },
+            {
+                "name": "Criação Robusta",
+                "description": "Consegue tirar do chão armas feitas de madeira. Só pode existir uma única arma",
+                "category": "raça"
+            }
+        ]
+    },
+    "local": {
+        "Arquipélago de Arquis": [
+            {
+                "name": "Furtividade do Fugitivo",
+                "description": "Recebe constantemente +5 de Furtividade.",
+                "category": "local"
+            },
+            {
+                "name": "Escalador Experiente",
+                "description": "Facilita a subida do Personagem em locais mais altos.",
+                "category": "local"
+            }
+        ],
+        "Vulcão de Hairi": [
+            {
+                "name": "À Prova de Fogo",
+                "description": "Recebe 10% de Resistência à danos de fogo.",
+                "category": "local"
+            },
+            {
+                "name": "Sangue Quente",
+                "description": "Recebe imunidade à congelamento.",
+                "category": "local",
+                "once": {
+                    "effects": [
+                        {
+                            "caster": {
+                                "imunity": {
+                                    "status": {
+                                        "_$add": ["Congelamento"]
+                                    }
+                                }
+                            }
+                        }
+                    ]
+                }
+            }
+        ],
+        "Oceano de Ligro": [
+            {
+                "name": "Terreno Vantajoso",
+                "description": "Acréscimo de 10% de Agilidade em ambientes aquáticos.",
+                "category": "local",
+                "onEnviromentChange": {
+                    "actions": [
+                        {
+                            "conditions": {
+                                "caster": {
+                                    "currentEnviroment": {"_$eq": "Aquático"}
+                                }
+                            },
+                            "effects": [
+                                {
+                                    "caster": {
+                                        "stats": {
+                                            "agi": {
+                                                "_$set": "caster.stats.agi * 1.1"
+                                            }
+                                        }
+                                    }
+                                }
+                            ]
+                        },
+                        {
+                            "conditions": {
+                                "caster": {
+                                    "previusEnviroment": {"_$eq": "Aquático"},
+                                    "currentEnviroment": {"_$ne": "Aquático"}
+                                }
+                            },
+                            "effects": [
+                                {
+                                    "caster": {
+                                        "stats": {
+                                            "agi": {
+                                                "_$set": "caster.stats.agi / 1.1"
+                                            }
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    ]
+                }
+            },
+            {
+                "name": "Respiração Aquática",
+                "description": "Consegue criar esferas de ar em aliados, permitindo que eles visitem o fundo do oceano.",
+                "category": "local"
+            }
+        ],
+        "Cavernas de Brim": [
+            {
+                "name": "Ferreiro Nato",
+                "description": "Aumento constante na qualidade de seus objetos criados",
+                "category": "local"
+            },
+            {
+                "name": "Visão Amplificada",
+                "description": "Consegue enxergar melhor e mais longe em ambientes escuros.",
+                "category": "local"
+            }
+        ],
+        "Montanhas de Frigor": [
+            {
+                "name": "Adequação Natural",
+                "description": "Não sofre com privação de Oxigênio e alteração da pressão.",
+                "category": "local"
+            },
+            {
+                "name": "Coletores e Colhedores",
+                "description": "Conseguem comida de jeitos simples e práticos.",
+                "category": "local"
+            }
+        ],
+        "Planícies de Jilkul": [
+            {
+                "name": "Proficiente",
+                "description": "Conseguem ter e utilizar 3 Armas com a mesma proficiência.",
+                "category": "local"
+            },
+            {
+                "name": "Sobrevivente",
+                "description": "Recebe +150Hp máximo.",
+                "category": "local",
+                "once": {
+                    "effects": [
+                        {
+                            "caster": {
+                                "totalHP": {
+                                    "_$increase": 150
+                                }
+                            }
+                        }
+                    ]
+                }
+            }
+        ],
+        "Florestas de Zircon": [
+            {
+                "name": "Spellcaster",
+                "description": "O Personagem recebe um feitiço adicional.",
+                "category": "local"
+            },
+            {
+                "name": "Aptidão Mágica",
+                "description": "Consegue encontrar restos de feitiços e rituais que aconteceram no lugar.",
+                "category": "local"
+            }
+        ],
+        "O Norte": [
+            {
+                "name": "Aproveitamento total",
+                "description": "Recupera mais Hp de todas as fontes.",
+                "category": "local"
+            },
+            {
+                "name": "Camada de Gordura Natural",
+                "description": "Recebe +10% Resistência à Dano de Frio.",
+                "category": "local",
+                "once": {
+                    "effects": [
+                        {
+                            "caster": {
+                            }
+                        }
+                    ]
+                }
+            }
+        ],
+        "Deserto de Khanish": [
+            {
+                "name": "Pés Ágeis",
+                "description": "O Terreno não influencia seu movimento.",
+                "category": "local"
+            },
+            {
+                "name": "Conhecimento da Troca",
+                "description": "Consegue melhores preços mais facilmente.",
+                "category": "local"
+            }
+        ]
+    }
+}

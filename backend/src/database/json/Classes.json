@@ -1,0 +1,484 @@
+{
+    "Bardo": {
+        "name": "Bardo",
+        "attack": {
+            "description": "Nota Básica. Modificador Bônus: Carisma.\t\nA Nota pode causar dano em um inimigo ou recuperar levemente a vida de um aliado."
+        },
+        "skillList": [ "O Mestre Mandou", "Ritmo Acelerado", "Harmonia", "Botando pra Quebrar", "Acorde Errado", "Tá tiltado? "],
+        "passiveList": [ "Inspiração", "Charme", "Rivalidade Musical", "Estância", "Acordes", "Poliglota", "Conhecedor do Mundo"  ]
+    },
+    "Bárbaro": {
+        "name": "Bárbaro",
+        "attack": {
+            "description": "Golpe Comum. Modificador Bônus: Depende da Arma.\nOs ataques básicos de Bárbaros concedem à ele 2 Pontos de Raiva, que podem ser utilizados para melhorar suas habilidades. O Máximo de Pontos de Raiva é 100. Ataques Críticos concedem 4 Pontos de Raiva. Todas as Habilidades consomem toda a raiva atual na hora que são ativadas.",
+            "onNormal": {
+                "actions": [
+                    {
+                        "effects": [
+                            {
+                                "caster": {
+                                    "stats": {
+                                        "raiva": {
+                                            "_$increment": 2
+                                        }
+                                    }
+                                }
+                            }
+                        ]
+                    }
+                ] 
+            },
+            "onCritical": {
+                "actions": [
+                    {
+                        "effects": [
+                            {
+                                "caster": {
+                                    "stats": {
+                                        "raiva": {
+                                            "_$increment": 4
+                                        }
+                                    }
+                                }
+                            }
+                        ]
+                    }
+                ]
+            }
+        },
+        "skillList": [
+             "Investida",
+             "Acalmar-se",
+             "Realocar Raiva",
+             "MORRE PUTA!",
+             "Temam o Meu Poder!",
+             "Insulto"
+        ],
+        "passiveList": [
+             "Vivo pelo Ódio",
+             "Intimidador Nato",
+             "Sortudos",
+             "Massacre",
+             "Longevidade",
+             "Protegendo os Aliados",
+             "Faro de Perigo"
+        ]
+    },
+    "Bruxo": {
+        "name": "Bruxo",
+        "attack": {
+            "description": "Raio Primordial. Modificador Bônus: Carisma.\nOs efeitos do ataque dependem do Patrono do Bruxo."
+        },
+        "skillList": [
+             "Vingança!",
+             "Parado!",
+             "Palavra da Morte!",
+             "Explosão de Poder!",
+             "Polimorfia!",
+             "Sugar Vida!"
+        ],
+        "passiveList": [
+             "Patrono",
+             "Ajuda dos Universitários",
+             "Maldição",
+             "Visão Perfeita",
+             "Ilusões",
+             "Stalker Much?",
+             "Tal Mestre, Tal Aprendiz"
+        ]
+    },
+    "Clérigo": {
+        "name": "Clérigo",
+        "attack": { 
+            "description": "Golpe comum/Luz Divina. Modificador Bônus: Depende da Arma/Fé.\nTodos os Danos dos Clérigos são sempre aumentados em 15% contra Mortos-Vivos.",
+            "onAny": {
+                "actions": [
+                    {
+                        "conditions": {
+                            "target": {
+                                "race": { "_$eq": "morto-vivo" }
+                            }
+                        },
+                        "effects": [
+                            {
+                                "self": {
+                                    "bonusDamage": {
+                                        "_$increase": 0.15
+                                    }
+                                }                                
+                            }
+                        ]
+                    }
+                ]
+            }
+        },
+        "skillList": [
+             "Flagelamento",
+             "A Fé é o Melhor Remédio",
+             "Minha Fé é meu Escudo",
+             "SAI CAPETA",
+             "A Fé é para Todos",
+             "Devoção"
+        ],
+        "passiveList": [
+             "Benção",
+             "Sentir Pecadores",
+             "Poupar os Mortos",
+             "Proteção",
+             "Confessionário",
+             "Orar por Orientação",
+             "Deuses Falsos"
+        ]
+    },
+    "Druída": {
+        "name": "Druída",
+        "attack": {
+            "description": "Garras, Dentes ou Patas/Ataque da Natureza. Modificador Bônus: Força,Destreza/Sabedoria..\nAo causar dano em um inimigo, esse é afetado por Sangramento, caso seja um ataque físico, ou Veneno, caso seja um ataque mágico.",
+            "onAny": {
+                "actions": [
+                    {
+                        "conditions": {
+                            "self": {
+                                "type": {"_$eq": "physical-offensive"}
+                            }    
+                        },
+                        "effects": [
+                            {
+                                "target": {
+                                    "status": {
+                                        "_$add": ["Sangrando"]
+                                    }
+                                }
+                            }
+                        ]
+                    },
+                    {
+                        "conditions": {
+                            "self": {
+                                "type": "magical-offensive"
+                            }    
+                        },
+                        "effects": [
+                            {
+                                "target": {
+                                    "status": {
+                                        "_$add": ["Envenenado"]
+                                    }
+                                }
+                            }
+                        ]
+                    }
+                ]
+            }
+        },
+        "skillList": [
+             "Todas as Cores do Vento",
+             "Infecção Fungística",
+             "Quando bate a Trip",
+             "Morfar",
+             "Tranquilidade da Natureza",
+             "Fonte Natural"
+        ],
+        "passiveList": [
+             "Forma Bestial",
+             "Ser de Humanas",
+             "Conhecimento Herbáceo",
+             "Coberto de Espinhos",
+             "Fada da Floresta",
+             "Tô com Fome",
+             "Eu sei o Caminho"
+        ]
+    },
+    "Feiticeiro": {
+        "name": "Feiticeiro",
+        "attack": {
+            "description": "Disparo Elemental. Modificador Bônus: Sabedoria.\nO Elemento e o Efeito Secundário dependem da sua Origem Mágica."
+        },
+        "skillList": [
+             "Tempestade de Raios",
+             "Nevasca",
+             "Bola de Fogo",
+             "Lança de Pedra",
+             "Resistir Elementos",
+             "Barreira Refletora"
+        ],
+        "passiveList": [
+             "Customização",
+             "Roleta Elemental",
+             "Hereditariedade",
+             "Poder Demais",
+             "Neblina Constante",
+             "Pele de Pedra",
+             "Vitalidade Adicional"
+        ]
+    },
+    "Lutador": {
+        "name": "Lutador",
+        "attack": {
+            "description": "Golpe Comum. Modificador Bônus: Depende da Arma.\nOs Lutadores realizam um ataque complementar aos seus básicos, esses causando metade do Dano anterior.",
+            "onAny": {
+                "actions": [
+                    {
+                        
+                    }
+                ]
+            }
+        },
+        "skillList": [
+             "Eu tô aqui!",
+             "Agora eu te alcanço",
+             "Tá assustado?",
+             "Perda de Foco",
+             "Vamos Quebrar Ossos",
+             "Liderando o Exército"
+        ],
+        "passiveList": [
+             "Empunhadura Dupla Perfeita",
+             "Combatente Perfeito",
+             "Aparar Golpe",
+             "Ripostar",
+             "Larga isso aí!",
+             "Tá fora de posição!",
+             "Disciplina de Batalha"
+        ]
+    },
+    "Mago": {
+        "name": "Mago",
+        "attack": 
+            {
+                "description": "Disparo Mágico. Modificador Bônus: Inteligência.\nOs Disparos Mágicos dos Magos causam Dano adicional à inimigos usando armadura: +5% Contra Armaduras Leves; +10% Contra Armaduras Médias; +20% Contra Armaduras Pesadas.",
+                "onAny": {
+                    "actions": [
+                        {
+                            "conditions": {
+                                "target": {
+                                    "equips": {
+                                        "_$someMatch": {
+                                            "type": {
+                                                "_$eq": "Armadura Leve"
+                                            }
+                                        }
+                                    }
+                                }
+                            },
+                            "effects": [
+                                {
+                                    "self": {
+                                        "bonusDamage": {
+                                            "_$increase": 0.05
+                                        }
+                                    }
+                                }
+                            ]
+                        },
+                        {
+                            "conditions": {
+                                "target": {
+                                    "equips": {
+                                        "_$someMatch": {
+                                            "type": {
+                                                "_$eq": "Armadura Média"
+                                            }
+                                        }
+                                    }
+                                }
+                            },
+                            "effects": [
+                                {
+                                    "self": {
+                                        "bonusDamage": {
+                                            "_$increase": 0.1
+                                        }
+                                    }
+                                }
+                            ]
+                        },
+                        {
+                            "conditions": {
+                                "target": {
+                                    "equips": {
+                                        "_$someMatch": {
+                                            "type": {
+                                                "_$eq": "Armadura Pesada"
+                                            }
+                                        }
+                                    }
+                                }
+                            },
+                            "effects": [
+                                {
+                                    "self": {
+                                        "bonusDamage": {
+                                            "_$increase": 0.2
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    ]
+                }
+            },
+        "skillList": [
+             "Ajuda Família",
+             "Míssil Mágico",
+             "Feitiço de Resistência",
+             "Contra-Feitiço",
+             "Desfazer Magia",
+             "Congelamento Temporal"
+        ],
+        "passiveList": [
+             "Ser Implacável",
+             "Sentidos Compartilhados",
+             "Frutos do Estudo",
+             "Telecinese",
+             "Telepatia",
+             "Movimento espacial rápido",
+             "Lanterna Humana"
+        ]
+    },
+    "Monge": {
+        "name": "Monge",
+        "attack": "Golpe Comum. Modificador Bônus: Depende da Arma.\nO Ataque Básico dos Monges contam como Dano Mágico.",
+        "skillList": [
+             "Sequência de Golpes",
+             "Paz de Mente",
+             "Clones Astrais",
+             "Golpe Concussivo",
+             "Limpeza de Alma",
+             "Contra-Ataque"
+        ],
+        "passiveList": [
+             "Meditação",
+             "Retornar ao Remetente",
+             "Homem-Aranha",
+             "Peso Pena",
+             "Desprovido de Peso",
+             "Mestre Acrobata",
+             "Pés Ágeis"
+        ]
+    },
+    "Paladino": {
+        "name": "Paladino",
+        "attack": {
+            "description": "Golpe Comum. Modificador Bônus: Depende da Arma.\nQuando um Paladino elimina um inimigo, ele cura o aliado com menor Hp em 10% da vida máxima do inimigo.",
+            "onKill": {
+                "actions": [
+                    {
+                        "conditions": {
+                            "caster": {
+                                "allies": {
+                                    "_$someMatch": {
+                                        "currentHP": {
+                                            "_$lte": "enemy.totalHP * 0.1"
+                                        }
+                                    }
+                                }
+                            }
+                        },
+                        "effects": [
+                            {
+                                "caster": {
+                                    "allies": {
+                                        "_$sortBy": ["currentHP", "asc"]
+                                    }
+                                }
+                            },
+                            {
+                                "caster": {
+                                    "allies": {
+                                        "_$evalOnFirst": "first.currentHP += enemy.totalHP * 0.1"
+                                    }
+                                }
+                            }
+                        ]
+                    }
+                ]
+            }
+        },
+        "skillList": [
+             "A Fé é o Melhor Remédio",
+             "Insultar Religião",
+             "A Fé nos Protege",
+             "Purificação",
+             "Avatar Divino",
+             "Punição Divina"
+        ],
+        "passiveList": [
+             "Ascensão Divina",
+             "Saúde Perfeita",
+             "Auras Poderosas",
+             "Deuses Falsos",
+             "Aspecto Divino",
+             "Temam a Inquisição!",
+             "O Enviado de Deus"
+        ]
+    },
+    "Patrulheiro": {
+        "name": "Patrulheiro",
+        "attack": {
+            "description": "Golpe Comum/Disparo Comum. Modificador Bônus: Depende da Arma/Mira.\nO 1ª inimigo atingido por um ataque ou habilidade do Patrulheiro é marcado. Alvos marcados recebem danos e/ou efeitos amplificados vindos do Patrulheiros.",
+            "onFirstAttack": {
+                "actions": [
+                    {
+                        "target": {
+                            "status": {
+                                "_$add": ["Marcado"]
+                            }
+                        }
+                    }
+                ]
+            }
+        },
+        "skillList": [
+             "Tiro Crítico",
+             "Colocar Armadilha",
+             "Pacote de Ervas",
+             "Mire na Perna",
+             "Chuva de Flechas",
+             "Aumentar a Precisão"
+        ],
+        "passiveList": [
+             "Favoritismo",
+             "Surpresa!",
+             "Camuflagem",
+             "Faro Sobrenatural",
+             "Adestrador",
+             "Rastreio",
+             "Arqueiro Nato"
+        ]
+    },
+    "Trapaceiro": {
+        "name": "Trapaceiro",
+        "attack": {
+            "description": "Apunhalada. Modificador Bônus: Destreza.\nAtaques nas costas causam 10% de dano adicional.",
+            "onBackStab": {
+                "effects": [
+                    {
+                        "self": {
+                            "bonusDamage": {
+                                "_$increase": 0.1
+                            }
+                        }
+                    }
+                ]
+            }
+        },
+        "skillList": [
+             "Frascos de Venenos",
+             "Gato e Rato",
+             "Procurar Fraqueza",
+             "Causar Ferimento",
+             "Arremessar Adagas",
+             "Nada pessoal garoto"
+        ],
+        "passiveList": [
+             "Frenesi do Assassino",
+             "Surpresa!",
+             "Mãos Hábeis",
+             "Um com as Sombras",
+             "Pés Leves",
+             "Mestre do x1",
+             "Velocista"
+        ]
+    }
+}

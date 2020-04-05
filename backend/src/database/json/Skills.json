@@ -1,0 +1,1233 @@
+{
+    "Bardo": [
+        {
+            "name": "O Mestre Mandou",
+            "description": "Controla o Inimigo com menos Inteligência por 2 rodadas. 5 rodadas de recarga.",
+            "type": "control",
+            "cooldown": 5,
+            "paCost": 1,
+            "duration": 2,
+            "target": {
+                "type": "enemy",
+                "howMany": 1
+            },
+            "currentCooldown": 0,
+            "category": "classe",
+            "onCast": {
+                "actions": {
+                    "effects": [
+                        {
+                            "caster": {
+                                "enemies": {
+                                    "_$sortBy": ["stats.int", "asc"],
+                                    "_$evalOnFirst": "target = first"
+                                }
+                            },
+                            "target": {
+                                "status": {
+                                    "_$add": ["Controlado"]
+                                }
+                            }
+                        }
+                    ]
+                }
+            }
+        },
+        {
+            "name": "Ritmo Acelerado",
+            "description": "Reduz a recarga de todas as habilidades de todos os aliados em 1 rodada. 9 rodadas de recarga.",
+            "type": "buff",
+            "cooldown": 9,
+            "paCost": 1,
+            "duration": 0,
+            "target": {
+                "type": "ally",
+                "howMany": "all"
+            },
+            "currentCooldown": 0,
+            "category": "classe",
+            "onCast": {
+                "actions": {
+                    "caster": {
+                        "allies": {
+                            "_$forEach": {
+                                "skills": {
+                                    "_$filter": {
+                                        "cooldown": {"_$ne": "OPB" },
+                                        "currentCooldown": {"_$gt": 0}
+                                    },
+                                    "_$forEach": {
+                                        "currentCooldown": {"_$decrement": 1}
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        {
+            "name": "Harmonia",
+            "description": "Causa um Som harmonioso que recupera 25 (+1 cada 2 de Carisma) de Hp de um aliado. 6 rodadas de recarga.",
+            "type": "healing",
+            "cooldown": 6,
+            "paCost": 1,
+            "duration": 0,
+            "tags": {
+                "healing": {
+                    "healFunction": "healByFormula",
+                    "formula": "25 + Math.floor(caster.stats.car / 2)"
+                }
+            },
+            "formula": "25 + floor(a.stats.car / 2)",
+            "scaling": "carisma",
+            "baseValue": 25,
+            "currentCooldown": 0,
+            "category": "classe"
+        },
+        {
+            "name": "Botando pra Quebrar",
+            "description": "Toca uma Nota que aumenta o Dano de todos os ataques ou magias de um Aliado por 3 rodadas. 9 rodadas de recarga.",
+            "type": "buff",
+            "cooldown": 9,
+            "paCost": 1,
+            "duration": 3,
+            "target": {
+                "type": "ally",
+                "howMany": 1
+            },
+            "currentCooldown": 0,
+            "category": "classe"
+        },
+        {
+            "name": "Acorde Errado",
+            "description": "Causa um Som estridente que é escutado por apenas um inimigo, atordoando-o por 2 rodadas. 7 rodadas de recarga.",
+            "type": "disruptive",
+            "cooldown": 7,
+            "paCost": 1,
+            "duration": 2,
+            "target": {
+                "type": "enemy",
+                "howMany": 1
+            },
+            "currentCooldown": 0,
+            "category": "classe"
+        },
+        {
+            "name": "Tá tiltado? ",
+            "description": "O Som do Instrumento do Bardo causa 36 (+1 cada 10 de Carisma) de Dano Mental em um inimigo. 6 rodadas de recarga.",
+            "type": "mental-offensive",
+            "cooldown": 6,
+            "paCost": 1,
+            "duration": 0,
+            "target": {
+                "type": "enemy",
+                "howMany": 1
+            },
+            "formula": "36 + Math.floor(stats[scaling] / 10)",
+            "scaling": "",
+            "baseValue": 36,
+            "currentCooldown": 0,
+            "category": "classe"
+        }
+    ],
+    "Bárbaro": [
+        {
+            "name": "Investida",
+            "description": "Avança em um inimigo, causando 25 (+1 cada 7 de Força) em um inimigo e atordoando-o logo depois. 8 rodadas de recarga.",
+            "type": "physical-offensive, disruptive",
+            "cooldown": 8,
+            "paCost": 1,
+            "duration": 0,
+            "target": {
+                "type": "enemy",
+                "howMany": 1
+            },
+            "formula": "25 + Math.floor(stats[scaling] / 7)",
+            "scaling": "for",
+            "baseValue": 0,
+            "currentCooldown": 0,
+            "category": "classe"
+        },
+        {
+            "name": "Acalmar-se",
+            "description": "Recupera 50 (+1 cada 2 de Raiva) de Hp de si mesmo, além de recuperar 2% de Hp por 5 rodadas. 8 rodadas de recarga.",
+            "type": "healing",
+            "cooldown": 8,
+            "paCost": 1,
+            "duration": 5,
+            "target": {
+                "type": "self",
+                "howMany": 1
+            },
+            "formula": "50 + floor(state[scaling] / 2)",
+            "scaling": "raiva",
+            "baseValue": 50,
+            "currentCooldown": 0,
+            "category": "classe"
+        },
+        {
+            "name": "Realocar Raiva",
+            "description": "Realoca sua Raiva para Bloquear totalmente os próximos 1 (+1 cada 25 de Raiva) golpes. 9 rodadas de recarga.",
+            "type": "defensive",
+            "cooldown": 9,
+            "paCost": 1,
+            "duration": 0,
+            "target": {
+                "type": "",
+                "howMany": 0
+            },
+            "formula": "1 + Math.floor(stats[scaling]/25)",
+            "scaling": "raiva",
+            "baseValue": 0,
+            "currentCooldown": 0,
+            "category": "classe"
+        },
+        {
+            "name": "MORRE PUTA!",
+            "description": "Golpeia um inimigo causando 55 (+1 cada 2 de Raiva). Caso o inimigo morra sem receber o dano total, outro inimigo recebe o dano restante. 9 rodadas de recarga.",
+            "type": "physical-offensive",
+            "cooldown": 9,
+            "paCost": 1,
+            "duration": 0,
+            "target": {
+                "type": "enemy",
+                "howMany": "many"
+            },
+            "formula": "55 + Math.floor(stats[scaling] / 2)",
+            "scaling": "raiva",
+            "baseValue": 55,
+            "currentCooldown": 0,
+            "category": "classe"
+        },
+        {
+            "name": "Temam o Meu Poder!",
+            "description": "Libera uma Aura amedrontadora que faz todos os inimigos perderem 1 rodada. 7 rodadas de recarga.",
+            "type": "debuff",
+            "cooldown": 7,
+            "paCost": 1,
+            "duration": 0,
+            "target": {
+                "type": "enemy",
+                "howMany": "all"
+            },
+            "currentCooldown": 0,
+            "category": "classe"
+        },
+        {
+            "name": "Insulto",
+            "description": "Provoca todos os inimigos, forçando-os à atacá-lo na próxima rodada. 6 rodadas de recarga.",
+            "type": "disruptive",
+            "cooldown": 6,
+            "paCost": 1,
+            "duration": 0,
+            "target": {
+                "type": "enemy",
+                "howMany": "all"
+            },
+            "currentCooldown": 0,
+            "category": "classe"
+        }
+    ],
+    "Bruxo": [
+        {
+            "name": "Vingança!",
+            "description": "Causa 25(+1 a cada 5 de Carisma) à um inimigo que tenha atacado-o. 6 rodadas de recarga.",
+            "type": "physical-offensive",
+            "cooldown": 6,
+            "paCost": 1,
+            "duration": 0,
+            "target": {
+                "type": "enemy",
+                "howMany": 1
+            },
+            "formula": "25 + Math.floor(stats[scaling] / 5)",
+            "scaling": "car",
+            "baseValue": 25,
+            "currentCooldown": 0,
+            "category": "classe"
+        },
+        {
+            "name": "Parado!",
+            "description": "Imobiliza 1(+1 cada 11 de Carisma) por 1 rodadas utilizando os Poderes de seu Patrono. 8 rodadas de recarga,",
+            "type": "disruptive",
+            "cooldown": 8,
+            "paCost": 1,
+            "duration": 1,
+            "target": {
+                "type": "enemy",
+                "howMany": "many"
+            },
+            "formula": "1 + Math.floor(stats[scaling] / 11)",
+            "scaling": "car",
+            "baseValue": 1,
+            "currentCooldown": 0,
+            "category": "classe"
+        },
+        {
+            "name": "Palavra da Morte!",
+            "description": "Causa 25(+1 de dano cada 2 de Carisma) à um inimigo, recebendo 50% de Bônus quando ele estiver com menos de 25% da vida. Caso o ataque mate o inimigo, essa habilidade não entra em recarga. 9 rodadas de recarga.",
+            "type": "magical-offensive",
+            "cooldown": 9,
+            "paCost": 1,
+            "duration": 0,
+            "target": {
+                "type": "enemy",
+                "howMany": 1
+            },
+            "formula": "25 + Math.floor(stats[scaling] / 2)",
+            "scaling": "car",
+            "baseValue": 25,
+            "currentCooldown": 0,
+            "category": "classe"
+        },
+        {
+            "name": "Explosão de Poder!",
+            "description": "Causa 15(+1 a cada 3 de Carisma) em todos os inimigos. O seu Patrono define o Efeito Secundário dessa habilidade. 8 rodadas de recarga.",
+            "type": "magical-offensive",
+            "cooldown": 8,
+            "paCost": 1,
+            "duration": 0,
+            "target": {
+                "type": "enemy",
+                "howMany": "all"
+            },
+            "formula": "15 + Math.floor(stats[scaling] / 3)",
+            "scaling": "car",
+            "baseValue": 15,
+            "currentCooldown": 0,
+            "category": "classe"
+        },
+        {
+            "name": "Polimorfia!",
+            "description": "Transforma 1 (+1 cada 25 de Carisma) criaturas, inimigos com menos de 50% da vida/aliados/selvagens com menos de 75% de Hp, em uma Criatura diferente ou em um Objeto. Ao serem transformados, todos os objetos que a pessoa carregava desaparecem momentaneamente. Na nova forma a pessoa é incapaz de utilizar quaisquer magias que era capaz na forma Original. Quando a nova forma chega a 0 de Hp, ele retorna para a forma antiga, recebendo quaisquer danos. Utilizável apenas uma vez por Combate.",
+            "type": "disruptive",
+            "cooldown": "OPB",
+            "paCost": 1,
+            "duration": 0,
+            "target": {
+                "type": "ally, neutral, enemy",
+                "howMany": "many"
+            },
+            "formula": "1 + Math.floor(stats[scaling] / 25)",
+            "scaling": "car",
+            "currentCooldown": 0,
+            "category": "classe"
+        },
+        {
+            "name": "Sugar Vida!",
+            "description": "Prende o inimigo com sua Magia, causando 25 (+1 cada 2 de Carisma) nele e recuperando 50% do dano causado como Vida para si. Caso exceda sua Vida máxima, é criado um escudo com a cura restante. 8 rodadas de recarga.",
+            "type": "magical-offensive, healing",
+            "cooldown": 8,
+            "paCost": 1,
+            "duration": 0,
+            "tags": {
+                "offensive": {
+                    "damageFunction": "damageByFormula",
+                    "formula": "25 + Math.floor(caster.stats.car / 2)"
+                },
+                "healing": {
+                    "target": "caster",
+                    "turnExtraHPToStamina": true,
+                    "healFunction": "healByPercentualOf",
+                    "percentual": 0.5,
+                    "reference": "skill.tags.offensive.damage"
+                }
+            },
+            "currentCooldown": 0,
+            "category": "classe"
+        }
+    ],
+    "Clérigo": [
+        {
+            "name": "Flagelamento",
+            "description": "Utiliza a Luz Divina para causar abrir feridas em um inimigo ao causar 25(+1 a cada 5 de Fé) de dano. 6 rodadas de recarga.",
+            "type": "magical-offensive",
+            "cooldown": 6,
+            "paCost": 1,
+            "duration": 0,
+            "target": {
+                "type": "enemy",
+                "howMany": 1
+            },
+            "formula": "25 + Math.floor(stats[scaling] / 5)",
+            "scaling": "fé",
+            "baseValue": 25,
+            "currentCooldown": 0,
+            "category": "classe"
+        },
+        {
+            "name": "A Fé é o Melhor Remédio",
+            "description": "Utiliza uma Luz aconchegante para recuperar 25 (+1 cada 1 de Fé) de um único aliado, além de deixá-lo imune à debuffs físicos por 2 rodadas. 8 rodadas de recarga.",
+            "type": "healing, buff",
+            "cooldown": 8,
+            "paCost": 1,
+            "duration": 2,
+            "tags": {
+                "healing": {
+                    "target": "waitForSelection",
+                    "healFunction": "healByFormula",
+                    "formula": "25 + caster.stats.faith"
+                }  
+            },
+            "currentCooldown": 0,
+            "category": "classe"
+        },
+        {
+            "name": "Minha Fé é meu Escudo",
+            "description": "Cria um escudo em um aliado que o protege de 35 (+1 cada 4 de Fé) de dano. 6 rodadas de recarga.",
+            "type": "defensive",
+            "cooldown": 6,
+            "paCost": 1,
+            "duration": 0,
+            "target": {
+                "type": "ally",
+                "howMany": 1
+            },
+            "formula": "35 + Math.floor(stats[scaling] / 4)",
+            "scaling": "fé",
+            "baseValue": 35,
+            "currentCooldown": 0,
+            "category": "classe"
+        },
+        {
+            "name": "SAI CAPETA",
+            "description": "Utiliza o Símbolo Divino de seu Deus, fazendo com que todas as criaturas Demoníacas ou Mortas-Vivos fujam do combate, se estiverem com menos de 50% de vida, ou desistam de atacar pela próxima rodada. 8 rodadas de recarga.",
+            "type": "desruptive",
+            "cooldown": 8,
+            "paCost": 1,
+            "duration": 0,
+            "target": {
+                "type": "enemy",
+                "howMany": "all"
+            },
+            "currentCooldown": 0,
+            "category": "classe"
+        },
+        {
+            "name": "A Fé é para Todos",
+            "description": "Recupera de todos os aliados 10 (+1 cada 2 de Fé). 8 rodadas de recarga.",
+            "type": "healing",
+            "cooldown": 8,
+            "paCost": 1,
+            "duration": 0,
+            "tags": {
+                "healing": {
+                    "target": "caster.party",
+                    "healFunction": "healByFormula",
+                    "formula": "10 + Math.floor(caster.stats.faith / 2)"
+                }
+            },
+            "currentCooldown": 0,
+            "category": "classe"
+        },
+        {
+            "name": "Devoção",
+            "description": "Sua devoção é compartilhada momentâneamente com seus aliados, permitindo que eles recuperem 2,5% de Hp por rodada. Duração de 4 rodadas. 9 rodadas de recarga.",
+            "type": "healing",
+            "cooldown": 9,
+            "paCost": 1,
+            "duration": 4,
+            "target": {
+                "type": "ally",
+                "howMany": "all"
+            },
+            "formula": "0.025",
+            "baseValue": 0.025,
+            "currentCooldown": 0,
+            "category": "classe"
+        }
+    ],
+    "Druída": [
+        {
+            "name": "Todas as Cores do Vento",
+            "description": "Controla os ventos, atacando todos os inimigos com eles, causando 15 (+1 a cada 3 de Sabedoria), os ventos podem carregar esporos de plantas, que causam efeitos variados (Jogue 1d6 para saber o efeito). 9 rodadas de recarga.",
+            "type": "magical-offensive, debuff, disruptive",
+            "cooldown": 9,
+            "paCost": 1,
+            "duration": 0,
+            "target": {
+                "type": "enemy",
+                "howMany": "all"
+            },
+            "formula": "15 + Math.floor(stats[scaling~/ 3)",
+            "scaling": "sab",
+            "baseValue": 15,
+            "currentCooldown": 0,
+            "category": "classe"
+        },
+        {
+            "name": "Infecção Fungística",
+            "description": "Infecta um Inimigo com Fungos, que causam 5 (+1 cada 8 de Sabedoria) de dano por rodada, caso o Inimigo morra, é renascido como um Morto-Vivo à seu controle. 8 rodadas de recarga.",
+            "type": "disruptive, control",
+            "cooldown": 8,
+            "paCost": 1,
+            "duration": -1,
+            "target": {
+                "type": "enemy",
+                "howMany": 1
+            },
+            "formula": "5 + Math.floor(stats[scaling] / 8)",
+            "scaling": "sab",
+            "baseValue": 5,
+            "currentCooldown": 0,
+            "category": "classe"
+        },
+        {
+            "name": "Quando bate a Trip",
+            "description": "Invoca um Animal para lutar ao seu lado, que possui 50% dos stats do Druída e que desaparece ao ser morto. A recarga começa quando o animal morre e possui 9 rodadas de duração.",
+            "type": "invocation",
+            "cooldown": 9,
+            "paCost": 1,
+            "duration": -1,
+            "target": {
+                "type": "none",
+                "howMany": 0
+            },
+            "currentCooldown": 0,
+            "category": "classe"
+        },
+        {
+            "name": "Morfar",
+            "description": "Transforma 1 (+1 cada 11 de Sabedoria) aliados em animais, permitindo que eles ataquem como suas novas formas. As formas são escolhidas pelo druída e duram até os Hps das novas formas serem zerados. Quando as formas são destruídas, as pessoas recebem 50% do Hp total do animal como dano em seu Hp. 15 rodadas de recarga.",
+            "type": "disruptive",
+            "cooldown": 15,
+            "paCost": 1,
+            "duration": 0,
+            "target": {
+                "type": "ally",
+                "howMany": "many"
+            },
+            "formula": "1 + Math.floor(stats[scaling] / 11)",
+            "scaling": "sab",
+            "baseValue": 0,
+            "currentCooldown": 0,
+            "category": "classe"
+        },
+        {
+            "name": "Tranquilidade da Natureza",
+            "description": "Transmite a calma da Natureza para si e seus aliados, recuperando o Hp de todos em 10(+1 cada 3 de Sabedoria). 9 rodadas de recarga.",
+            "type": "healing",
+            "cooldown": 9,
+            "paCost": 1,
+            "duration": 0,
+            "target": {
+                "type": "ally",
+                "howMany": "all"
+            },
+            "formula": "10 + Math.floor(stats[scaling] / 3)",
+            "scaling": "sab",
+            "baseValue": 10,
+            "currentCooldown": 0,
+            "category": "classe"
+        },
+        {
+            "name": "Fonte Natural",
+            "description": "Recobre a si ou a um aliado com uma camada de água de Fonte Pura, liberando o alvo de quaisquer debuffs e status. 8 rodadas de recarga.",
+            "type": "buff",
+            "cooldown": 8,
+            "paCost": 1,
+            "duration": 0,
+            "target": {
+                "type": "ally",
+                "howMany": 1
+            },
+            "currentCooldown": 0,
+            "category": "classe"
+        }
+    ],
+    "Feiticeiro": [
+        {
+            "name": "Tempestade de Raios",
+            "description": "Dispara Trovões e Raios em todos os inimigos, causando 35 (+1 cada 2 de Sabedoria), além de possui uma chance de 15% de Paralisar aqueles atingidos pelo ataque. 7 rodadas de recarga.",
+            "type": "magical-offensive, disruptive",
+            "cooldown": 7,
+            "paCost": 1,
+            "duration": 0,
+            "target": {
+                "type": "enemy",
+                "howMany": "all"
+            },
+            "formula": "35 + (stats[scaling] / 2)",
+            "scaling": "sab",
+            "baseValue": 35,
+            "currentCooldown": 0,
+            "category": "classe"
+        },
+        {
+            "name": "Nevasca",
+            "description": "Cria uma forte rajada de ventos Frios, que atacam todos os inimigos, causando 25 (+1 cada 2 de Sabedoria), e congela os atingidos com uma chance de 25%. 8 rodadas de recarga.",
+            "type": "magical-offensive, disruptive",
+            "cooldown": 8,
+            "paCost": 1,
+            "duration": 0,
+            "target": {
+                "type": "enemy",
+                "howMany": "all"
+            },
+            "formula": "35 + Math.floor(stats[scaling] / 2)",
+            "scaling": "sab",
+            "baseValue": 0,
+            "currentCooldown": 0,
+            "category": "classe"
+        },
+        {
+            "name": "Bola de Fogo",
+            "description": "Cria e dispara um Projétil Flamejante que acerta um único inimigo, causando 40 (+1 cada 2 de Sabedoria) e deixando-o com queimadura por 3 rodadas. 8 rodadas de recarga.",
+            "type": "magical-offensive",
+            "cooldown": 8,
+            "paCost": 1,
+            "duration": 3,
+            "target": {
+                "type": "enemy",
+                "howMany": 1
+            },
+            "formula": "40 + Math.floor(stats[scaling] / 2)",
+            "scaling": "sab",
+            "baseValue": 40,
+            "currentCooldown": 0,
+            "category": "classe"
+        },
+        {
+            "name": "Lança de Pedra",
+            "description": "Dispara um único projétil sólido de pedra que causa 50 (+1 cada 2 de Sabedoria) e perfura o alvo. 8 rodadas de recarga.",
+            "type": "magical-offensive",
+            "cooldown": 8,
+            "paCost": 1,
+            "duration": 0,
+            "target": {
+                "type": "enemy",
+                "howMany": 1
+            },
+            "formula": "50 + Math.floor(stats[scaling] / 2)",
+            "scaling": "sab",
+            "baseValue": 50,
+            "currentCooldown": 0,
+            "category": "classe"
+        },
+        {
+            "name": "Resistir Elementos",
+            "description": "Cria uma camada ao redor de todos os aliados, aumentando a Resistência Mágica de todos eles em 10% (+1% cada 2 de Sabedoria) por 4 rodadas. 9 rodadas de recarga.",
+            "type": "buff",
+            "cooldown": 9,
+            "paCost": 1,
+            "duration": 4,
+            "target": {
+                "type": "ally",
+                "howMany": "all"
+            },
+            "formula": "0.1 + 0.01 * Math.floor(stats[scaling] / 2)",
+            "scaling": "sab",
+            "currentCooldown": 0,
+            "category": "classe"
+        },
+        {
+            "name": "Barreira Refletora",
+            "description": "Cria uma aura espelhada ao redor de si ou de um aliado, que reflete 2 (+1 cada 20 de Sabedoria) ataques mágicos disparados contra essa pessoa. 8 rodadas de recarga.",
+            "type": "buff",
+            "cooldown": 8,
+            "paCost": 1,
+            "duration": 0,
+            "target": {
+                "type": "self, ally",
+                "howMany": 1
+            },
+            "formula": "2 + Math.floor(stats[scaling] / 20)",
+            "scaling": "sab",
+            "currentCooldown": 0,
+            "category": "classe"
+        }
+    ],
+    "Lutador": [
+        {
+            "name": "Eu tô aqui!",
+            "description": "Provoca todos os inimigos por 2 rodadas. 6 rodadas de recarga.",
+            "type": "disruptive",
+            "cooldown": 6,
+            "paCost": 1,
+            "duration": 2,
+            "target": {
+                "type": "enemy",
+                "howMany": "all"
+            },
+            "currentCooldown": 0,
+            "category": "classe"
+        },
+        {
+            "name": "Agora eu te alcanço",
+            "description": "Permite que seus ataques básicos, e habilidades, atinjam inimigos voadores. Dura 3 rodadas. 9 rodadas de recarga.",
+            "type": "buff",
+            "cooldown": 9,
+            "paCost": 1,
+            "duration": 3,
+            "target": {
+                "type": "self",
+                "howMany": 1
+            },
+            "currentCooldown": 0,
+            "category": "classe"
+        },
+        {
+            "name": "Tá assustado?",
+            "description": "Libera uma Aura de Medo que assusta todos os inimigos, fazendo-os perderem 1 turno. 7 rodadas de recarga.",
+            "type": "debuff",
+            "cooldown": 7,
+            "paCost": 1,
+            "duration": 0,
+            "target": {
+                "type": "enemy",
+                "howMany": "all"
+            },
+            "currentCooldown": 0,
+            "category": "classe"
+        },
+        {
+            "name": "Perda de Foco",
+            "description": "Cria um alvoroço, fazendo os inimigos perderem o Foco e forçando-os à atacarem alvos diferentes durante o próximo turno. 7 rodadas de recarga.",
+            "type": "disruptive",
+            "cooldown": 7,
+            "paCost": 1,
+            "duration": 0,
+            "target": {
+                "type": "enemy",
+                "howMany": "all"
+            },
+            "currentCooldown": 0,
+            "category": "classe"
+        },
+        {
+            "name": "Vamos Quebrar Ossos",
+            "description": "Avança em um inimigo, causando 35 (+1 cada 4 de Força) nele e causando uma Fratura em seu corpo. 8 rodadas de recarga.",
+            "type": "physical-offensive, disruptive",
+            "cooldown": 8,
+            "paCost": 1,
+            "duration": 0,
+            "target": {
+                "type": "enemy",
+                "howMany": 1
+            },
+            "formula": "35 + Math.floor(stats[scaling] / 4)",
+            "scaling": "for",
+            "baseValue": 0,
+            "currentCooldown": 0,
+            "category": "classe"
+        },
+        {
+            "name": "Liderando o Exército",
+            "description": "Todos do seu grupo recebem 1 Ponto de Ação adicional. 12 rodadas de recarga.",
+            "type": "buff",
+            "cooldown": 12,
+            "paCost": 1,
+            "duration": 0,
+            "target": {
+                "type": "ally",
+                "howMany": 1
+            },
+            "currentCooldown": 0,
+            "category": "classe"
+        }
+    ],
+    "Mago": [
+        {
+            "name": "Ajuda Família",
+            "description": "Invoca 1 (+1 cada 50 de Inteligência)  Familiar para te auxiliar, seja em combate ou fora dele. Sempre que um Familiar morrer, é preciso esperar 6 rodadas para reinvocá-lo.",
+            "type": "invocation",
+            "cooldown": "OPB",
+            "paCost": 1,
+            "duration": 0,
+            "target": {
+                "type": "none",
+                "howMany": 0
+            },
+            "formula": "1 + Math.floor(stats[scaling] / 50)",
+            "scaling": "int",
+            "currentCooldown": 0,
+            "category": "classe"
+        },
+        {
+            "name": "Míssil Mágico",
+            "description": "Dispara 1 (+1 cada 10 de Inteligências) que causam 20 de dano ao inimigo atingido. 7 rodadas de recarga.",
+            "type": "magical-offensive",
+            "cooldown": 7,
+            "paCost": 1,
+            "duration": 0,
+            "target": {
+                "type": "enemy",
+                "howMany": 1
+            },
+            "formula": "20 * (1 + Math.floor(stats[scaling] / 10)",
+            "scaling": "int",
+            "baseValue": 20,
+            "currentCooldown": 0,
+            "category": "classe"
+        },
+        {
+            "name": "Feitiço de Resistência",
+            "description": "Cria uma camada ao redor de um único aliado, aumentando sua resistência em 5% (+1 cada 10 de Inteligência) por 4 turnos. 8 rodadas de recarga.",
+            "type": "buff",
+            "cooldown": 8,
+            "paCost": 1,
+            "duration": 4,
+            "target": {
+                "type": "ally",
+                "howMany": 1
+            },
+            "formula": "0.05 + 0.01 * Math.floor(stats[scaling] / 10)",
+            "scaling": "int",
+            "currentCooldown": 0,
+            "category": "classe"
+        },
+        {
+            "name": "Contra-Feitiço",
+            "description": "Cria um espelho que reflete a primeira magia que atingi-lo. Pode ser usado como counter ao custo de 1 Ponto de Ação da próxima rodada. 10 rodadas de recarga.",
+            "type": "buff",
+            "cooldown": 10,
+            "paCost": 1,
+            "duration": 0,
+            "target": {
+                "type": "self",
+                "howMany": 1
+            },
+            "currentCooldown": 0,
+            "category": "classe"
+        },
+        {
+            "name": "Desfazer Magia",
+            "description": "Concentra sua Magia para fazer uma pequena esfera que libera uma energia e cancela qualquer feitiço sendo preparado ou já disparado. Pode ser usado como counter ao custo de 1 Ponto de Ação da próxima rodada. 13 rodadas de recarga.",
+            "type": "buff",
+            "cooldown": 13,
+            "paCost": 1,
+            "duration": 0,
+            "target": {
+                "type": "none",
+                "howMany": 0
+            },
+            "currentCooldown": 0,
+            "category": "classe"
+        },
+        {
+            "name": "Congelamento Temporal",
+            "description": "Canaliza sua Magia, utilizando 2 Pontos de Ação, e para o tempo, fazendo todos os inimigos ficarem parados completamente por 2 rodadas. Utilizável uma vez por combate.",
+            "type": "disruptive",
+            "cooldown": "OPB",
+            "paCost": 1,
+            "duration": 2,
+            "target": {
+                "type": "enemy",
+                "howMany": "all"
+            },
+            "currentCooldown": 0,
+            "category": "classe"
+        }
+    ],
+    "Monge": [
+        {
+            "name": "Sequência de Golpes",
+            "description": "Desfere 4 (+1 cada 10 de Ki) golpes ao mesmo tempo, podendo acertar um único inimigo ou diversos. 7 rodadas de recarga.",
+            "type": "physical-offensive",
+            "cooldown": 7,
+            "paCost": 1,
+            "duration": 0,
+            "target": {
+                "type": "enemy",
+                "howMany": 1
+            },
+            "formula": "4 + Math.floor(stats[scaling] / 10)",
+            "scaling": "ki",
+            "currentCooldown": 0,
+            "category": "classe"
+        },
+        {
+            "name": "Paz de Mente",
+            "description": "A calmaria da sua mente retira de si mesmo todos os debuffs e status negativos. 6 rodadas de recarga.",
+            "type": "buff",
+            "cooldown": 6,
+            "paCost": 1,
+            "duration": 0,
+            "target": {
+                "type": "self",
+                "howMany": 1
+            },
+            "currentCooldown": 0,
+            "category": "classe"
+        },
+        {
+            "name": "Clones Astrais",
+            "description": "Cria 1 (+1 cada 50 de Ki) clones de si mesmo, eles podem complementar seus ataques ou atacar inimigos diferentes. Os clones duram por 2 rodadas. 8 rodadas de recarga.",
+            "type": "invocation",
+            "cooldown": 8,
+            "paCost": 1,
+            "duration": 2,
+            "target": {
+                "type": "self",
+                "howMany": 1
+            },
+            "formula": "1 + Math.floor(stats[scaling] / 50)",
+            "scaling": "ki",
+            "currentCooldown": 0,
+            "category": "classe"
+        },
+        {
+            "name": "Golpe Concussivo",
+            "description": "Avança em um inimigo, atordoando-o por 1 (+1 cada 50 de Ki) rodadas. 7 rodadas de recarga.",
+            "type": "disruptive",
+            "cooldown": 7,
+            "paCost": 1,
+            "duration": 0,
+            "target": {
+                "type": "enemy",
+                "howMany": 1
+            },
+            "formula": "1 + Math.floor(stats[scaling] / 50)",
+            "scaling": "ki",
+            "currentCooldown": 0,
+            "category": "classe"
+        },
+        {
+            "name": "Limpeza de Alma",
+            "description": "Acalma sua mente e corpo, recuperando 35 (+1 cada 2 de Ki) de seu Hp. 7 rodadas de recarga.",
+            "type": "healing",
+            "cooldown": 7,
+            "paCost": 1,
+            "duration": 0,
+            "target": {
+                "type": "self",
+                "howMany": 1
+            },
+            "formula": "35 + Math.floor(stats[scaling] / 2)",
+            "scaling": "ki",
+            "currentCooldown": 0,
+            "category": "classe"
+        },
+        {
+            "name": "Contra-Ataque",
+            "description": "Ao assumir uma postura defensiva, contra-ataca toda vez que é atacado por um golpe corpo-a-corpo. Dura 3 rodadas. 7 rodadas de recarga.",
+            "type": "defensive",
+            "cooldown": 7,
+            "paCost": 1,
+            "duration": 3,
+            "target": {
+                "type": "self",
+                "howMany": 1
+            },
+            "currentCooldown": 0,
+            "category": "classe"
+        }
+    ],
+    "Paladino": [
+        {
+            "name": "A Fé é o Melhor Remédio",
+            "description": "Utiliza uma Luz aconchegante para recuperar 25 (+1 cada 1 de Fé) de um único aliado, além de deixá-lo imune à debuffs físicos por 2 rodadas. 8 rodadas de recarga.",
+            "type": "healing, buff",
+            "cooldown": 8,
+            "paCost": 1,
+            "duration": 2,
+            "tags": {
+                "healing": {
+                    "target": "waitForSelection",
+                    "healFunction": "healByFormula",
+                    "formula": "25 + caster.stats.faith"
+                }  
+            },
+            "currentCooldown": 0,
+            "category": "classe"
+        },
+        {
+            "name": "Insultar Religião",
+            "description": "Provoca os inimigos, forçando-os à te atacar por 2 rodadas. 7 rodadas de recarga.",
+            "type": "disruptive",
+            "cooldown": 7,
+            "paCost": 1,
+            "duration": 2,
+            "target": {
+                "type": "enemy",
+                "howMany": "all"
+            },
+            "currentCooldown": 0,
+            "category": "classe"
+        },
+        {
+            "name": "A Fé nos Protege",
+            "description": "Abençoa todos os seus aliados, aumentando sua Resistência em 5% (+1% cada 4 de Fé) por 4 rodadas. 8 rodadas de recarga.",
+            "type": "buff",
+            "cooldown": 8,
+            "paCost": 1,
+            "duration": 4,
+            "target": {
+                "type": "ally",
+                "howMany": "all"
+            },
+            "formula": "0.05 + 0.01 * Math.floor(stats[scaling] / 4)",
+            "scaling": "fé",
+            "baseValue": 0,
+            "currentCooldown": 0,
+            "category": "classe"
+        },
+        {
+            "name": "Purificação",
+            "description": "Cobre a si mesmo ou um aliado com uma camada cintilante, curando-se de todos os debuffs e status negativos. 7 rodadas de recarga.",
+            "type": "buff",
+            "cooldown": 7,
+            "paCost": 1,
+            "duration": 0,
+            "target": {
+                "type": "self, ally",
+                "howMany": 1
+            },
+            "currentCooldown": 0,
+            "category": "classe"
+        },
+        {
+            "name": "Avatar Divino",
+            "description": "Invoca um Avatar representante de seu Deus, que auxilia em seus ataques e ajuda em seus bloqueios. Dura 5 rodadas. 10 rodadas de recarga.",
+            "type": "invocation",
+            "cooldown": 10,
+            "paCost": 1,
+            "duration": 5,
+            "target": {
+                "type": "none",
+                "howMany": 0
+            },
+            "currentCooldown": 0,
+            "category": "classe"
+        },
+        {
+            "name": "Punição Divina",
+            "description": "Acerta um inimigo com um Feixe de Luz vindo dos céus, causando 55 (+1 cada 2 de Fé). Caso o inimigo seja eliminado, o dano extra é infligido em outro inimigo. 10 rodadas de recarga.",
+            "type": "magical-offensive",
+            "cooldown": 10,
+            "paCost": 1,
+            "duration": 0,
+            "target": {
+                "type": "enemy",
+                "howMany": "many"
+            },
+            "formula": "55 + Math.floor(stats[scaling] / 2)",
+            "scaling": "fé",
+            "currentCooldown": 0,
+            "category": "classe"
+        }
+    ],
+    "Patrulheiro": [
+        {
+            "name": "Tiro Crítico",
+            "description": "Dispara uma Flecha de sua arma, causando um acerto crítico de 200% de Dano. 5 rodadas de recarga.",
+            "type": "physical-offensive",
+            "cooldown": 5,
+            "paCost": 1,
+            "duration": 0,
+            "target": {
+                "type": "enemy",
+                "howMany": 1
+            },
+            "formula": "3",
+            "currentCooldown": 0,
+            "category": "classe"
+        },
+        {
+            "name": "Colocar Armadilha",
+            "description": "Coloca uma armadilha no campo de batalha, que ao ser ativada atordoa um inimigo por 1 rodada. Armadilhas podem ser colocadas antes de começar o combate. 4 rodadas de recarga.",
+            "type": "disruptive",
+            "cooldown": 4,
+            "paCost": 1,
+            "duration": 0,
+            "target": {
+                "type": "none",
+                "howMany": 0
+            },
+            "currentCooldown": 0,
+            "category": "classe"
+        },
+        {
+            "name": "Pacote de Ervas",
+            "description": "Utiliza suas reserva de ervas para recuperar 25 (+1 cada 2 de Sabedoria) de Hp de si mesmo. Ao utilizar ervas específicas é possível receber bônus. 7 rodadas de recarga.",
+            "type": "healing",
+            "cooldown": 7,
+            "paCost": 1,
+            "duration": 0,
+            "target": {
+                "type": "self",
+                "howMany": 1
+            },
+            "formula": "25 + Math.floor(stats[scaling] / 2)",
+            "scaling": "sab",
+            "baseValue": 25,
+            "currentCooldown": 0,
+            "category": "classe"
+        },
+        {
+            "name": "Mire na Perna",
+            "description": "Avança em um inimigo, mirando e golpeando sua Perna com força, causando uma Fratura. Caso tenha um companheiro animal, ele ataca junto. 7 rodadas de recarga.",
+            "type": "physical-offensive",
+            "cooldown": 7,
+            "paCost": 1,
+            "duration": 0,
+            "target": {
+                "type": "enemy",
+                "howMany": 1
+            },
+            "currentCooldown": 0,
+            "category": "classe"
+        },
+        {
+            "name": "Chuva de Flechas",
+            "description": "Dispara uma única Flecha para cima, que se divide em várias e acerta todos os inimigos, causando 15 (+1 cada 4 de Mira) de dano. 8 rodadas de recarga.",
+            "type": "physical-offensive",
+            "cooldown": 8,
+            "paCost": 1,
+            "duration": 0,
+            "target": {
+                "type": "enemy",
+                "howMany": "all"
+            },
+            "formula": "15 + Math.floor(stats[scaling] / 4)",
+            "scaling": "mira",
+            "baseValue": 0,
+            "currentCooldown": 0,
+            "category": "classe"
+        },
+        {
+            "name": "Aumentar a Precisão",
+            "description": "Todos os aliados recebem um Bônus de 15% em sua Mira. Duração de 3 rodadas. 6 rodadas de recarga.",
+            "type": "buff",
+            "cooldown": 6,
+            "paCost": 1,
+            "duration": 0,
+            "target": {
+                "type": "ally",
+                "howMany": "all"
+            },
+            "formula": "1.15 * stats[scaling]",
+            "scaling": "mira",
+            "baseValue": 0,
+            "currentCooldown": 0,
+            "category": "classe"
+        }
+    ],
+    "Trapaceiro": [
+        {
+            "name": "Frascos de Venenos",
+            "description": "Cobre suas lâminas com um veneno de sua coleção, fazendo com que todos os seus ataques envenenem os inimigos. Dura 3 rodadas. 5 rodadas de recarga.",
+            "type": "buff",
+            "cooldown": 5,
+            "paCost": 1,
+            "duration": 0,
+            "target": {
+                "type": "self",
+                "howMany": 1
+            },
+            "currentCooldown": 0,
+            "category": "classe"
+        },
+        {
+            "name": "Gato e Rato",
+            "description": "Desvia de 1 (+1 cada 40 de Agilidade) ataques dos inimigos com exatidão. 6 rodadas de recarga.",
+            "type": "buff",
+            "cooldown": 6,
+            "paCost": 1,
+            "duration": 0,
+            "target": {
+                "type": "ally",
+                "howMany": 1
+            },
+            "formula": "1 + Math.floor(stats[scaling] / 40)",
+            "scaling": "agi",
+            "baseValue": 0,
+            "currentCooldown": 0,
+            "category": "classe"
+        },
+        {
+            "name": "Procurar Fraqueza",
+            "description": "Examina os inimigos, encontrando, ou tentando, encontrar suas fraquezas.",
+            "type": "buff",
+            "cooldown": "OPB",
+            "paCost": 1,
+            "duration": 0,
+            "target": {
+                "type": "enemy",
+                "howMany": 1
+            },
+            "currentCooldown": 0,
+            "category": "classe"
+        },
+        {
+            "name": "Causar Ferimento",
+            "description": "Ataca com força e precisão, causando sangramento no inimigo. 6 rodadas de recarga.",
+            "type": "physical-offesive, disruptive",
+            "cooldown": 6,
+            "paCost": 1,
+            "duration": 0,
+            "target": {
+                "type": "enemy",
+                "howMany": 1
+            },
+            "currentCooldown": 0,
+            "category": "classe"
+        },
+        {
+            "name": "Arremessar Adagas",
+            "description": "Dispara Adagas em todos os inimigos, causando 5 (+1 cada 10 de Mira) (+1 cada 10 de Destreza). 6 rodadas de recarga.",
+            "type": "physical-offensive",
+            "cooldown": 6,
+            "paCost": 1,
+            "duration": 0,
+            "target": {
+                "type": "enemy",
+                "howMany": "all"
+            },
+            "formula": "5 + Math.floor(stats[scaling[0]] / 10) + Math.floor(stats[scaling[1]] / 10)",
+            "scaling": ["mira", "dex"],
+            "baseValue": 5,
+            "currentCooldown": 0,
+            "category": "classe"
+        },
+        {
+            "name": "Nada pessoal garoto",
+            "description": "Aparece atrás de um inimigo, realizando um ataque em suas costas que causa 10% de Dano Bônus. 6 rodadas de recarga.",
+            "type": "physical-offensive",
+            "cooldown": 6,
+            "paCost": 1,
+            "duration": 0,
+            "target": {
+                "type": "enemy",
+                "howMany": 1
+            },
+            "currentCooldown": 0,
+            "category": "classe"
+        }
+    ],
+    "Extras": [
+        {
+            "name": "Fontes Termais",
+            "description": "Recupera 150hp de todos os aliados. 7 rodadas de recarga",
+            "type": "heal",
+            "cooldown": 7,
+            "paCost": 1,
+            "duration": 0,
+            "target": {
+                "type": "ally",
+                "howMany": "all"
+            },
+            "baseValue": 150,
+            "currentCooldown": 0,
+            "category": "extra-spellcaster"
+        },
+        {
+            "name": "Disparos Energéticoss",
+            "description": "Dispara 3(+1 cada 20 de Sabedoria) que causa 15(+1 cada 8 de Sabedoria) no mesmo alvo ou em alvos variados. 6 rodadas de recarga.",
+            "type": "physic offensive",
+            "cooldown": 6,
+            "paCost": 1,
+            "duration": 0,
+            "target": {
+                "type": "enemy",
+                "howMany": "3 + floor(a.stats.sab / 20)"
+            },
+            "formula": "15 + floor(a.stats.sab / 8)",
+            "scaling": "sabedoria",
+            "baseValue": 15,
+            "currentCooldown": 0,
+            "category": "extra-Aprendizado Mágico"
+        }
+    ]
+}
