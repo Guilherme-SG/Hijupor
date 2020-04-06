@@ -8,7 +8,7 @@ const { DeffensiveTag } = require("./DeffensiveTag")
 const { OffensiveTag } = require("./OffensiveTag")
 const { HealingTag } = require("./HealingTag")
 
-const gameSystem = require('../GameSystem')
+const gameSystem = require('../SkillManager')
 
 class SkillSystem {
 

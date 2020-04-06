@@ -1,6 +1,6 @@
 const { SkillTag } = require("./SkillTag");
 
-const gameSystem = require("../GameSystem")
+const gameSystem = require("../SkillManager")
 
 class DisruptiveTag extends SkillTag {
     constructor() {

@@ -1,5 +1,5 @@
 const ConditionalSystem = require("../ConditionalSystem");
-const gameSystem = require("../GameSystem")
+const gameSystem = require("../SkillManager")
 
 class SkillTag {
     constructor() {
