@@ -2,25 +2,39 @@ const { createId } = require("../util")
 const Stats = require("./Stats")
 
 class Actor {
-    constructor(name, stats = new Stats(), id = createId()) {
+    constructor({
+        stats = new Stats(), 
+        id = createId(),        
+        name = `Nameless#${id}`,
+        partyId = -1,
+        currentStamina = 0,
+        totalStamina = 0,
+        totalHP,
+        currentHP,
+        skills = []
+    }) {
         this.id = id
-        this.partyId = -1
+        this.partyId = partyId
         this.temporaryPartyId = -1
-
-        this.allies = {}
-
-        this.name = name ? name : `Nameless#${id}`
+        
+        this.name = name
         this.stats = stats
 
         this.status = []
+
+        if(totalHP) {
+            this.currentHP = currentHP
+            this.totalHP = totalHP
+        } else {
+            this.calculateTotalHPByStats()
+            this.regenateHPFully()
+        }
         
-        this.calculateTotalHPByStats()
-        this.regenateHPFully()
 
-        this.currentStamina = 0
-        this.totalStamina = 0
+        this.currentStamina = currentStamina
+        this.totalStamina = totalStamina
 
-        this.skills = []
+        this.skills = skills
     }
 
     setParty(partyId) {
