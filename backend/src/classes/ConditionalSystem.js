@@ -1,6 +1,7 @@
-const gameSystem = require("./GameSystem")
-
 class ConditionalSystem {
+    constructor(evaluator) {
+        this.evaluator = evaluator
+    }
 
     isEqual = (value, reference) => value == reference
     isNotEqual = (value, reference) => value != reference
@@ -19,8 +20,8 @@ class ConditionalSystem {
             const { subject, fn, params } = trigger
             const { attribute, reference } = params
 
-            const target = this.evaluateTarget(subject)
-            const value = this.evaluateAttribute(target, attribute)
+            const target = this.evaluator.evaluateTarget(subject)
+            const value = this.evaluator.evaluateAttribute(target, attribute)
 
             return this[fn](value, reference)
         })
@@ -45,24 +46,6 @@ class ConditionalSystem {
 
         const { whileTrue } = durationOptions
         return whileTrue.every( this.trigger )
-    }
-
-    evaluateTarget(subject) {
-        let targets = {
-            caster: () => gameSystem.getCaster(),
-            skillTarget: () => gameSystem.getSelectedActor(),
-            party: () => gameSystem.getSelectedParty(),
-        }
-
-        return targets[subject]()
-    }
-
-    evaluateAttribute(subject, attribute) {
-        if(attribute.startsWith("get") || attribute.startsWith("is")) {
-            return subject[attribute]()
-        }
-
-        return subject[attribute]
     }
 }
 
