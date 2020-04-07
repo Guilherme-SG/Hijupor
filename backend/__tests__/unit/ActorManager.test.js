@@ -1,4 +1,4 @@
-const ActorManager = require("../../src/classes/ActorManager")
+const ActorManager = require("../../src/classes/managers/ActorManager")
 
 const Actor = require("../../src/classes/Actor")
 
@@ -19,34 +19,35 @@ describe("Actor Manager", () => {
 
     describe("Add Actor", () => {
         it("Add single actor", () => {     
-            actorManager.addActor(yendros)
-            expect(actorManager.actors).toHaveProperty(yendros.id)
+            actorManager.add(yendros)
+
+            expect(actorManager.has(yendros.id)).toBeTruthy()
         })
 
         it("Add 2 actors", () => {     
-            actorManager.addActor(jane)
-            actorManager.addActor(aaron)
+            actorManager.add(jane)
+            actorManager.add(aaron)
 
-            expect(actorManager.actors).toHaveProperty(jane.id)
-            expect(actorManager.actors).toHaveProperty(aaron.id)
+            expect(actorManager.has(jane.id)).toBeTruthy()
+            expect(actorManager.has(aaron.id)).toBeTruthy()
         })
 
-        it("If never benn called, the property \"actors\" should be empty", () => {
-            expect(actorManager.actors).toMatchObject({})
+        it("If never been called, the property \"actors\" should be empty", () => {
+            expect(actorManager.size()).toBe(0)
         })
     })
 
     it("Get actor using his/her id", () => {     
-        actorManager.addActor(yendros)
+        actorManager.add(yendros)
 
-        const foundActor = actorManager.getActor(yendros.id)
+        const foundActor = actorManager.get(yendros.id)
 
         expect(foundActor).toBeInstanceOf(Actor)
         expect(foundActor).toMatchObject(yendros)
     })
 
     it("Define the caster of some skill", () => {
-        actorManager.addActor(yendros)
+        actorManager.add(yendros)
         actorManager.setCaster(yendros.id)
 
         const caster = actorManager.getCaster()
@@ -56,19 +57,19 @@ describe("Actor Manager", () => {
     })
 
     it("Select an actor and get it", () => {
-        actorManager.addActor(yendros)
-        actorManager.selectActor(yendros.id)
+        actorManager.add(yendros)
+        actorManager.select(yendros.id)
 
-        const actor = actorManager.getSelectedActor()
+        const actor = actorManager.getSelected()
 
         expect(actor).toBeInstanceOf(Actor)
         expect(actor).toMatchObject(yendros)
     })
 
     it("Search for an actor by his/her name", () => {
-        actorManager.addActor(jane)
+        actorManager.add(jane)
 
-        expect(actorManager.getActorByName(jane.name)).toMatchObject(jane)
+        expect(actorManager.getByName(jane.name)).toMatchObject(jane)
     })
 
 })
