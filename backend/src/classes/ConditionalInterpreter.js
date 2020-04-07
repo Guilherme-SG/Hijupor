@@ -1,6 +1,7 @@
 class ConditionalInterpreter {
     constructor(evaluator) {
         this.evaluator = evaluator
+        
         this.comparisions = new Map([
             ["isEqual", (value, reference) => value == reference],
             ["isNotEqual", (value, reference) => value != reference],
