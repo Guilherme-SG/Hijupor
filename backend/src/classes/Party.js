@@ -1,28 +1,43 @@
 const { createId } = require("../util")
+const Serializable = require("./Serializable")
 
-class Party {
-    constructor(name, id = createId()) {
+
+class Party extends Serializable {
+    constructor({
+        name, 
+        id = createId(),
+        members = new Map
+    }) {
+        super()
+        
         this.id = id
         this.name = name
-        this.members = {}
+        this.members = members
     }
 
-    addMember(member) {        
-        this.members[member.id] = member
-        this.members[member.id].setParty(this.id)
+    add(member) {        
+        this.members.set(member.id, member) 
+        member.setParty(this.id)
     }
 
-    removeMember(id) {
-        this.members[id].setParty(-1)
-        delete this.members[id]
+    delete(id) {
+        this.members.get(id).setParty(-1)
+        this.members.delete(id)
     }
 
-    getMemberById = id => this.members[id]
+    get = actorId => this.members.get(actorId)
 
-    includes = actorId => this.getMemberById(actorId) != undefined
+    has = actorId => this.members.has(actorId)
 
-    getMembers() {
-        return Object.values(this.members)
+    getAll() {
+        return [...this.members.values()]
+    }
+
+    serialize() {
+        return {
+            id: this.id,
+            members: [...this.members.keys()]
+        }
     }
 }
 

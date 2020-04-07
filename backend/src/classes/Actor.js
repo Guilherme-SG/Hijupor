@@ -1,9 +1,11 @@
 const { createId } = require("../util")
 const Stats = require("./Stats")
+const Serializable = require("./Serializable")
 
-class Actor {
+
+class Actor extends Serializable {
     constructor({
-        stats = new Stats(), 
+        stats = new Stats({}), 
         id = createId(),        
         name = `Nameless#${id}`,
         partyId = -1,
@@ -11,16 +13,18 @@ class Actor {
         totalStamina = 0,
         totalHP,
         currentHP,
+        status = [],
         skills = []
     }) {
+        super()
+        
         this.id = id
         this.partyId = partyId
-        this.temporaryPartyId = -1
         
         this.name = name
         this.stats = stats
 
-        this.status = []
+        this.status = status
 
         if(totalHP) {
             this.currentHP = currentHP
@@ -37,12 +41,23 @@ class Actor {
         this.skills = skills
     }
 
-    setParty(partyId) {
-        this.partyId = partyId
+    serialize() {
+        return {
+            id: this.id,
+            name: this.name,
+            stats: this.stats.serialize(),
+            partyId: this.partyId,
+            currentHP: this.currentHP,
+            totalHP: this.totalHP,
+            currentStamina: this.currentStamina,
+            totalStamina: this.totalStamina,
+            status: this.status,
+            skills: this.skills
+        }
     }
 
-    setTemporaryParty(partyId) {
-        this.temporaryPartyId = partyId
+    setParty(partyId) {
+        this.partyId = partyId
     }
 
     regenateHPFully() {
@@ -124,21 +139,12 @@ class Actor {
     shieldCanBeBroken = (damageAmount) => damageAmount > this.currentStamina
 
     isAlive = () => this.currentHP > 0
+    isDead = () => !this.isAlive()
 
     die() {
         this.currentHP = 0
         this.cleanStatusList()
         this.addStatus("dead")
-    }
-
-    addTemporaryAlly(ally) {
-        ally.setTemporaryParty(this.partyId)
-        this.allies[ally.id] = ally
-    }
-
-    removeTemporaryAlly(id) {
-        ally.setTemporaryParty(-1)
-        delete this.allies[id]
     }
 
     addSkill(skillId) {
