@@ -5,13 +5,20 @@ class Evaluator {
     }
 
     evaluateTarget(subject) {
-        let targets = {
-            caster: () => this.actorManager.getCaster(),
-            skillTarget: () => this.actorManager.getSelectedActor(),
-            party: () => this.partyManager.getSelectedParty(),
+        let targets = new Map([
+            ["caster", () => this.actorManager.getCaster()],
+            ["actor", (params) => {
+                if(params.selected) return this.actorManager.getSelected()
+            }],
+            ["party", () => this.partyManager.getSelected()],
+            ["direct", params => params.target ]
+        ])
+
+        if(targets.has(subject.type)) {
+            return targets.get(subject.type)(subject.params)
         }
 
-        return targets[subject]()
+        return false
     }
 
     evaluateAttribute(subject, attribute) {
