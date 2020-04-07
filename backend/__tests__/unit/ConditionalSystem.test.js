@@ -12,11 +12,11 @@ const aaron = new Actor({ name: "Aaron", currentHP: 100 })
 const jane = new Actor({ name: "Jane", currentHP: 100 })
 
 const players = new Party("Players")
-players.addMember(yendros)
-players.addMember(aaron)
+players.add(yendros)
+players.add(aaron)
 
 const enemies = new Party("Enemies")
-enemies.addMember(jane)
+enemies.add(jane)
 
 const actorManager = new ActorManager()
 actorManager.addActor(yendros)
