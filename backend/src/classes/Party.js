@@ -1,42 +1,39 @@
 const { createId } = require("../util")
-const Serializable = require("./Serializable")
+const CollectionManager = require("./managers/CollectionManager")
 
 
-class Party extends Serializable {
+class Party extends CollectionManager {
     constructor({
         name, 
         id = createId(),
-        members = new Map
+        collection
     }) {
         super()
         
         this.id = id
         this.name = name
-        this.members = members
+
+        if(collection) {
+            this.collection = collection
+        }
     }
 
     add(member) {        
-        this.members.set(member.id, member) 
+        super.add(member) 
         member.setParty(this.id)
     }
 
     delete(id) {
-        this.members.get(id).setParty(-1)
-        this.members.delete(id)
-    }
+        const member = super.get(id)
+        member.setParty(-1)
 
-    get = actorId => this.members.get(actorId)
-
-    has = actorId => this.members.has(actorId)
-
-    getAll() {
-        return [...this.members.values()]
+        super.delete(id)
     }
 
     serialize() {
         return {
             id: this.id,
-            members: [...this.members.keys()]
+            members: [...this.collection.keys()]
         }
     }
 }

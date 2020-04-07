@@ -11,6 +11,10 @@ class CollectionManager {
         return this.collection.get(id)
     }
 
+    getAll() {
+        return Array.from(this.collection.values())
+    }
+
     delete(id) {
         this.collection.delete(id)
     }
