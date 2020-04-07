@@ -2,16 +2,16 @@ const Serializable = require("./Serializable")
 
 class Stats extends Serializable {
     constructor({
-        str = 100,
-        dex = 100,
-        aim = 100,
-        int = 100,
-        sab = 100,
-        mr = 100,
-        res = 100,
-        car = 100,
-        faith = 100,
-        vit = 100
+        str = 0,
+        dex = 0,
+        aim = 0,
+        int = 0,
+        sab = 0,
+        mr = 0,
+        res = 0,
+        car = 0,
+        faith = 0,
+        vit = 0
     }) {
         super()
         this.for = str
