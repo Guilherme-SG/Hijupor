@@ -1,8 +1,8 @@
 const ConditionalSystem = require('../../src/classes/ConditionalSystem')
 const Evalulator = require("../../src/classes/Evaluator")
 
-const ActorManager = require("../../src/classes/ActorManager")
-const PartyManager = require("../../src/classes/PartyManager")
+const ActorManager = require("../../src/classes/managers/ActorManager")
+const PartyManager = require("../../src/classes/managers/PartyManager")
 
 const Actor = require("../../src/classes/Actor")
 const Party = require("../../src/classes/Party")
@@ -19,13 +19,13 @@ const enemies = new Party("Enemies")
 enemies.add(jane)
 
 const actorManager = new ActorManager()
-actorManager.addActor(yendros)
-actorManager.addActor(aaron)
-actorManager.addActor(jane)
+actorManager.add(yendros)
+actorManager.add(aaron)
+actorManager.add(jane)
 
 const partyManager = new PartyManager()
-partyManager.addParty(players)
-partyManager.addParty(enemies)
+partyManager.add(players)
+partyManager.add(enemies)
 
 const evalulator = new Evalulator(actorManager, partyManager)
 const cs = new ConditionalSystem(evalulator)
