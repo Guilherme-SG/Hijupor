@@ -26,9 +26,10 @@ class Party extends CollectionManager {
     delete(id) {
         const member = super.get(id)
         member.setParty(-1)
-
+        
         super.delete(id)
     }
+
 
     serialize() {
         return {

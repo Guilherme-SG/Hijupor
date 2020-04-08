@@ -1,7 +1,7 @@
 const request = require("supertest")
-const app = require("../../src/app")
+const app = require("../../../src/app")
 
-const SkillModel = require("../../src/models/Skill")
+const SkillModel = require("../../../src/models/Skill")
 
 describe("Skill API", () => {
     const skillObj = {

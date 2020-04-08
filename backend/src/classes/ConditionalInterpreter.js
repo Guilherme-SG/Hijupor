@@ -29,8 +29,7 @@ class ConditionalInterpreter {
     }
 
     processMany(optionsList) {
-        if (!optionsList) return true
-
+        if (!optionsList) return false
         return optionsList.every(this.process)
     }
 

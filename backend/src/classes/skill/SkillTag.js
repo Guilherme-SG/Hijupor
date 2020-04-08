@@ -1,9 +1,8 @@
-const ConditionalSystem = require("../ConditionalInterpreter");
-const gameSystem = require("../managers/SkillManager")
-
 class SkillTag {
-    constructor() {
-        this.conditionalSystem = new ConditionalSystem();
+    constructor(evaluator, conditionalInterpreter, filter) {
+        this.evaluator = evaluator
+        this.conditionalInterpreter = conditionalInterpreter
+        this.filter = filter
     }
     
     getCalculationFunction(nameFunction) {
@@ -17,26 +16,10 @@ class SkillTag {
         };
         return functions[nameFunction];
     }
-
-    evaluateTarget(target) {
-        const { type } = target
-        const targetTypes = {
-            caster: () => gameSystem.getCaster(),
-            actor: () => gameSystem.getSelectedActor(),
-            party: ({ filters }) => {                
-                const party = gameSystem.getSelectedParty()
-
-                if(!filters) return party.getMembers()
-                
-                return this.conditionalSystem.filter(party.getMembers(), filters)
-                
-            }
-        }
-        
-        return targetTypes[type](target)
+    
+    active(caster, skill) { 
+        throw new Error("Not Implemented")
     }
-
-    active(caster, skill) { }
 }
 
 exports.SkillTag = SkillTag

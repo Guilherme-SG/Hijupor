@@ -1,30 +1,29 @@
-const { SkillTag } = require("./SkillTag");
-
-const gameSystem = require("../managers/SkillManager")
+const { SkillTag } = require("./SkillTag")
 
 class DisruptiveTag extends SkillTag {
-    constructor() {
-        super();
+    constructor(evaluator, conditionalInterpreter, filter) {
+        super(evaluator, conditionalInterpreter, filter)
     }
+
     // Infligem status negativos ao alvo
     active(caster, skill) {
         const {
+            subject,
             statusList,
         } = skill.tags.disruptive
 
-        let target = gameSystem.getSelectedActor()
+        let target = this.evaluator.evaluateTarget(subject)
 
         statusList.forEach( status => {
-            let { triggers } = status
-            if(triggers && triggers.every( trigger => 
-                !this.conditionalSystem.trigger(trigger) )) {
-                return
-            }
-        
-            target.addStatus(status.name)    
+            let { triggers, name } = status
+            
+            if(triggers && !this.conditionalInterpreter.processMany(triggers)) return
+
+            target.addStatus(name)
         })
 
         
     }
 }
+
 exports.DisruptiveTag = DisruptiveTag;

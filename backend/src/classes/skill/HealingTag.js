@@ -1,9 +1,8 @@
-const Party = require("../Party");
 const { SkillTag } = require("./SkillTag");
 
 class HealingTag extends SkillTag {
-    constructor() {
-        super();
+    constructor(evaluator, conditionalInterpreter, filter) {
+        super(evaluator, conditionalInterpreter, filter);
     }
     /*  Recuperam a vida, podendo exceder a vida do alvo em forma de escudo
         Healing options:

@@ -3,8 +3,8 @@ const { SkillTag } = require("./SkillTag");
 const gameSystem = require("../managers/SkillManager")
 
 class OffensiveTag extends SkillTag {
-    constructor() {
-        super();
+    constructor(evaluator, conditionalInterpreter, filter) {
+        super(evaluator, conditionalInterpreter, filter)
     }
     
     active(caster, skill) {
@@ -15,7 +15,7 @@ class OffensiveTag extends SkillTag {
             subject
         } = skill.tags.offensive;       
         
-        let target = this.evaluateTarget(subject);
+        let target = this.evaluator.evaluateTarget(subject);
 
         let damageAmount = this.calculateDamage(damageFunction, caster, skill, target)
         if(damageBonus) damageAmount = this.applyBonus(damageBonus, damageAmount)
@@ -61,7 +61,7 @@ class OffensiveTag extends SkillTag {
     }
 
     distributeDamageToParty(damageAmount, party, attacker) {
-        for (let target of party) {
+        for (let target of party.getAll()) {
             console.log(`${attacker.name} deals ${damageAmount} damage to ${target.name}`);
             damageAmount = target.takeDamage(damageAmount);
             
@@ -73,7 +73,7 @@ class OffensiveTag extends SkillTag {
     }
 
     dealSameDamageToParty(damageAmount, party, attacker) {
-        const members = party.getMembers()
+        const members = party.getAll()
         let lastDamageTaked  = 0
 
         members.forEach(target => {
