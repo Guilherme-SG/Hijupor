@@ -19,6 +19,11 @@ class CollectionManager {
         this.collection.delete(id)
     }
 
+    deleteAll() {
+        Array.from(this.collection.keys())
+            .forEach( id => this.delete(id))
+    }
+
     has(id) {
         return this.collection.has(id)
     }
