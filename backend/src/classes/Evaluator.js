@@ -10,7 +10,15 @@ class Evaluator {
             ["actor", (params) => {
                 if(params.selected) return this.actorManager.getSelected()
             }],
-            ["party", () => this.partyManager.getSelected()],
+            ["party", params => {
+                if(params.selected) return this.partyManager.getSelected()
+
+                if(params.hasActor) {
+                    let actor = this.evaluateTarget(params.hasActor)
+                    return this.partyManager.get(actor.partyId)
+                }
+                
+            }],
             ["direct", params => params.target ]
         ])
 
