@@ -1,4 +1,5 @@
-const { SkillTag } = require("./SkillTag");
+const SkillTag = require("./SkillTag")
+const Party = require("../Party")
 
 class HealingTag extends SkillTag {
     constructor(evaluator, conditionalInterpreter, filter) {
@@ -19,25 +20,30 @@ class HealingTag extends SkillTag {
             subject
         } = skill.tags.healing;
         
-        let target = this.evaluateTarget(subject)
+        let target = this.evaluator.evaluateTarget(subject)
         let healAmount = this.calculateHeal(healFunction, caster, skill, target)
        
-        if (Array.isArray(target)) {
-            target.forEach(target => this.healActor(target, healAmount, turnExtraHPToStamina))
+        if (target instanceof Party) {
+            this.healParty(target, healAmount, turnExtraHPToStamina)
         }
         else {
             this.healActor(target, healAmount, turnExtraHPToStamina)
-            console.log(`${caster.name} heals ${healAmount} HP of ${target.name}`)
         }
     }
 
-    calculateHeal(healFunction, caster, skill, target) {
-        return this.getCalculationFunction(healFunction)({ caster, skill, target, tag: "healing" })
+    calculateHeal(functionName, caster, skill, target) {
+        let healFunction = this.getCalculationFunction(functionName)
+        return healFunction({ caster, skill, target, tag: "healing" })
     }
 
     healActor(actor, healAmount, turnExtraHPToStamina) {
         actor.healHP(healAmount, turnExtraHPToStamina)
     }
+
+    healParty(party, healAmount, turnExtraHPToStamina) {
+        let members = party.getAll()
+        members.forEach(target => this.healActor(target, healAmount, turnExtraHPToStamina))
+    }
 }
 
-exports.HealingTag = HealingTag;
+module.exports = HealingTag;

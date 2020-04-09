@@ -1,4 +1,5 @@
-const { SkillTag } = require("./SkillTag");
+const SkillTag = require("./SkillTag")
+
 class BuffTag extends SkillTag {
     constructor() {
         super();
@@ -7,4 +8,4 @@ class BuffTag extends SkillTag {
     active(caster, skil) {
     }
 }
-exports.BuffTag = BuffTag;
+module.exports = BuffTag;

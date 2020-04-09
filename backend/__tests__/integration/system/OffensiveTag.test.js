@@ -1,9 +1,7 @@
-
 const ActorManager = require("../../../src/classes/managers/ActorManager")
 const PartyManager = require("../../../src/classes/managers/PartyManager")
-const SkillManager = require("../../../src/classes/managers/SkillManager")
 
-const SkillSystem = require("../../../src/classes/skill/SkillSystem")
+const OffensiveTag = require("../../../src/classes/skill/OffensiveTag")
 
 const Actor = require("../../../src/classes/Actor")
 const Party = require("../../../src/classes/Party")
@@ -29,61 +27,69 @@ const investida = new Skill({
             },
             "damageFunction": "byFormula",
             "formula": "25 + Math.floor(caster.stats.for / 7)"
-        },
-        "disruptive": {
-            "subject": {
-                "type": "actor",
-                "params": {
-                    "selected": true
-                }
-            },
-            "statusList": [
-                {
-                    "name": "stunned"
-                }
-            ]
         }
     }
 })
 
-const harmonia = new Skill({
-    "name": "Harmonia",
-    "description": "Causa um Som harmonioso que recupera 25 (+1 cada 2 de Carisma) de Hp de um aliado. 6 rodadas de recarga.",
-    "cooldown": 6,
+const divinySmite = new Skill({
+    "name": "Punição Divina",
+    "description": "Acerta um inimigo com um Feixe de Luz vindo dos céus, causando 55 (+1 cada 2 de Fé). Caso o inimigo seja eliminado, o dano extra é infligido em outro inimigo. 10 rodadas de recarga.",
+    "cooldown": 10,
     "paCost": 1,
     "tags": {
-        "healing": {
+        "offensive": {
+            "damageType": "magic",
             "subject": {
                 "type": "actor",
                 "params": {
                     "selected": true
                 }
             },
-            "healFunction": "byFormula",
-            "formula": "25 + Math.floor(caster.stats.car / 2)"
+            "damageFunction": "byFormula",
+            "formula": "55 + Math.floor(caster.stats.faith / 2)",
+            "extraDamageHitAnotherTarget": true
         }
     }
 })
 
-describe("Skill System", () => {
+const tempestade = new Skill({
+    "name": "Tempestade de Raios",
+    "description": "Dispara Trovões e Raios em todos os inimigos, causando 35 (+1 cada 2 de Sabedoria), além de possui uma chance de 15% de Paralisar aqueles atingidos pelo ataque. 7 rodadas de recarga.",
+    "type": "magical-offensive, disruptive",
+    "cooldown": 7,
+    "paCost": 1,
+    "tags": {
+        "offensive": {
+            "subject": {
+                "type": "party",
+                "params": {
+                    "selected": true
+                } 
+            },
+            "damageFunction": "byFormula",
+            "formula": "35 + Math.floor(caster.stats.sab / 2)"
+        }
+    }
+})
+
+describe("Offensive Skill Interpreter", () => {
     let yendros, aaron, jane
     let players, enemies
 
     let evaluator, conditionalInterpreter, filter
-    let skillManager, actorManager, partyManager
+    let actorManager, partyManager
+
+    let offensiveTag
 
     beforeAll(() => {
         actorManager = new ActorManager()
         partyManager = new PartyManager()
-        skillManager = new SkillManager()
 
         evaluator = new Evaluator(actorManager, partyManager)
         conditionalInterpreter = new ConditionalInterpreter(evaluator)
         filter = new Filter(conditionalInterpreter)
-
-        skillSystem = new SkillSystem(evaluator, conditionalInterpreter, filter, skillManager, actorManager)
-        skillManager.add(investida)
-        skillManager.add(harmonia)
+        
+        offensiveTag = new OffensiveTag(evaluator, conditionalInterpreter, filter)
     })
 
     beforeEach( () => {
@@ -113,27 +119,43 @@ describe("Skill System", () => {
     })
 
     it("Exists", () => {
-        expect(skillSystem).toBeDefined()
+        expect(OffensiveTag).toBeDefined()
     })
 
-    it("Use skill with offensive and disruptive", () => {
+    it("Should deal damage (calculated by formula) to a single target", () => {
         actorManager.select(aaron.id)
-        skillSystem.useSkill(jane.id, investida.id)
+        offensiveTag.active(jane, investida)
 
-        expect(aaron.status).toContain("stunned")
+        expect(investida.damageDone).toBe(25)
+
         expect(aaron.currentHP).toBe(75)
     })
 
-    it("Use skill with healing", () => {
-        actorManager.select(aaron.id)
-        skillSystem.useSkill(jane.id, investida.id)
+    it("Should deal damage to a single target, if target die the remaning damage must be distribuite to another target others members of first target's party",
+        () => {
+            actorManager.select(yendros.id)
+            jane.stats.faith = 100
+            offensiveTag.active(jane, divinySmite)
 
-        expect(aaron.status).toContain("stunned")
-        expect(aaron.currentHP).toBe(75)
+            expect(divinySmite.damageDone).toBe(105)
 
-        skillSystem.useSkill(jane.id, harmonia.id)
+            expect(yendros.currentHP).toBe(0)
+            expect(yendros.isDead()).toBeTruthy()
 
-        expect(aaron.status).toContain("stunned")
-        expect(aaron.currentHP).toBe(100)
+            expect(aaron.currentHP).toBe(95)
     })
+
+    it("Should deal damage (calculated by formula) to party", () => {
+        partyManager.select(players.id)
+
+        jane.stats.sab = 100
+
+        offensiveTag.active(jane, tempestade)
+
+        expect(tempestade.damageDone).toBe(85)
+
+        expect(yendros.currentHP).toBe(15)
+        expect(aaron.currentHP).toBe(15)
+    })
+
 })

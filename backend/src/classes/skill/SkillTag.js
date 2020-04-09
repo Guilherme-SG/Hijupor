@@ -22,4 +22,4 @@ class SkillTag {
     }
 }
 
-exports.SkillTag = SkillTag
+module.exports = SkillTag

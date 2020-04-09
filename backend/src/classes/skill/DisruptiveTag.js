@@ -1,4 +1,4 @@
-const { SkillTag } = require("./SkillTag")
+const SkillTag = require("./SkillTag")
 
 class DisruptiveTag extends SkillTag {
     constructor(evaluator, conditionalInterpreter, filter) {
@@ -26,4 +26,4 @@ class DisruptiveTag extends SkillTag {
     }
 }
 
-exports.DisruptiveTag = DisruptiveTag;
+module.exports = DisruptiveTag;

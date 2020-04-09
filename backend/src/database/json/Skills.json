@@ -69,21 +69,20 @@
         {
             "name": "Harmonia",
             "description": "Causa um Som harmonioso que recupera 25 (+1 cada 2 de Carisma) de Hp de um aliado. 6 rodadas de recarga.",
-            "type": "healing",
             "cooldown": 6,
             "paCost": 1,
-            "duration": 0,
             "tags": {
                 "healing": {
-                    "healFunction": "healByFormula",
+                    "subject": {
+                        "type": "actor",
+                        "params": {
+                            "selected": true
+                        }
+                    },
+                    "healFunction": "byFormula",
                     "formula": "25 + Math.floor(caster.stats.car / 2)"
                 }
-            },
-            "formula": "25 + floor(a.stats.car / 2)",
-            "scaling": "carisma",
-            "baseValue": 25,
-            "currentCooldown": 0,
-            "category": "classe"
+            }
         },
         {
             "name": "Botando pra Quebrar",
@@ -410,16 +409,20 @@
             "type": "healing",
             "cooldown": 8,
             "paCost": 1,
-            "duration": 0,
             "tags": {
                 "healing": {
-                    "target": "caster.party",
-                    "healFunction": "healByFormula",
+                    "subject": {
+                        "type": "party",
+                        "params": {
+                            "hasActor": {
+                                "type": "caster"
+                            }
+                        }
+                    },
+                    "healFunction": "byFormula",
                     "formula": "10 + Math.floor(caster.stats.faith / 2)"
                 }
-            },
-            "currentCooldown": 0,
-            "category": "classe"
+            }
         },
         {
             "name": "Devoção",
@@ -543,16 +546,18 @@
             "type": "magical-offensive, disruptive",
             "cooldown": 7,
             "paCost": 1,
-            "duration": 0,
-            "target": {
-                "type": "enemy",
-                "howMany": "all"
-            },
-            "formula": "35 + (stats[scaling] / 2)",
-            "scaling": "sab",
-            "baseValue": 35,
-            "currentCooldown": 0,
-            "category": "classe"
+            "tags": {
+                "offensive": {
+                    "subject": {
+                        "type": "party",
+                        "params": {
+                            "selected": true
+                        } 
+                    },
+                    "damageFunction": "byFormula",
+                    "formula": "35 + Math.floor(caster.stats.sab / 2)"
+                }
+            }
         },
         {
             "name": "Nevasca",

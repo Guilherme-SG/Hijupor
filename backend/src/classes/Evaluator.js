@@ -29,6 +29,10 @@ class Evaluator {
         return false
     }
 
+    getActorsParty(actor) {
+        return this.partyManager.get(actor.partyId)
+    }
+
     evaluateAttribute(subject, attribute) {
         if(attribute.startsWith("get") || attribute.startsWith("is")) {
             return subject[attribute]()

@@ -1,4 +1,5 @@
-const { SkillTag } = require("./SkillTag");
+const SkillTag = require("./SkillTag")
+
 class DebuffTag extends SkillTag {
     constructor() {
         super();
@@ -7,4 +8,5 @@ class DebuffTag extends SkillTag {
     active(caster, skil) {
     }
 }
-exports.DebuffTag = DebuffTag;
+
+module.exports = DebuffTag;

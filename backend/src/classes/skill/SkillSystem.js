@@ -1,12 +1,12 @@
-const { SummoningTag } = require("./SummoningTag")
-const { DebuffTag } = require("./DebuffTag")
-const { BuffTag } = require("./BuffTag")
-const { DisruptiveTag } = require("./DisruptiveTag")
-const { ControllerTag } = require("./ControllerTag")
-const { RegenerationTag } = require("./RegenerationTag")
-const { DeffensiveTag } = require("./DeffensiveTag")
-const { OffensiveTag } = require("./OffensiveTag")
-const { HealingTag } = require("./HealingTag")
+const SummoningTag = require("./SummoningTag")
+const DebuffTag = require("./DebuffTag")
+const BuffTag = require("./BuffTag")
+const DisruptiveTag = require("./DisruptiveTag")
+const ControllerTag = require("./ControllerTag")
+const RegenerationTag = require("./RegenerationTag")
+const DeffensiveTag = require("./DeffensiveTag")
+const OffensiveTag = require("./OffensiveTag")
+const HealingTag = require("./HealingTag")
 
 
 class SkillSystem {

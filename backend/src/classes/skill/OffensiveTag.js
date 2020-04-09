@@ -1,6 +1,5 @@
-const { SkillTag } = require("./SkillTag");
-
-const gameSystem = require("../managers/SkillManager")
+const SkillTag = require("./SkillTag")
+const Party = require("../Party")
 
 class OffensiveTag extends SkillTag {
     constructor(evaluator, conditionalInterpreter, filter) {
@@ -10,7 +9,7 @@ class OffensiveTag extends SkillTag {
     active(caster, skill) {
         const { 
             damageFunction,
-            extraDamageHitAnotherEnemy,
+            extraDamageHitAnotherTarget,
             damageBonus,
             subject
         } = skill.tags.offensive;       
@@ -20,18 +19,17 @@ class OffensiveTag extends SkillTag {
         let damageAmount = this.calculateDamage(damageFunction, caster, skill, target)
         if(damageBonus) damageAmount = this.applyBonus(damageBonus, damageAmount)
 
-        skill.tags.offensive.damage = damageAmount
+        skill.damageDone = damageAmount
 
-        if (Array.isArray(target)) {
-            this.attackParty(damageAmount, target, caster, extraDamageHitAnotherEnemy)
+        if (target instanceof Party) {
+            this.dealSameDamageToParty(damageAmount, target)
         }
         else {
-            console.log(`${caster.name} deals ${damageAmount} damage to ${target.name}`);
-            damageAmount = target.takeDamage(damageAmount);
+            damageAmount = target.takeDamage(damageAmount)
 
-            if(extraDamageHitAnotherEnemy && damageAmount > 0) {
-                let members = this.getOthersMembersInSameParty(target)
-                damageAmount = this.attackParty(damageAmount, members, caster, extraDamageHitAnotherEnemy)
+            if(extraDamageHitAnotherTarget && damageAmount > 0) {
+                let targetsParty = this.evaluator.getActorsParty(target)
+                damageAmount = this.distributeDamageToParty(damageAmount, targetsParty)
             }            
         }
     }
@@ -43,7 +41,7 @@ class OffensiveTag extends SkillTag {
     applyBonus(damageBonus, damageAmount) {
         damageBonus.forEach(bonus => {
             if (bonus.triggers 
-                && !this.conditionalSystem.trigger(bonus.triggers)) return
+                && !this.conditionalInterpreter.processMany(bonus.triggers)) return
                 
             damageAmount *= 1 + bonus.multipler;
         });
@@ -51,18 +49,8 @@ class OffensiveTag extends SkillTag {
         return damageAmount;
     }
 
-    attackParty(damageAmount, party, attacker, extraDamageHitAnotherEnemy) {
-        if (extraDamageHitAnotherEnemy) {
-            return this.distributeDamageToParty(damageAmount, party, attacker)                
-        }
-        else {
-            return this.dealSameDamageToParty(damageAmount, party, attacker)
-        }
-    }
-
-    distributeDamageToParty(damageAmount, party, attacker) {
+    distributeDamageToParty(damageAmount, party) {
         for (let target of party.getAll()) {
-            console.log(`${attacker.name} deals ${damageAmount} damage to ${target.name}`);
             damageAmount = target.takeDamage(damageAmount);
             
             if (!damageAmount)
@@ -72,42 +60,17 @@ class OffensiveTag extends SkillTag {
         return damageAmount
     }
 
-    dealSameDamageToParty(damageAmount, party, attacker) {
+    dealSameDamageToParty(damageAmount, party) {
         const members = party.getAll()
         let lastDamageTaked  = 0
 
         members.forEach(target => {
-            console.log(`${attacker.name} deals ${damageAmount} damage to ${target.name}`);
             lastDamageTaked = target.takeDamage(damageAmount);
         });
 
         return lastDamageTaked
     }
 
-    getOthersMembersInSameParty(actorReference) {
-        const actorParty = gameSystem.getParty(actorReference.partyId)
-        gameSystem.setSelectedParty(actorParty.id)
-
-        return this.evaluateTarget({
-            type: "party",
-            filters: [                
-                {
-                    fn: "isNotEqual",
-                    params: {
-                        attribute: "id",
-                        reference: actorParty.id
-                    }
-                },
-                {
-                    fn: "isEqual",
-                    params: {
-                        attribute: "isAlive",
-                        reference: true
-                    }
-                }          
-            ]
-        })
-    }
 }
 
-exports.OffensiveTag = OffensiveTag;
+module.exports = OffensiveTag;

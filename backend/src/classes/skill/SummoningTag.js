@@ -1,4 +1,4 @@
-const { SkillTag } = require("./SkillTag");
+const SkillTag = require("./SkillTag")
 
 class SummoningTag extends SkillTag {
     constructor() {
@@ -9,4 +9,4 @@ class SummoningTag extends SkillTag {
     }
 }
 
-exports.SummoningTag = SummoningTag;
+module.exports = SummoningTag;
