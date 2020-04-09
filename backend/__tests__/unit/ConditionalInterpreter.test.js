@@ -31,6 +31,11 @@ const evalulator = new Evalulator(actorManager, partyManager)
 const interpreter = new ConditionalInterpreter(evalulator)
 
 describe("Conditional Interpreter", () => {
+
+    afterEach(() => {
+        jest.resetAllMocks()
+    })
+
     it("Module exists", () => {
         expect(interpreter).toBeDefined()
     })
@@ -102,5 +107,32 @@ describe("Conditional Interpreter", () => {
 
         expect(interpreter.process(options)).toBeTruthy()
     })
+
+    it("Have 25% of chance to return true", () => {
+        jest.spyOn(global.Math, 'random').mockReturnValue(0.1)
+        
+        const options = {
+            fn: "haveChanceToOccur",
+            params: {
+                reference: 0.25
+            }
+        }
+
+        expect(interpreter.process(options)).toBeTruthy()
+    })
+
+    it("Have 25% of chance to return true, but fail", () => {
+        jest.spyOn(global.Math, 'random').mockReturnValue(0.8)
+        
+        const options = {
+            fn: "haveChanceToOccur",
+            params: {
+                reference: 0.25
+            }
+        }
+        
+        expect(interpreter.process(options)).toBeFalsy()
+    })
+
 
 })

@@ -8,7 +8,9 @@ class ConditionalInterpreter {
             ["isGreaterThan", (value, reference) => value > reference],
             ["isGreaterThanOrEqual", (value, reference) => value >= reference],
             ["isLessThan", (value, reference) => value < reference],
-            ["isLessThanOrEqual", (value, reference) => value <= reference]
+            ["isLessThanOrEqual", (value, reference) => value <= reference],
+            ["haveChanceToOccur", reference => Math.random() < reference],
+            ["mockTest", () => Math.random()]
         ])
     }
 
@@ -17,7 +19,7 @@ class ConditionalInterpreter {
         if (!params) return false
 
         let { attribute, reference, value } = params
-
+        
         if (!this.comparisions.has(fn)) return false
 
         if (subject) {
@@ -25,12 +27,14 @@ class ConditionalInterpreter {
             value = this.evaluator.evaluateAttribute(target, attribute)
         }
 
-        return this.comparisions.get(fn)(value, reference)
+        if (value) return this.comparisions.get(fn)(value, reference)
+        
+        return this.comparisions.get(fn)(reference)
     }
 
     processMany(optionsList) {
         if (!optionsList) return false
-        return optionsList.every(this.process)
+        return optionsList.every( options => this.process(options))
     }
 
 }

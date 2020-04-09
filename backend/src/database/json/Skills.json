@@ -562,19 +562,29 @@
         {
             "name": "Nevasca",
             "description": "Cria uma forte rajada de ventos Frios, que atacam todos os inimigos, causando 25 (+1 cada 2 de Sabedoria), e congela os atingidos com uma chance de 25%. 8 rodadas de recarga.",
-            "type": "magical-offensive, disruptive",
             "cooldown": 8,
             "paCost": 1,
-            "duration": 0,
-            "target": {
-                "type": "enemy",
-                "howMany": "all"
-            },
-            "formula": "35 + Math.floor(stats[scaling] / 2)",
-            "scaling": "sab",
-            "baseValue": 0,
-            "currentCooldown": 0,
-            "category": "classe"
+            "tag": {
+                "offensive": {
+                    "subject": {
+                        "type": "party",
+                        "params": {
+                            "selected": true
+                        }
+                    },
+                    "damageFunction": "byFormula",
+                    "formula": "25 + Math.floor(caster.stats.sab / 2)"
+                },
+                "disruptive": {
+                    "subject": {
+                        "type": "party",
+                        "params": {
+                            "selected": true
+                        }
+                    },
+                    "statuslist": [{ "name": "Frozen" }]
+                }
+            }
         },
         {
             "name": "Bola de Fogo",
