@@ -32,8 +32,7 @@ class SkillSystem {
         const caster = this.actorManager.get(casterId)
         const skill = this.skillManager.get(skillId)
         this.actorManager.setCaster(casterId)
-
-        console.log(`${caster.name} is casting ${skill.name}`);        
+              
         Object.keys(skill.tags).forEach( tag => this.tags[tag].active(caster, skill) )
     }
 }

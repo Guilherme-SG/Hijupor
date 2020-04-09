@@ -97,7 +97,7 @@ const nevasca = new Skill({
     }
 })
 
-describe("Healing Skill Interpreter", () => {
+describe("Disruptive Skill Interpreter", () => {
     let yendros, aaron, jane
     let players, enemies
 

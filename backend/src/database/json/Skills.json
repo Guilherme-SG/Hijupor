@@ -623,18 +623,24 @@
         {
             "name": "Resistir Elementos",
             "description": "Cria uma camada ao redor de todos os aliados, aumentando a Resistência Mágica de todos eles em 10% (+1% cada 2 de Sabedoria) por 4 rodadas. 9 rodadas de recarga.",
-            "type": "buff",
-            "cooldown": 9,
+           "cooldown": 9,
             "paCost": 1,
-            "duration": 4,
-            "target": {
-                "type": "ally",
-                "howMany": "all"
-            },
-            "formula": "0.1 + 0.01 * Math.floor(stats[scaling] / 2)",
-            "scaling": "sab",
-            "currentCooldown": 0,
-            "category": "classe"
+            "tags": {
+                "buff": {
+                    "subject": {
+                        "type": "party",
+                        "params": {
+                            "hasActor": {
+                                "type": "caster"
+                            }
+                        }
+                    },
+                    "buffFunction": "byFormula",
+                    "formula": "0.1 + 0.01 * Math.floor(caster.stats.sab / 2)",
+                    "duration": 4,
+                    "statToImprove": "mr"
+                }
+            }
         },
         {
             "name": "Barreira Refletora",

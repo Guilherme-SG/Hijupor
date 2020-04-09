@@ -7,6 +7,12 @@ class DisruptiveTag extends SkillTag {
     }
 
     // Infligem status negativos ao alvo
+    /**
+     * TODO LIST
+     *  
+     * - Calcular o número de alvos por formulá
+     * - Definir a duração por formula
+     */
     active(caster, skill) {
         const {
             subject,

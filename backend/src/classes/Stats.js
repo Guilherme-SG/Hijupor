@@ -32,6 +32,15 @@ class Stats extends Serializable {
         this[statName] += value
     }
 
+    modifyStatByMultiplier(statName, value) {
+        if(this[statName] == undefined) { 
+            this[statName] = 0
+            return
+        }
+
+        this[statName] *= 1 + value
+    }
+
     serialize() {
         return {
             for: this.for,
