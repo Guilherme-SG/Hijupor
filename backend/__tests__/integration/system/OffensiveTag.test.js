@@ -11,6 +11,8 @@ const Evaluator = require("../../../src/classes/Evaluator")
 const ConditionalInterpreter = require("../../../src/classes/ConditionalInterpreter")
 const Filter = require("../../../src/classes/Filter")
 
+const RawBonus = require("../../../src/classes/RawBonus")
+
 const investida = new Skill({
     "name": "Investida",
     "description": "Avança em um inimigo, causando 25 (+1 cada 7 de Força) em um inimigo e atordoando-o logo depois. 8 rodadas de recarga.",
@@ -26,7 +28,7 @@ const investida = new Skill({
                 }
             },
             "damageFunction": "byFormula",
-            "formula": "25 + Math.floor(caster.stats.for / 7)"
+            "formula": "25 + Math.floor(caster.stats.get('str') / 7)"
         }
     }
 })
@@ -46,7 +48,7 @@ const divinySmite = new Skill({
                 }
             },
             "damageFunction": "byFormula",
-            "formula": "55 + Math.floor(caster.stats.faith / 2)",
+            "formula": "55 + Math.floor(caster.stats.get('faith') / 2)",
             "extraDamageHitAnotherTarget": true
         }
     }
@@ -67,7 +69,7 @@ const tempestade = new Skill({
                 } 
             },
             "damageFunction": "byFormula",
-            "formula": "35 + Math.floor(caster.stats.sab / 2)"
+            "formula": "35 + Math.floor(caster.stats.get('sab') / 2)"
         }
     }
 })
@@ -134,7 +136,7 @@ describe("Offensive Skill Interpreter", () => {
     it("Should deal damage to a single target, if target die the remaning damage must be distribuite to another target others members of first target's party",
         () => {
             actorManager.select(yendros.id)
-            jane.stats.faith = 100
+            jane.stats.faith.addRawBonus(new RawBonus(100))
             offensiveTag.active(jane, divinySmite)
 
             expect(divinySmite.damageDone).toBe(105)
@@ -148,7 +150,7 @@ describe("Offensive Skill Interpreter", () => {
     it("Should deal damage (calculated by formula) to party", () => {
         partyManager.select(players.id)
 
-        jane.stats.sab = 100
+        jane.stats.sab.addRawBonus(new RawBonus(100))
 
         offensiveTag.active(jane, tempestade)
 

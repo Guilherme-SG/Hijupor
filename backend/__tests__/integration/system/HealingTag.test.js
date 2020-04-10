@@ -11,6 +11,8 @@ const Evaluator = require("../../../src/classes/Evaluator")
 const ConditionalInterpreter = require("../../../src/classes/ConditionalInterpreter")
 const Filter = require("../../../src/classes/Filter")
 
+const RawBonus = require("../../../src/classes/RawBonus")
+
 const harmonia = new Skill({
     "name": "Harmonia",
     "description": "Causa um Som harmonioso que recupera 25 (+1 cada 2 de Carisma) de Hp de um aliado. 6 rodadas de recarga.",
@@ -25,7 +27,7 @@ const harmonia = new Skill({
                 }
             },
             "healFunction": "byFormula",
-            "formula": "25 + Math.floor(caster.stats.car / 2)"
+            "formula": "25 + Math.floor(caster.stats.get('car') / 2)"
         }
     }
 })
@@ -44,7 +46,7 @@ const healParty = new Skill({
                 }
             },
             "healFunction": "byFormula",
-            "formula": "25 + Math.floor(caster.stats.car / 2)"
+            "formula": "25 + Math.floor(caster.stats.get('car') / 2)"
         }
     }
 })
@@ -60,7 +62,7 @@ const healWithShield = new Skill({
                 }
             },
             healFunction: "byFormula",
-            formula: "15 + Math.floor(caster.stats.faith / 5)",
+            formula: "15 + Math.floor(caster.stats.get('faith') / 5)",
             turnExtraHPToStamina: true
         }
     }
@@ -77,7 +79,7 @@ const protectionForEveryone = new Skill({
                 }
             },
             healFunction: "byFormula",
-            formula: "15 + Math.floor(caster.stats.faith / 5)",
+            formula: "15 + Math.floor(caster.stats.get('faith') / 5)",
             turnExtraHPToStamina: true
         }
     }
@@ -115,7 +117,7 @@ const faithIsForEveryone = new Skill({
                 }
             },
             "healFunction": "byFormula",
-            "formula": "10 + Math.floor(caster.stats.faith / 2)"
+            "formula": "10 + Math.floor(caster.stats.get('faith') / 2)"
         }
     }
 })
@@ -181,7 +183,8 @@ describe("Healing Skill Interpreter", () => {
 
     it("Should heal (calculated by formula) a single target, the caster have 100 of carism", () => {
         yendros.currentHP = 25
-        aaron.stats.car = 100
+        aaron.stats.car.addRawBonus(new RawBonus(100))
+        
 
         actorManager.select(yendros.id)
         healingTag.active(aaron, harmonia)
@@ -193,7 +196,7 @@ describe("Healing Skill Interpreter", () => {
         yendros.currentHP = 25
         aaron.currentHP = 25
 
-        jane.stats.car = 100
+        jane.stats.car.addRawBonus(new RawBonus(100))
 
         partyManager.select(players.id)
         healingTag.active(jane, healParty)
@@ -204,12 +207,13 @@ describe("Healing Skill Interpreter", () => {
 
     it("Should heal (calculated by formula) a single target, the caster have 100 of faith, and exceeding heal turn into stamina", () => {
         yendros.currentHP = 85
-        aaron.stats.faith = 100
+        aaron.stats.faith.addRawBonus(new RawBonus(100))
 
         actorManager.select(yendros.id)
         healingTag.active(aaron, healWithShield)
 
         expect(yendros.currentHP).toBe(100)
+        expect(yendros.totalHP).toBe(100)
         expect(yendros.haveShield()).toBeTruthy()
         expect(yendros.currentStamina).toBe(20)
     })
@@ -217,7 +221,7 @@ describe("Healing Skill Interpreter", () => {
     it("Should heal (calculated by formula) an entire party, the caster have 100 of faith, and exceeding heal turn into stamina", () => {
         aaron.currentHP = 75
         yendros.currentHP = 85
-        jane.stats.faith = 100
+        jane.stats.faith.addRawBonus(new RawBonus(100))
 
         partyManager.select(players.id)
         healingTag.active(jane, protectionForEveryone)

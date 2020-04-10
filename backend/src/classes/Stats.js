@@ -1,4 +1,5 @@
 const Serializable = require("./Serializable")
+const Attribute = require("./Attribute")
 
 class Stats extends Serializable {
     constructor({
@@ -14,45 +15,40 @@ class Stats extends Serializable {
         vit = 0
     }) {
         super()
-        this.for = str
-        this.dex = dex
-        this.aim = aim
-        this.int = int
-        this.sab = sab
-        this.mr = mr
-        this.res = res
-        this.car = car
-        this.faith = faith
-        this.vit = vit
+        this.str = new Attribute(str)
+        this.dex = new Attribute(dex)
+        this.aim = new Attribute(aim)
+        this.int = new Attribute(int)
+        this.sab = new Attribute(sab)
+        this.mr = new Attribute(mr)
+        this.res = new Attribute(res)
+        this.car = new Attribute(car)
+        this.faith = new Attribute(faith)
+        this.vit = new Attribute(vit)
     }
 
-    modifyStatByFixedValue(statName, value) {
-        if (this[statName] == undefined) this[statName] = 0
-
-        this[statName] += value
+    get(name) {
+        //console.log(name, this[name])
+        return this[name].getFinalValue()
     }
 
-    modifyStatByMultiplier(statName, value) {
-        if(this[statName] == undefined) { 
-            this[statName] = 0
-            return
-        }
-
-        this[statName] *= 1 + value
+    update() {
+        Object.values(this)
+            .forEach( attr => attr.update() )
     }
 
     serialize() {
         return {
-            for: this.for,
-            dex: this.dex,
-            aim: this.aim,
-            int: this.int,
-            sab: this.sab,
-            mr: this.mr,
-            res: this.res,
-            car: this.car,
-            faith: this.faith,
-            vit: this.vit
+            str: this.str.getFinalValue(),
+            dex: this.dex.getFinalValue(),
+            aim: this.aim.getFinalValue(),
+            int: this.int.getFinalValue(),
+            sab: this.sab.getFinalValue(),
+            mr: this.mr.getFinalValue(),
+            res: this.res.getFinalValue(),
+            car: this.car.getFinalValue(),
+            faith: this.faith.getFinalValue(),
+            vit: this.vit.getFinalValue()
         }
     }
 }

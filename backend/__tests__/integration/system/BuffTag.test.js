@@ -28,7 +28,7 @@ const resistirElementos = new Skill({
                 }
             },
             "buffFunction": "byFormula",
-            "formula": "0.1 + 0.01 * Math.floor(caster.stats.sab / 2)",
+            "formula": "0.1 + 0.01 * Math.floor(caster.stats.get('sab') / 2)",
             "duration": 4,
             "statToImprove": "mr"
         }
@@ -135,12 +135,33 @@ describe("Buff Skill Interpreter", () => {
     it("Should improve magic resistence by 10% to caster and his/her party", () => {
         actorManager.setCaster(aaron.id)
 
-        expect(yendros.stats.mr).toBe(100)
-        expect(aaron.stats.mr).toBe(100)
+        expect(yendros.stats.mr.getFinalValue()).toBe(100)
+        expect(aaron.stats.mr.getFinalValue()).toBe(100)
 
         buffTag.active(aaron, resistirElementos)
 
-        expect(yendros.stats.mr).toBe(160)
-        expect(aaron.stats.mr).toBe(160)
+        expect(yendros.stats.mr.getFinalValue()).toBe(160)
+        expect(aaron.stats.mr.getFinalValue()).toBe(160)
+    })
+
+    it("Should improve magic resistance by 10% to caster and his/her party during 4 turns, after that the improvement should be undone", () => {
+        actorManager.setCaster(aaron.id)
+
+        expect(yendros.stats.mr.getFinalValue()).toBe(100)
+        expect(aaron.stats.mr.getFinalValue()).toBe(100)
+
+
+        buffTag.active(aaron, resistirElementos)
+
+        for(let i = 0; i < 4; i++) {
+            expect(yendros.stats.mr.getFinalValue()).toBe(160)
+            expect(aaron.stats.mr.getFinalValue()).toBe(160)
+
+            yendros.update()
+            aaron.update()
+        }
+
+        expect(yendros.stats.mr.getFinalValue()).toBe(100)
+        expect(aaron.stats.mr.getFinalValue()).toBe(100)        
     })
 })

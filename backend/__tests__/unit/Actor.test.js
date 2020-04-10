@@ -170,7 +170,7 @@ describe("Actor representation", () => {
             id: "342",
             name: "Liliana",
             stats: {
-                for: 0,
+                str: 0,
                 dex: 0,
                 aim: 0,
                 int: 0,

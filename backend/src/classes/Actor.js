@@ -56,6 +56,10 @@ class Actor extends Serializable {
         }
     }
 
+    update() {
+        this.stats.update()
+    }
+
     setParty(partyId) {
         this.partyId = partyId
     }
@@ -65,7 +69,7 @@ class Actor extends Serializable {
     }
 
     calculateTotalHPByStats() {
-        this.totalHP = 100 + this.stats.vit * 5
+        this.totalHP = 100 + this.stats.get("vit") * 5
     }
 
     getPercentualHP() {

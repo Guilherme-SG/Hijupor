@@ -28,7 +28,7 @@ const investida = new Skill({
                 }
             },
             "damageFunction": "byFormula",
-            "formula": "25 + Math.floor(caster.stats.for / 7)"
+            "formula": "25 + Math.floor(caster.stats.get('str') / 7)"
         },
         "disruptive": {
             "subject": {
@@ -60,7 +60,7 @@ const harmonia = new Skill({
                 }
             },
             "healFunction": "byFormula",
-            "formula": "25 + Math.floor(caster.stats.car / 2)"
+            "formula": "25 + Math.floor(caster.stats.get('car') / 2)"
         }
     }
 })
