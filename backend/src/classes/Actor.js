@@ -1,6 +1,29 @@
 const { createId } = require("../util")
 const Stats = require("./Stats")
 const Serializable = require("./Serializable")
+const StaminaShield = require("./StaminaShield")
+
+class ShieldRelector {
+    constructor(protectAgainst, hp) {
+        this.protectAgainst = protectAgainst
+        this.hp = hp
+    }
+
+    reflectDamage(damage, type, attacker) {
+        if( (Array.isArray(this.protectAgainst) && this.protectAgainst.includes(type))
+            || this.protectAgainst == type) {
+                this.hp--
+                attacker.takeDamage(damage)
+
+                return 0
+            }
+        
+        return damage
+    }
+}
+
+
+
 
 
 class Actor extends Serializable {
@@ -33,10 +56,12 @@ class Actor extends Serializable {
             this.calculateTotalHPByStats()
             this.regenateHPFully()
         }
-        
 
         this.currentStamina = currentStamina
         this.totalStamina = totalStamina
+
+        this.ShieldRelector = new ShieldRelector()
+        this.staminaShield = new StaminaShield(this)
 
         this.skills = skills
     }
@@ -58,6 +83,7 @@ class Actor extends Serializable {
 
     update() {
         this.stats.update()
+        this.staminaShield.updateFromOwner()
     }
 
     setParty(partyId) {
@@ -81,66 +107,57 @@ class Actor extends Serializable {
     }
 
     healHP(heal, turnExtraHPToStamina) {
+        this.staminaShield.updateToOwner()
+
         if (this.isHealingGreaterThanTotalHP(heal)) {
             if (turnExtraHPToStamina) {
-                this.healShield(heal - this.totalHP + this.currentHP)
+                this.staminaShield.heal(heal - this.totalHP + this.currentHP)
             }
 
             this.currentHP = this.totalHP
         } else {
             this.currentHP += heal
         }
+
+        this.staminaShield.updateFromOwner()
     }
 
     canDieByDamage = damage => damage >= this.currentHP
 
     isHealingGreaterThanTotalHP = heal => heal + this.currentHP > this.totalHP
 
-    healShield(heal) {
-        this.currentStamina += heal
-
-        if (this.isCurrentStaminaGreaterThanTotal()) {
-            this.totalStamina = this.currentStamina
-        }
-    }
-
     isCurrentStaminaGreaterThanTotal = () => this.currentStamina > this.totalStamina
 
-    takeDamage(damage) {
+    takeDamage(damage, type, attacker) {
         let prevHP = this.currentHP
         let prevStamina = this.currentStamina
-        let remainingDamage = 0
+        let remainingDamage = damage
 
-        if (this.haveShield()) {
-            if (this.shieldCanBeBroken(damage)) {
-                this.currentHP -= damage - this.currentStamina
-                this.breakShield()
+        this.staminaShield.updateFromOwner()
+
+        //remainingDamage = this.ShieldRelector.reflectDamage(damage, type, attacker)
+        
+        if (this.staminaShield.isNotBroken()) {
+            if (this.staminaShield.canBeBroken(damage)) {
+                this.currentHP -= this.staminaShield.takeDamage(damage)
                 remainingDamage = damage - prevStamina - prevHP
             } else {
-                this.damageShield(damage)
-                remainingDamage = damage - this.prevStamina
+                this.staminaShield.takeDamage(damage)
+                remainingDamage = 0
             }
         } else {
             this.currentHP -= damage
             remainingDamage = damage - prevHP
         }
 
-        if (!this.isAlive()) this.die()
+        if (this.isDead()) this.die()
+
+        this.staminaShield.updateFromOwner()
 
         return remainingDamage < 0 ? 0 : remainingDamage
     }
 
-    damageShield(damage) {
-        this.currentStamina -= damage
-    }
-
-    breakShield() {
-        this.currentStamina = 0
-        this.totalStamina = 0
-    }
-
-    haveShield = () => this.currentStamina > 0
-    shieldCanBeBroken = (damageAmount) => damageAmount > this.currentStamina
+    haveShield = () => this.staminaShield.isNotBroken()
 
     isAlive = () => this.currentHP > 0
     isDead = () => !this.isAlive()
