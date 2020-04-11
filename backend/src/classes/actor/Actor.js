@@ -4,6 +4,7 @@ const Serializable = require("../Serializable")
 const StaminaShield = require("./StaminaShield")
 const ActionPoint = require("./ActionPoint")
 
+
 class Actor extends Serializable {
     constructor({
         stats = new Stats({}), 
