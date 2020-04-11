@@ -1,4 +1,4 @@
-const Serializable = require("./Serializable")
+const Serializable = require("../Serializable")
 const Attribute = require("./Attribute")
 
 class Stats extends Serializable {
@@ -12,7 +12,8 @@ class Stats extends Serializable {
         res = 0,
         car = 0,
         faith = 0,
-        vit = 0
+        vit = 0,
+        agi = 0
     }) {
         super()
         this.str = new Attribute(str)
@@ -25,6 +26,7 @@ class Stats extends Serializable {
         this.car = new Attribute(car)
         this.faith = new Attribute(faith)
         this.vit = new Attribute(vit)
+        this.agi = new Attribute(agi)
     }
 
     get(name) {

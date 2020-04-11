@@ -1,5 +1,5 @@
-const Stats = require("../../../src/classes/Stats")
-const RawBonus = require("../../../src/classes/RawBonus")
+const Stats = require("../../../src/classes/actor/Stats")
+const RawBonus = require("../../../src/classes/actor/RawBonus")
 const FinalBonus = require("../../../src/classes/FinalBonus")
 
 describe("Stats Representation", () => {

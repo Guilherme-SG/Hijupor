@@ -1,7 +1,8 @@
-const { createId } = require("../util")
+const { createId } = require("../../util")
 const Stats = require("./Stats")
-const Serializable = require("./Serializable")
+const Serializable = require("../Serializable")
 const StaminaShield = require("./StaminaShield")
+const ActionPoint = require("./ActionPoint")
 
 class Actor extends Serializable {
     constructor({
@@ -38,6 +39,8 @@ class Actor extends Serializable {
         this.totalStamina = totalStamina
 
         this.staminaShield = new StaminaShield(this)
+        this.actionPoint = new ActionPoint()
+        this.actionPoint.calculateTotalPA(this.stats.get("agi"))
 
         this.skills = skills
     }
@@ -60,6 +63,9 @@ class Actor extends Serializable {
     update() {
         this.stats.update()
         this.staminaShield.updateFromOwner()
+
+        this.actionPoint.calculateTotalPA(this.stats.get("agi"))
+        this.actionPoint.update()
     }
 
     setParty(partyId) {

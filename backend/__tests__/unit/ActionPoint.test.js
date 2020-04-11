@@ -1,4 +1,4 @@
-const ActionPoint = require("../../src/classes/ActionPoint")
+const ActionPoint = require("../../src/classes/actor/ActionPoint")
 
 describe("Action Point test", () => {
     it("Exists", () => {

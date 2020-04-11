@@ -7,7 +7,7 @@ class SkillTag {
     
     getCalculationFunction(nameFunction) {
         const functions = {
-            byFixedValue: ({ skill }) => skill.tags.healing.fixedValue,
+            byRawValue: ({ skill, tag }) => skill.tags[tag].rawValue,
             byFormula: ({ caster, skill, target, tag }) => eval(skill.tags[tag].formula),
             byPercentualOf: ({ caster, skill, target, tag }) => {
                 let { reference, percentual } = skill.tags[tag];

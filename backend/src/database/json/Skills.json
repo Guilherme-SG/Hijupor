@@ -736,16 +736,23 @@
         {
             "name": "Liderando o Exército",
             "description": "Todos do seu grupo recebem 1 Ponto de Ação adicional. 12 rodadas de recarga.",
-            "type": "buff",
             "cooldown": 12,
             "paCost": 1,
-            "duration": 0,
-            "target": {
-                "type": "ally",
-                "howMany": 1
-            },
-            "currentCooldown": 0,
-            "category": "classe"
+            "tags": {
+                "buff": {
+                    "subject": {
+                        "type": "party",
+                        "params": {
+                            "hasActor": {
+                                "type": "caster"
+                            }
+                        }
+                    },
+                    "buffFunction": "byRawValue",
+                    "rawValue": 1,
+                    "statToImprove": "actionPoint"
+                }
+            }
         }
     ],
     "Mago": [

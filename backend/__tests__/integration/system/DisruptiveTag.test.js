@@ -3,7 +3,7 @@ const PartyManager = require("../../../src/classes/managers/PartyManager")
 
 const DisruptiveTag = require("../../../src/classes/skill/DisruptiveTag")
 
-const Actor = require("../../../src/classes/Actor")
+const Actor = require("../../../src/classes/actor/Actor")
 const Party = require("../../../src/classes/Party")
 const Skill = require("../../../src/classes/skill/Skill")
 

@@ -7,7 +7,6 @@ class BuffTag extends SkillTag {
         super(evaluator, conditionalInterpreter, filter)
     }
 
-    // Previnem, diminuem, reflerem ou anulam ataques/magias
     active(caster, skill) {
         const {
             subject,
@@ -36,7 +35,11 @@ class BuffTag extends SkillTag {
     }
 
     improveActor(actor, improvement, statToImprove, duration) {
-        actor.stats[statToImprove].addFinalBonus(new FinalBonus(0, improvement, duration))
+        if(statToImprove == "actionPoint") {
+            actor.actionPoint.addExtraPoint(improvement)
+        } else {
+            actor.stats[statToImprove].addFinalBonus(new FinalBonus(0, improvement, duration))
+        }
     }
 }
 module.exports = BuffTag;

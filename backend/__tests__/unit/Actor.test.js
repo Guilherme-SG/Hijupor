@@ -1,4 +1,4 @@
-const Actor = require("../../src/classes/Actor")
+const Actor = require("../../src/classes/actor/Actor")
 
 describe("Actor representation", () => {
     it("Exists", () => {

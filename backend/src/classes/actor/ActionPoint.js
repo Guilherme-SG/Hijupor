@@ -1,5 +1,5 @@
 const Attribute = require("./Attribute")
-const FinalBonus = require("./FinalBonus")
+const FinalBonus = require("../FinalBonus")
 
 class ActionPoint {
     constructor(current = 1, total = 1) {

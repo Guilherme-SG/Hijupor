@@ -1,7 +1,7 @@
 /**
  * Permitir que ações afetem determinados alvos
- * Adicionar PA
- * Melhor stats
+ * Adicionar PA [X]
+ * Melhor stats [X]
  * Remover debuffs
  * Remover status negativos
  * Conceder imunidade à debuff

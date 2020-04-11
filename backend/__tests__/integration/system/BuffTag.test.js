@@ -3,14 +3,16 @@ const PartyManager = require("../../../src/classes/managers/PartyManager")
 
 const BuffTag = require("../../../src/classes/skill/BuffTag")
 
-const Actor = require("../../../src/classes/Actor")
+const Actor = require("../../../src/classes/actor/Actor")
 const Party = require("../../../src/classes/Party")
 const Skill = require("../../../src/classes/skill/Skill")
-const Stats = require("../../../src/classes/Stats")
+const Stats = require("../../../src/classes/actor/Stats")
 
 const Evaluator = require("../../../src/classes/Evaluator")
 const ConditionalInterpreter = require("../../../src/classes/ConditionalInterpreter")
 const Filter = require("../../../src/classes/Filter")
+
+const ActionPoint = require("../../../src/classes/actor/ActionPoint")
 
 const resistirElementos = new Skill({
     "name": "Resistir Elementos",
@@ -35,6 +37,27 @@ const resistirElementos = new Skill({
     }
 })
 
+const liderando = new Skill({
+    "name": "Liderando o Exército",
+    "description": "Todos do seu grupo recebem 1 Ponto de Ação adicional. 12 rodadas de recarga.",
+    "cooldown": 12,
+    "paCost": 1,
+    "tags": {
+        "buff": {
+            "subject": {
+                "type": "party",
+                "params": {
+                    "hasActor": {
+                        "type": "caster"
+                    }
+                }
+            },
+            "buffFunction": "byRawValue",
+            "rawValue": 1,
+            "statToImprove": "actionPoint"
+        }
+    }
+})
 
 describe("Buff Skill Interpreter", () => {
     let yendros, aaron, jane
@@ -69,7 +92,8 @@ describe("Buff Skill Interpreter", () => {
                 res: 100,
                 car: 100,
                 faith: 100,
-                vit: 100
+                vit: 100,
+                agi: 100
             })
         })
 
@@ -85,7 +109,8 @@ describe("Buff Skill Interpreter", () => {
                 res: 100,
                 car: 100,
                 faith: 100,
-                vit: 100
+                vit: 100,
+                agi: 100
             })
         })
 
@@ -101,7 +126,8 @@ describe("Buff Skill Interpreter", () => {
                 res: 100,
                 car: 100,
                 faith: 100,
-                vit: 100
+                vit: 100,
+                agi: 100
             })
         })
 
@@ -163,5 +189,17 @@ describe("Buff Skill Interpreter", () => {
 
         expect(yendros.stats.mr.getFinalValue()).toBe(100)
         expect(aaron.stats.mr.getFinalValue()).toBe(100)        
+    })
+
+    it("Should add 1 extra action point to caster and his/her party", () => {
+        actorManager.setCaster(aaron.id)
+
+        expect(aaron.actionPoint.getAvailablePoints()).toBe(3)
+        expect(yendros.actionPoint.getAvailablePoints()).toBe(3)
+
+        buffTag.active(aaron, liderando)
+
+        expect(aaron.actionPoint.getAvailablePoints()).toBe(4)
+        expect(yendros.actionPoint.getAvailablePoints()).toBe(4)
     })
 })

@@ -4,7 +4,7 @@ const Evaluator = require("../../src/classes/Evaluator")
 const ActorManager = require("../../src/classes/managers/ActorManager")
 const PartyManager = require("../../src/classes/managers/PartyManager")
 
-const Actor = require("../../src/classes/Actor")
+const Actor = require("../../src/classes/actor/Actor")
 const Party = require("../../src/classes/Party")
 
 const yendros = new Actor({ name: "Yendros", currentHP: 100 })

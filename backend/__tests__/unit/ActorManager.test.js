@@ -1,6 +1,6 @@
 const ActorManager = require("../../src/classes/managers/ActorManager")
 
-const Actor = require("../../src/classes/Actor")
+const Actor = require("../../src/classes/actor/Actor")
 
 const yendros = new Actor({ name: "Yendros", currentHP: 100 })
 const aaron = new Actor({ name: "Aaron", currentHP: 100 })

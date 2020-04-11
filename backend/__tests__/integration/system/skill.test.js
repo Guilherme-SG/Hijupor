@@ -5,7 +5,7 @@ const SkillManager = require("../../../src/classes/managers/SkillManager")
 
 const SkillSystem = require("../../../src/classes/skill/SkillSystem")
 
-const Actor = require("../../../src/classes/Actor")
+const Actor = require("../../../src/classes/actor/Actor")
 const Party = require("../../../src/classes/Party")
 const Skill = require("../../../src/classes/skill/Skill")
 
