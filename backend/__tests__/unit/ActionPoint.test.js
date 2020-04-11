@@ -1,5 +1,6 @@
 const ActionPoint = require("../../src/classes/actor/ActionPoint")
 const Attribute = require("../../src/classes/attribute/Attribute")
+const RawBonus = require("../../src/classes/attribute/RawBonus")
 
 describe("Action Point test", () => {
     it("Exists", () => {
@@ -74,8 +75,12 @@ describe("Action Point test", () => {
         const pa = new ActionPoint(new Attribute(100))
 
         expect(pa.getAvailablePoints()).toBe(3)
+        expect(pa.getTotalPoints()).toBe(3)
+
         expect(pa.usePoints(1)).toBeTruthy()
+
         expect(pa.getAvailablePoints()).toBe(2)
+        expect(pa.getTotalPoints()).toBe(3)
 
         pa.update()
 
@@ -111,6 +116,24 @@ describe("Action Point test", () => {
         expect(pa.getTotalPoints()).toBe(1)
         
         pa.update()
+
+        expect(pa.getTotalPoints()).toBe(2)
+        expect(pa.getAvailablePoints()).toBe(2)
+        
+    })
+
+    it("Gained 50 of agi, so should add 1 point to total AP", () => {
+        const agi = new Attribute()
+        const pa = new ActionPoint(agi)
+
+        expect(agi.getFinalValue()).toBe(0)
+        
+        expect(pa.getAvailablePoints()).toBe(1)
+        expect(pa.getTotalPoints()).toBe(1)
+
+        agi.addRawBonus(new RawBonus(50))
+
+        expect(agi.getFinalValue()).toBe(50)
 
         expect(pa.getTotalPoints()).toBe(2)
         expect(pa.getAvailablePoints()).toBe(2)

@@ -1,3 +1,4 @@
+const Attribute = require("../attribute/Attribute")
 const DependantAttribute = require("../attribute/DependantAttribute")
 const FinalBonus = require("../attribute/FinalBonus")
 
@@ -6,13 +7,18 @@ class TotalAP extends DependantAttribute{
         super(startValue)
     }
 
-    calculateValue() {
-        this.finalValue = this.baseValue
-
+    getBaseValue() {
         let agi = this.otherAttributes[0]
+
         if(agi) {
-            this.finalValue += Math.floor(agi.getFinalValue() / 50)
-        }        
+            return this.baseValue + Math.floor(agi.getFinalValue() / 50)
+        }  
+
+        return this.baseValue 
+    }
+
+    calculateValue() {
+        this.finalValue = this.getBaseValue()
 
         this.applyRawBonuses()
         this.applyFinalBonuses()
@@ -21,41 +27,47 @@ class TotalAP extends DependantAttribute{
     }
 }
 
+class CurrentAP extends Attribute {
+    constructor(startValue) {
+        super(startValue)
+    }
+}
+
 class ActionPoint {
     constructor(agi) {
-        this.totalPA = new TotalAP(1)
-        this.totalPA.addAttribute(agi)
+        this.totalAP = new TotalAP(1)
+        this.totalAP.addAttribute(agi)
 
-        let totalPAValue = this.totalPA.getFinalValue()
-        this.currentPA = new DependantAttribute(totalPAValue)
+        let totalAPValue = this.totalAP.getFinalValue()
+        this.currentAP = new CurrentAP(totalAPValue)      
     }
 
-    accumulatePa() {
-        this.totalPA.addFinalBonus(new FinalBonus(this.currentPA.getFinalValue(), 0, 1))
+    accumulateAP() {
+        this.totalAP.addFinalBonus(new FinalBonus(this.currentAP.getFinalValue(), 0, 1))
     }
 
     update() {
-        this.totalPA.update()
-        
-        if(this.currentPA.getFinalValue() > 0) {
-            this.accumulatePa()
+        this.totalAP.update()
+        if(this.currentAP.getFinalValue() > 0) {
+            this.accumulateAP()
         }
 
-        this.currentPA.update()
-        this.currentPA.baseValue = this.totalPA.getFinalValue()    
+        this.currentAP.update()
+        this.currentAP.baseValue = this.totalAP.getFinalValue()
     }
 
     getAvailablePoints() {
-        return this.currentPA.getFinalValue()
+        this.currentAP.baseValue = this.totalAP.getFinalValue()
+        return this.currentAP.getFinalValue()
     }
 
     getTotalPoints() {
-        return this.totalPA.getFinalValue()
+        return this.totalAP.getFinalValue()
     }
 
     usePoints(points) {
-        if(this.currentPA.getFinalValue() >= points) {
-            this.currentPA.addFinalBonus(new FinalBonus(-points, 0, 1))
+        if(this.currentAP.getFinalValue() >= points) {
+            this.currentAP.addFinalBonus(new FinalBonus(-points, 0, 1))
             return true
         }
 
@@ -63,7 +75,7 @@ class ActionPoint {
     }
 
     addExtraPoint(points, duration) {
-        this.currentPA.addFinalBonus(new FinalBonus(points, 0, duration))
+        this.currentAP.addFinalBonus(new FinalBonus(points, 0, duration))
     }
 }
 
