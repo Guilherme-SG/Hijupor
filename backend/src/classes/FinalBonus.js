@@ -1,7 +1,7 @@
 const BaseAttribute = require("./BaseAttribute")
 
 class FinalBonus extends BaseAttribute {
-    constructor(value, multiplier, duration, type) {
+    constructor(value, multiplier, duration = 0, type) {
         super(value, multiplier)
 
         this.duration = duration
@@ -13,11 +13,14 @@ class FinalBonus extends BaseAttribute {
     }
 
     update() {
-        this.duration--
+        if(this.duration) {
+            this.duration--
+        }
 
-        if(this.duration == 0) {
+        if(!this.duration) {
             this.parent.deleteFinalBonus(this)
         }
+            
     }
 
     delete() {

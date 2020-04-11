@@ -75,7 +75,7 @@ class Attribute extends BaseAttribute {
     }
 
     update() {
-        this.finalBonuses.forEach( finalBonus => finalBonus.update() )
+        [...this.finalBonuses].forEach( finalBonus => finalBonus.update() )
     }
 }
 

@@ -3,29 +3,6 @@ const Stats = require("./Stats")
 const Serializable = require("./Serializable")
 const StaminaShield = require("./StaminaShield")
 
-class ShieldRelector {
-    constructor(protectAgainst, hp) {
-        this.protectAgainst = protectAgainst
-        this.hp = hp
-    }
-
-    reflectDamage(damage, type, attacker) {
-        if( (Array.isArray(this.protectAgainst) && this.protectAgainst.includes(type))
-            || this.protectAgainst == type) {
-                this.hp--
-                attacker.takeDamage(damage)
-
-                return 0
-            }
-        
-        return damage
-    }
-}
-
-
-
-
-
 class Actor extends Serializable {
     constructor({
         stats = new Stats({}), 
@@ -60,7 +37,6 @@ class Actor extends Serializable {
         this.currentStamina = currentStamina
         this.totalStamina = totalStamina
 
-        this.ShieldRelector = new ShieldRelector()
         this.staminaShield = new StaminaShield(this)
 
         this.skills = skills
@@ -135,8 +111,6 @@ class Actor extends Serializable {
 
         this.staminaShield.updateFromOwner()
 
-        //remainingDamage = this.ShieldRelector.reflectDamage(damage, type, attacker)
-        
         if (this.staminaShield.isNotBroken()) {
             if (this.staminaShield.canBeBroken(damage)) {
                 this.currentHP -= this.staminaShield.takeDamage(damage)

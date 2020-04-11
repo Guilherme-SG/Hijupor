@@ -202,7 +202,7 @@
         {
             "name": "Temam o Meu Poder!",
             "description": "Libera uma Aura amedrontadora que faz todos os inimigos perderem 1 rodada. 7 rodadas de recarga.",
-            "type": "debuff",
+            "type": "disruptive",
             "cooldown": 7,
             "paCost": 1,
             "duration": 0,
@@ -645,7 +645,7 @@
         {
             "name": "Barreira Refletora",
             "description": "Cria uma aura espelhada ao redor de si ou de um aliado, que reflete 2 (+1 cada 20 de Sabedoria) ataques mágicos disparados contra essa pessoa. 8 rodadas de recarga.",
-            "type": "buff",
+            "type": "deffensive",
             "cooldown": 8,
             "paCost": 1,
             "duration": 0,
@@ -691,7 +691,7 @@
         {
             "name": "Tá assustado?",
             "description": "Libera uma Aura de Medo que assusta todos os inimigos, fazendo-os perderem 1 turno. 7 rodadas de recarga.",
-            "type": "debuff",
+            "type": "disruptive",
             "cooldown": 7,
             "paCost": 1,
             "duration": 0,
@@ -801,7 +801,7 @@
         {
             "name": "Contra-Feitiço",
             "description": "Cria um espelho que reflete a primeira magia que atingi-lo. Pode ser usado como counter ao custo de 1 Ponto de Ação da próxima rodada. 10 rodadas de recarga.",
-            "type": "buff",
+            "type": "deffensive",
             "cooldown": 10,
             "paCost": 1,
             "duration": 0,
@@ -815,7 +815,7 @@
         {
             "name": "Desfazer Magia",
             "description": "Concentra sua Magia para fazer uma pequena esfera que libera uma energia e cancela qualquer feitiço sendo preparado ou já disparado. Pode ser usado como counter ao custo de 1 Ponto de Ação da próxima rodada. 13 rodadas de recarga.",
-            "type": "buff",
+            "type": "disruptive",
             "cooldown": 13,
             "paCost": 1,
             "duration": 0,
@@ -1143,7 +1143,7 @@
         {
             "name": "Gato e Rato",
             "description": "Desvia de 1 (+1 cada 40 de Agilidade) ataques dos inimigos com exatidão. 6 rodadas de recarga.",
-            "type": "buff",
+            "type": "deffensive",
             "cooldown": 6,
             "paCost": 1,
             "duration": 0,
