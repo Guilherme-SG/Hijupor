@@ -1,0 +1,21 @@
+/**
+ * Permitir que ações afetem determinados alvos
+ * Adicionar PA
+ * Melhor stats
+ * Remover debuffs
+ * Remover status negativos
+ * Conceder imunidade à debuff
+ * Conceder imunidade à status negativo
+ * Faz com que ataques e skills causem status negativos
+ * Reduz a recarga das skills
+ * Aumenta dano causado por skills e ataques
+ */
+
+class Buff {
+    constructor() {
+        this.rawBonuses = []
+        this.attributeAffected
+    }
+}
+
+module.exports = Buff
