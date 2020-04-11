@@ -1,15 +1,33 @@
-const Attribute = require("../attribute/Attribute")
+const DependantAttribute = require("../attribute/DependantAttribute")
 const FinalBonus = require("../attribute/FinalBonus")
 
-class ActionPoint {
-    constructor(current = 1, total = 1) {
-        this.currentPA = new Attribute(current)
-        this.totalPA = new Attribute(total)
+class TotalAP extends DependantAttribute{
+    constructor(startValue) {
+        super(startValue)
     }
 
-    calculateTotalPA(agi = 0) {
-        this.totalPA.baseValue = 1 + Math.floor(agi / 50)
-        this.currentPA.baseValue = this.totalPA.getBaseValue()
+    calculateValue() {
+        this.finalValue = this.baseValue
+
+        let agi = this.otherAttributes[0]
+        if(agi) {
+            this.finalValue += Math.floor(agi.getFinalValue() / 50)
+        }        
+
+        this.applyRawBonuses()
+        this.applyFinalBonuses()
+
+        return this.finalValue
+    }
+}
+
+class ActionPoint {
+    constructor(agi) {
+        this.totalPA = new TotalAP(1)
+        this.totalPA.addAttribute(agi)
+
+        let totalPAValue = this.totalPA.getFinalValue()
+        this.currentPA = new DependantAttribute(totalPAValue)
     }
 
     accumulatePa() {

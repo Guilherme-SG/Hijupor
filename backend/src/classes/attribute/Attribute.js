@@ -1,7 +1,7 @@
 const BaseAttribute = require("./BaseAttribute")
 
 class Attribute extends BaseAttribute {
-    constructor(startValue) {
+    constructor(startValue = 0) {
         super(startValue)
 
         this.rawBonuses = []
@@ -51,19 +51,6 @@ class Attribute extends BaseAttribute {
 
         return this.finalValue
     }
-    
-    applyFinalBonuses() {
-        let finalBonusValue = 0
-        let finalBonusMultiplier = 0
-
-        this.finalBonuses.forEach(finalBonus => {
-            finalBonusValue += finalBonus.getBaseValue()
-            finalBonusMultiplier += finalBonus.getBaseMultiplier()
-        })
-
-        this.finalValue += finalBonusValue
-        this.finalValue *= 1 + finalBonusMultiplier
-    }
 
     applyRawBonuses() {
         let rawBonusValue = 0
@@ -76,6 +63,19 @@ class Attribute extends BaseAttribute {
 
         this.finalValue += rawBonusValue
         this.finalValue *= 1 + rawBonusMultiplier
+    }
+    
+    applyFinalBonuses() {
+        let finalBonusValue = 0
+        let finalBonusMultiplier = 0
+
+        this.finalBonuses.forEach(finalBonus => {
+            finalBonusValue += finalBonus.getBaseValue()
+            finalBonusMultiplier += finalBonus.getBaseMultiplier()
+        })
+
+        this.finalValue += finalBonusValue
+        this.finalValue *= 1 + finalBonusMultiplier
     }
 
     getFinalValue() {

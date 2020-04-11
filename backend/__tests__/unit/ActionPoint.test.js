@@ -1,4 +1,5 @@
 const ActionPoint = require("../../src/classes/actor/ActionPoint")
+const Attribute = require("../../src/classes/attribute/Attribute")
 
 describe("Action Point test", () => {
     it("Exists", () => {
@@ -6,14 +7,14 @@ describe("Action Point test", () => {
     })
 
     it("Default values should be 1", () => {
-        const pa = new ActionPoint()
+        const pa = new ActionPoint(new Attribute())
 
         expect(pa.getAvailablePoints()).toBe(1)
         expect(pa.getTotalPoints()).toBe(1)
     })
 
     it("Using 1 point, should remainging 0 points", () => {
-        const pa = new ActionPoint()
+        const pa = new ActionPoint(new Attribute())
 
         expect(pa.usePoints(1)).toBeTruthy()
         expect(pa.getAvailablePoints()).toBe(0)
@@ -21,24 +22,21 @@ describe("Action Point test", () => {
     })
 
     it("If actor has 50 of agility, then should have 2 action points", () => {
-        const pa = new ActionPoint()
-        pa.calculateTotalPA(50)
+        const pa = new ActionPoint(new Attribute(50))
 
         expect(pa.getAvailablePoints()).toBe(2)
         expect(pa.getTotalPoints()).toBe(2)
     })
 
     it("If actor has 100 of agility, then should have 3 action points", () => {
-        const pa = new ActionPoint()
-        pa.calculateTotalPA(100)
+        const pa = new ActionPoint(new Attribute(100))
 
         expect(pa.getAvailablePoints()).toBe(3)
         expect(pa.getTotalPoints()).toBe(3)
     })
 
     it("If try to use more points that available, no point should be used, and function return false", () => {
-        const pa = new ActionPoint()
-        pa.calculateTotalPA(50)
+        const pa = new ActionPoint(new Attribute(50))
 
         expect(pa.getAvailablePoints()).toBe(2)
 
@@ -48,7 +46,7 @@ describe("Action Point test", () => {
     })
 
     it("On pass turn and all availables points was used, should recover total PA", () => {
-        const pa = new ActionPoint()
+        const pa = new ActionPoint(new Attribute())
 
         expect(pa.getAvailablePoints()).toBe(1)
         expect(pa.usePoints(1)).toBeTruthy()
@@ -60,8 +58,7 @@ describe("Action Point test", () => {
     })
 
     it("On pass turn and not all availables points was used, should accumulate PA", () => {
-        const pa = new ActionPoint()
-        pa.calculateTotalPA(100)
+        const pa = new ActionPoint(new Attribute(100))
 
         expect(pa.getAvailablePoints()).toBe(3)
         expect(pa.usePoints(1)).toBeTruthy()
@@ -74,8 +71,7 @@ describe("Action Point test", () => {
     })
 
     it("On pass turn, all unused accumulated points accumulate again", () => {
-        const pa = new ActionPoint()
-        pa.calculateTotalPA(100)
+        const pa = new ActionPoint(new Attribute(100))
 
         expect(pa.getAvailablePoints()).toBe(3)
         expect(pa.usePoints(1)).toBeTruthy()
@@ -93,7 +89,7 @@ describe("Action Point test", () => {
     })
 
     it("Add 1 extra point", () => {
-        const pa = new ActionPoint()
+        const pa = new ActionPoint(new Attribute())
         
         expect(pa.getAvailablePoints()).toBe(1)
 
@@ -103,7 +99,7 @@ describe("Action Point test", () => {
     })
 
     it("Gained 1 extra point before this turn", () => {
-        const pa = new ActionPoint()
+        const pa = new ActionPoint(new Attribute())
         
         expect(pa.getAvailablePoints()).toBe(1)
         expect(pa.usePoints(1)).toBeTruthy()

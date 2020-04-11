@@ -39,12 +39,12 @@ class Actor extends Serializable {
         this.totalStamina = totalStamina
 
         this.staminaShield = new StaminaShield(this)
-        this.actionPoint = new ActionPoint()
-        this.actionPoint.calculateTotalPA(this.stats.get("agi"))
+        this.actionPoint = new ActionPoint(this.stats.agi)
 
         this.skills = skills
 
         this.statusNegativeimmunity = false
+        this.debuffimmunity = false
     }
 
     serialize() {
@@ -65,8 +65,6 @@ class Actor extends Serializable {
     update() {
         this.stats.update()
         this.staminaShield.updateFromOwner()
-
-        this.actionPoint.calculateTotalPA(this.stats.get("agi"))
         this.actionPoint.update()
     }
 
@@ -177,6 +175,18 @@ class Actor extends Serializable {
 
     removeImmunityToNegativeStatus() {
         this.statusNegativeimmunity = false
+    }
+
+    haveImmunityToDebuff() {
+        return this.debuffimmunity
+    }
+
+    addImmunityToDebuff() {
+        this.debuffimmunity = true
+    }
+
+    removeImmunityToDebuff() {
+        this.debuffimmunity = false
     }
 }
 
