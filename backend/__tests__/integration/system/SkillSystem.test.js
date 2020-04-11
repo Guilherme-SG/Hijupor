@@ -6,6 +6,7 @@ const SkillManager = require("../../../src/classes/managers/SkillManager")
 const SkillSystem = require("../../../src/classes/skill/SkillSystem")
 
 const Actor = require("../../../src/classes/actor/Actor")
+const Stats = require("../../../src/classes/actor/Stats")
 const Party = require("../../../src/classes/Party")
 const Skill = require("../../../src/classes/skill/Skill")
 
@@ -89,7 +90,10 @@ describe("Skill System", () => {
     beforeEach( () => {
         yendros = new Actor({ name: "Yendros" })
         aaron = new Actor({ name: "Aaron" })
-        jane = new Actor({ name: "Jane" })
+        jane = new Actor({ 
+            name: "Jane", 
+            stats: new Stats( {agi: 100} ) 
+        })
 
         actorManager.add(yendros)
         actorManager.add(aaron)
@@ -118,20 +122,24 @@ describe("Skill System", () => {
 
     it("Use skill with offensive and disruptive", () => {
         actorManager.select(aaron.id)
-        skillSystem.useSkill(jane.id, investida.id)
-
+        let skillWasUsed = skillSystem.useSkill(jane.id, investida.id)
+        expect(skillWasUsed).toBeTruthy()
+        
         expect(aaron.status).toContain("stunned")
         expect(aaron.currentHP).toBe(75)
     })
 
     it("Use skill with healing", () => {
         actorManager.select(aaron.id)
-        skillSystem.useSkill(jane.id, investida.id)
+        
+        let skillWasUsed = skillSystem.useSkill(jane.id, investida.id)
+        expect(skillWasUsed).toBeTruthy()
 
         expect(aaron.status).toContain("stunned")
         expect(aaron.currentHP).toBe(75)
 
-        skillSystem.useSkill(jane.id, harmonia.id)
+        skillWasUsed = skillSystem.useSkill(jane.id, harmonia.id)
+        expect(skillWasUsed).toBeTruthy()
 
         expect(aaron.status).toContain("stunned")
         expect(aaron.currentHP).toBe(100)

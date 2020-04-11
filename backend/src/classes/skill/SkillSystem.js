@@ -31,9 +31,17 @@ class SkillSystem {
     useSkill(casterId, skillId) {        
         const caster = this.actorManager.get(casterId)
         const skill = this.skillManager.get(skillId)
-        this.actorManager.setCaster(casterId)
+        
+        if(caster.actionPoint.usePoints(skill.paCost)) {
+            this.actorManager.setCaster(casterId)
               
-        Object.keys(skill.tags).forEach( tag => this.tags[tag].active(caster, skill) )
+            Object.keys(skill.tags).forEach( tag => this.tags[tag].active(caster, skill) )
+            skill.use()
+
+            return true
+        }
+
+        return false
     }
 }
 

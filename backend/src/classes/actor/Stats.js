@@ -1,5 +1,5 @@
 const Serializable = require("../Serializable")
-const Attribute = require("./Attribute")
+const Attribute = require("../attribute/Attribute")
 
 class Stats extends Serializable {
     constructor({

@@ -32,7 +32,11 @@ const resistirElementos = new Skill({
             "buffFunction": "byFormula",
             "formula": "0.1 + 0.01 * Math.floor(caster.stats.get('sab') / 2)",
             "duration": 4,
-            "statToImprove": "mr"
+            "params": {
+                "stats": {
+                    "mr": true
+                }
+            }
         }
     }
 })
@@ -54,7 +58,37 @@ const liderando = new Skill({
             },
             "buffFunction": "byRawValue",
             "rawValue": 1,
-            "statToImprove": "actionPoint"
+            "params": {
+                "actionPoint": {
+                    "extraPoints": true
+                }
+            }
+        }
+    }
+})
+
+const ritmoAcelerado = new Skill({
+    "name": "Ritmo Acelerado",
+    "description": "Reduz a recarga de todas as habilidades de todos os aliados em 1 rodada. 9 rodadas de recarga.",
+    "cooldown": 9,
+    "paCost": 1,
+    "tags": {
+        "buff": {
+            "subject": {
+                "type": "party",
+                "params": {
+                    "hasActor": {
+                        "type": "caster"
+                    }
+                }
+            },
+            "buffFunction": "byRawValue",
+            "rawValue": 1,
+            "params": {
+                "skills": {
+                    "cooldownReduction": true
+                }
+            }
         }
     }
 })
@@ -161,34 +195,34 @@ describe("Buff Skill Interpreter", () => {
     it("Should improve magic resistence by 10% to caster and his/her party", () => {
         actorManager.setCaster(aaron.id)
 
-        expect(yendros.stats.mr.getFinalValue()).toBe(100)
-        expect(aaron.stats.mr.getFinalValue()).toBe(100)
+        expect(yendros.stats.get("mr")).toBe(100)
+        expect(aaron.stats.get("mr")).toBe(100)
 
         buffTag.active(aaron, resistirElementos)
 
-        expect(yendros.stats.mr.getFinalValue()).toBe(160)
-        expect(aaron.stats.mr.getFinalValue()).toBe(160)
+        expect(yendros.stats.get("mr")).toBe(160)
+        expect(aaron.stats.get("mr")).toBe(160)
     })
 
     it("Should improve magic resistance by 10% to caster and his/her party during 4 turns, after that the improvement should be undone", () => {
         actorManager.setCaster(aaron.id)
 
-        expect(yendros.stats.mr.getFinalValue()).toBe(100)
-        expect(aaron.stats.mr.getFinalValue()).toBe(100)
+        expect(yendros.stats.get("mr")).toBe(100)
+        expect(aaron.stats.get("mr")).toBe(100)
 
 
         buffTag.active(aaron, resistirElementos)
 
         for(let i = 0; i < 4; i++) {
-            expect(yendros.stats.mr.getFinalValue()).toBe(160)
-            expect(aaron.stats.mr.getFinalValue()).toBe(160)
+            expect(yendros.stats.get("mr")).toBe(160)
+            expect(aaron.stats.get("mr")).toBe(160)
 
             yendros.update()
             aaron.update()
         }
 
-        expect(yendros.stats.mr.getFinalValue()).toBe(100)
-        expect(aaron.stats.mr.getFinalValue()).toBe(100)        
+        expect(yendros.stats.get("mr")).toBe(100)
+        expect(aaron.stats.get("mr")).toBe(100)        
     })
 
     it("Should add 1 extra action point to caster and his/her party", () => {
@@ -201,5 +235,27 @@ describe("Buff Skill Interpreter", () => {
 
         expect(aaron.actionPoint.getAvailablePoints()).toBe(4)
         expect(yendros.actionPoint.getAvailablePoints()).toBe(4)
+    })
+
+    it("Reduce cooldown in 1 turn to all skills of all party members", () => {
+        actorManager.setCaster(aaron.id)
+
+        aaron.skills.push(new Skill({name: "Test-Aaron", cooldown: 8}))
+        yendros.skills.push(new Skill({name: "Test-Yendros", cooldown: 1}))
+        yendros.skills.push(new Skill({name: "Test2-Yendros", cooldown: 3}))
+        
+        aaron.skills[0].use()
+        yendros.skills[0].use()
+        yendros.skills[1].use()
+        
+        expect(aaron.skills[0].getCooldown()).toBe(8)
+        expect(yendros.skills[0].getCooldown()).toBe(1)
+        expect(yendros.skills[1].getCooldown()).toBe(3)
+
+        buffTag.active(aaron, ritmoAcelerado)
+
+        expect(aaron.skills[0].getCooldown()).toBe(7)
+        expect(yendros.skills[0].getCooldown()).toBe(0)
+        expect(yendros.skills[1].getCooldown()).toBe(2)
     })
 })

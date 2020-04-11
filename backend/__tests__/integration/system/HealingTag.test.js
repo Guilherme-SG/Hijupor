@@ -11,7 +11,7 @@ const Evaluator = require("../../../src/classes/Evaluator")
 const ConditionalInterpreter = require("../../../src/classes/ConditionalInterpreter")
 const Filter = require("../../../src/classes/Filter")
 
-const RawBonus = require("../../../src/classes/actor/RawBonus")
+const RawBonus = require("../../../src/classes/attribute/RawBonus")
 
 const harmonia = new Skill({
     "name": "Harmonia",

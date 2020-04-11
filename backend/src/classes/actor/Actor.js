@@ -43,6 +43,8 @@ class Actor extends Serializable {
         this.actionPoint.calculateTotalPA(this.stats.get("agi"))
 
         this.skills = skills
+
+        this.statusNegativeimmunity = false
     }
 
     serialize() {
@@ -153,11 +155,28 @@ class Actor extends Serializable {
     }
 
     addStatus(status) {
-        this.status.push(status)
+        if(!this.haveImmunityToNegativeStatus()) {
+            this.status.push(status)
+            return true
+        }
+        
+        return false
     }
 
     cleanStatusList() {
         this.status = []
+    }
+
+    haveImmunityToNegativeStatus() {
+        return this.statusNegativeimmunity
+    }
+
+    addImmunityToNegativeStatus() {
+        this.statusNegativeimmunity = true
+    }
+
+    removeImmunityToNegativeStatus() {
+        this.statusNegativeimmunity = false
     }
 }
 

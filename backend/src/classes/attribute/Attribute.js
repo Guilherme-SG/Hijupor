@@ -22,6 +22,10 @@ class Attribute extends BaseAttribute {
         }
     }
 
+    deleteAllRawBonus() {
+        this.rawBonuses = []
+    }
+
     addFinalBonus(finalBonus) {
         finalBonus.setParent(this)
         this.finalBonuses.push(finalBonus)
@@ -33,6 +37,10 @@ class Attribute extends BaseAttribute {
         if(indexOf >= 0) {
             this.finalBonuses.splice(finalBonus, 1)
         }
+    }
+
+    deleteAllFinalBonus() {
+        this.finalBonuses = []
     }
 
     calculateValue() {

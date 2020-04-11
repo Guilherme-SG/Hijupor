@@ -7,7 +7,7 @@
  * Conceder imunidade à debuff
  * Conceder imunidade à status negativo
  * Faz com que ataques e skills causem status negativos
- * Reduz a recarga das skills
+ * Reduz a recarga das skills [x]
  * Aumenta dano causado por skills e ataques
  */
 

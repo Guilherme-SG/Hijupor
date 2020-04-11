@@ -1,4 +1,4 @@
-const BaseAttribute = require("./actor/BaseAttribute")
+const BaseAttribute = require("./BaseAttribute")
 
 class FinalBonus extends BaseAttribute {
     constructor(value, multiplier, duration = 0, type) {

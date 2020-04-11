@@ -36,30 +36,22 @@
         {
             "name": "Ritmo Acelerado",
             "description": "Reduz a recarga de todas as habilidades de todos os aliados em 1 rodada. 9 rodadas de recarga.",
-            "type": "buff",
             "cooldown": 9,
             "paCost": 1,
-            "duration": 0,
-            "target": {
-                "type": "ally",
-                "howMany": "all"
-            },
-            "currentCooldown": 0,
-            "category": "classe",
-            "onCast": {
-                "actions": {
-                    "caster": {
-                        "allies": {
-                            "_$forEach": {
-                                "skills": {
-                                    "_$filter": {
-                                        "cooldown": {"_$ne": "OPB" },
-                                        "currentCooldown": {"_$gt": 0}
-                                    },
-                                    "_$forEach": {
-                                        "currentCooldown": {"_$decrement": 1}
-                                    }
-                                }
+            "tags": {
+                "buff": {
+                    "subject": {
+                        "type": "party",
+                        "hasActor": {
+                            "type": "caster"
+                        }
+                    },
+                    "buffFunction": "byRawValue",
+                    "rawValue": 1,
+                    "params": {
+                        "skills": {
+                            "cooldown": {
+                                "reduction": true
                             }
                         }
                     }
