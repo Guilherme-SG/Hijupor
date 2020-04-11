@@ -16,8 +16,11 @@ class BuffTag extends SkillTag {
         } = skill.tags.buff
 
         let target = this.evaluator.evaluateTarget(subject)
-        let improvement = this.calculateImprovement(buffFunction, caster, skill, target)
-
+        let improvement
+        if(buffFunction) {
+            improvement = this.calculateImprovement(buffFunction, caster, skill, target)
+        }
+        
         if(target instanceof Party) {
             this.improveParty(target, improvement, params, duration)
         } else {
@@ -35,7 +38,12 @@ class BuffTag extends SkillTag {
     }
 
     improveActor(actor, improvement, params, duration) {
-        const { actionPoint, stats, skills } = params
+        const { 
+            actionPoint, 
+            stats, 
+            skills,
+            status
+        } = params
 
         if(actionPoint) {
             this.improveActorAP(actor, improvement, duration)
@@ -47,6 +55,10 @@ class BuffTag extends SkillTag {
 
         if(skills) {
             this.improveActorSkills(actor, improvement, skills, duration)
+        }
+
+        if(status) {
+            this.removeActorStatus(actor, status)
         }
     }
 
@@ -67,6 +79,14 @@ class BuffTag extends SkillTag {
         actor.skills.forEach( skill => {
             if( cooldownReduction ) skill.update()
         })
+    }
+
+    removeActorStatus(actor, params) {
+        const { removeAll } = params
+
+        if(removeAll) {
+            actor.cleanStatusList()
+        }
     }
 }
 module.exports = BuffTag;

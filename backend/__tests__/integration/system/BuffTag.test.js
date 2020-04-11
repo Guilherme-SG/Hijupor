@@ -93,6 +93,31 @@ const ritmoAcelerado = new Skill({
     }
 })
 
+const purificacao = new Skill({
+    "name": "Purificação",
+    "description": "Cobre a si mesmo ou um aliado com uma camada cintilante, curando-se de todos os debuffs e status negativos. 7 rodadas de recarga.",
+    "cooldown": 7,
+    "paCost": 1,
+    "tags": {
+        "buff": {
+            "subject": {
+                "type": "actor",
+                "params": {
+                    "selected": true
+                }
+            },
+            "params": {
+                "debuffs": {
+                    "removeAll": true
+                },
+                "status": {
+                    "removeAll": true
+                }
+            }
+        }
+    }
+})
+
 describe("Buff Skill Interpreter", () => {
     let yendros, aaron, jane
     let players, enemies
@@ -257,5 +282,18 @@ describe("Buff Skill Interpreter", () => {
         expect(aaron.skills[0].getCooldown()).toBe(7)
         expect(yendros.skills[0].getCooldown()).toBe(0)
         expect(yendros.skills[1].getCooldown()).toBe(2)
+    })
+
+    it("Should remove all negative status", () => {
+        actorManager.select(yendros.id)
+        
+        yendros.addStatus("frozen")
+        yendros.addStatus("poisoned")
+
+        expect(yendros.status).toHaveLength(2)
+
+        buffTag.active(aaron, purificacao)
+
+        expect(yendros.status).toHaveLength(0)
     })
 })

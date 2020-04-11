@@ -2,8 +2,8 @@
  * Permitir que ações afetem determinados alvos
  * Adicionar PA [X]
  * Melhor stats [X]
- * Remover debuffs
- * Remover status negativos
+ * Remover debuffs [X]
+ * Remover status negativos [X]
  * Conceder imunidade à debuff
  * Conceder imunidade à status negativo
  * Faz com que ataques e skills causem status negativos

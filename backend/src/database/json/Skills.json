@@ -986,16 +986,26 @@
         {
             "name": "Purificação",
             "description": "Cobre a si mesmo ou um aliado com uma camada cintilante, curando-se de todos os debuffs e status negativos. 7 rodadas de recarga.",
-            "type": "buff",
             "cooldown": 7,
             "paCost": 1,
-            "duration": 0,
-            "target": {
-                "type": "self, ally",
-                "howMany": 1
-            },
-            "currentCooldown": 0,
-            "category": "classe"
+            "tags": {
+                "buff": {
+                    "subject": {
+                        "type": "actor",
+                        "params": {
+                            "selected": true
+                        }
+                    },
+                    "params": {
+                        "debuffs": {
+                            "removeAll": true
+                        },
+                        "status": {
+                            "removeAll": true
+                        }
+                    }
+                }
+            }
         },
         {
             "name": "Avatar Divino",
