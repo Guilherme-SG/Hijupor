@@ -24,6 +24,9 @@ class ConditionalInterpreter {
 
         if (subject) {
             const target = this.evaluator.evaluateTarget(subject)
+
+            if(!target) return false
+
             value = this.evaluator.evaluateAttribute(target, attribute)
         }
 

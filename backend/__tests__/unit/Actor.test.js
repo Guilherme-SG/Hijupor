@@ -1,4 +1,5 @@
 const Actor = require("../../src/classes/actor/Actor")
+const Stats = require("../../src/classes/actor/Stats")
 
 describe("Actor representation", () => {
     it("Exists", () => {
@@ -9,65 +10,71 @@ describe("Actor representation", () => {
     it("Calculate HP with stats by default", () => {
         const yendros = new Actor({name: "Yendros"})
 
-        expect(yendros.totalHP).toBeGreaterThanOrEqual(100)
-    })
-
-    it("Should not calculate default hp with pass currentHP and totalHP", () => {
-        const formiga = new Actor({
-            name: "Formiga Guerreira do Deserto",
-            currentHP: 25,
-            totalHP: 40
-        })
-        
-        expect(formiga.currentHP).toBe(25)
-        expect(formiga.totalHP).toBe(40)
-    })
-
-    it("Should return percentual of HP", () => {
-        const golem = new Actor({
-            name: "Golem",
-            currentHP: 100,
-            totalHP: 1000
-        })
-
-        expect(golem.getPercentualHP()).toBe(0.1)
+        expect(yendros.health.getTotal()).toBeGreaterThanOrEqual(100)
     })
 
     describe("Heal behavior", () => {
         it("Should heal 20HP without give shield", () => {
             const bear = new Actor({
                 name: "Urso filhote",
-                currentHP: 5,
-                totalHP: 10
+                stats: new Stats({ vit: 20, res: 40 })
             })
 
-            expect(bear.currentStamina).toBe(0)
-            expect(bear.totalStamina).toBe(0)
+            expect(bear.health.getAvailable()).toBe(200)
+            expect(bear.health.getTotal()).toBe(200)
 
-            bear.healHP(20, false)
+            expect(bear.stamina.getAvailable()).toBe(200)
+            expect(bear.stamina.getTotal()).toBe(200)
 
-            expect(bear.currentHP).toBe(10)
-            expect(bear.currentStamina).toBe(0)
-            expect(bear.totalStamina).toBe(0)
+            bear.stamina.break()
+
+            expect(bear.stamina.getAvailable()).toBe(0)
+            expect(bear.stamina.getTotal()).toBe(200)
+
+            bear.takeDamage(100)
+
+            expect(bear.health.getAvailable()).toBe(100)
+            expect(bear.health.getTotal()).toBe(200)
+
+            bear.heal(20)
+
+            expect(bear.health.getAvailable()).toBe(120)
+            expect(bear.health.getTotal()).toBe(200)
+
+            expect(bear.stamina.getAvailable()).toBe(0)
+            expect(bear.stamina.getTotal()).toBe(200)
 
         })
 
         it("Should heal 20HP and give shield", () => {
             const bear = new Actor({
                 name: "Urso filhote",
-                currentHP: 5,
-                totalHP: 10
+                stats: new Stats({ vit: 20, res: 40 })
             })
 
-            expect(bear.currentStamina).toBe(0)
-            expect(bear.totalStamina).toBe(0)
+            expect(bear.health.getAvailable()).toBe(200)
+            expect(bear.health.getTotal()).toBe(200)
 
-            bear.healHP(20, true)
+            expect(bear.stamina.getAvailable()).toBe(200)
+            expect(bear.stamina.getTotal()).toBe(200)
 
-            expect(bear.currentHP).toBe(10)
+            bear.stamina.break()
 
-            expect(bear.currentStamina).toBe(15)
-            expect(bear.totalStamina).toBe(15)
+            expect(bear.stamina.getAvailable()).toBe(0)
+            expect(bear.stamina.getTotal()).toBe(200)
+
+            bear.takeDamage(100)
+
+            expect(bear.health.getAvailable()).toBe(100)
+            expect(bear.health.getTotal()).toBe(200)
+
+            bear.healWithShield(200)
+
+            expect(bear.health.getAvailable()).toBe(200)
+            expect(bear.health.getTotal()).toBe(200)
+
+            expect(bear.stamina.getAvailable()).toBe(100)
+            expect(bear.stamina.getTotal()).toBe(200)
 
         })
     })
@@ -76,52 +83,47 @@ describe("Actor representation", () => {
         it("Should lose HP if doesn't have a shield", () => {
             const human = new Actor({
                 name: "Humano operário",
-                currentHP: 150,
-                totalHP: 150
+                stats: new Stats({ vit: 10 })
             })
 
+            human.stamina.break()
             expect(human.haveShield()).toBeFalsy()
 
             human.takeDamage(100)
 
-            expect(human.currentHP).toBe(50)
-            expect(human.totalHP).toBe(150)
+            expect(human.health.getAvailable()).toBe(50)
+            expect(human.health.getTotal()).toBe(150)
         })
 
         it("Shouldn't lose HP if the shield take all damage", () => {
             const human = new Actor({
                 name: "Humano operário",
-                currentHP: 150,
-                totalHP: 150,
-                totalStamina: 300,
-                currentStamina: 300
+                stats: new Stats({ vit: 10, res: 80 })
             })
 
             expect(human.haveShield()).toBeTruthy()
 
             human.takeDamage(100)
 
-            expect(human.currentHP).toBe(150)
-            expect(human.totalHP).toBe(150)
+            expect(human.health.getAvailable()).toBe(150)
+            expect(human.health.getTotal()).toBe(150)
 
-            expect(human.currentStamina).toBeLessThan(human.totalStamina)
+            expect(human.stamina.getAvailable()).toBe(200)
+            expect(human.stamina.getTotal()).toBe(300)
         })
 
         it("Shield should be broken if take a lot of damage", () => {
             const human = new Actor({
                 name: "Humano operário",
-                currentHP: 150,
-                totalHP: 150,
-                totalStamina: 300,
-                currentStamina: 300
+                stats: new Stats({ vit: 10, res: 40 })
             })
 
             expect(human.haveShield()).toBeTruthy()
 
-            human.takeDamage(300)
+            human.takeDamage(200)
 
-            expect(human.currentHP).toBe(150)
-            expect(human.totalHP).toBe(150)
+            expect(human.health.getAvailable()).toBe(150)
+            expect(human.health.getTotal()).toBe(150)
 
             expect(human.haveShield()).toBeFalsy()
         })
@@ -129,18 +131,15 @@ describe("Actor representation", () => {
         it("Should lose HP if the shield break before absorve all damage", () => {
             const human = new Actor({
                 name: "Humano operário",
-                currentHP: 150,
-                totalHP: 150,
-                totalStamina: 300,
-                currentStamina: 300
+                stats: new Stats({ vit: 10, res: 40 })
             })
 
             expect(human.haveShield()).toBeTruthy()
 
-            human.takeDamage(400)
+            human.takeDamage(300)
 
-            expect(human.currentHP).toBe(50)
-            expect(human.totalHP).toBe(150)
+            expect(human.health.getAvailable()).toBe(50)
+            expect(human.health.getTotal()).toBe(150)
 
             expect(human.haveShield()).toBeFalsy()
         })
@@ -148,8 +147,7 @@ describe("Actor representation", () => {
         it("Should die if take more damage than total HP", () => {
             const player = new Actor({
                 name: "Yendros",
-                currentHP: 400,
-                totalHP: 400
+                stats: new Stats({ vit: 20})
             })
 
             player.takeDamage(400)
@@ -184,8 +182,8 @@ describe("Actor representation", () => {
             partyId: -1,
             currentHP: 100,
             totalHP: 100,
-            currentStamina: 0,
-            totalStamina: 0,
+            currentStamina: 100,
+            totalStamina: 100,
             status: [],
             skills: []
         })

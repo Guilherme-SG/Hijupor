@@ -21,13 +21,21 @@ class HealingTag extends SkillTag {
         } = skill.tags.healing;
         
         let target = this.evaluator.evaluateTarget(subject)
-        let healAmount = this.calculateHeal(healFunction, caster, skill, target)
-       
+        let healAmount = this.calculateHeal(healFunction, caster, skill, target)        
+
         if (target instanceof Party) {
-            this.healParty(target, healAmount, turnExtraHPToStamina)
+            if(turnExtraHPToStamina) {
+                this.healPartyWithShield(target, healAmount)
+            } else {
+                this.healParty(target, healAmount)
+            }
         }
         else {
-            this.healActor(target, healAmount, turnExtraHPToStamina)
+            if(turnExtraHPToStamina) {
+                this.healActorWithShield(target, healAmount)
+            } else {
+                this.healActor(target, healAmount)
+            }
         }
     }
 
@@ -36,14 +44,24 @@ class HealingTag extends SkillTag {
         return healFunction({ caster, skill, target, tag: "healing" })
     }
 
-    healActor(actor, healAmount, turnExtraHPToStamina) {
-        actor.healHP(healAmount, turnExtraHPToStamina)
+    healPartyWithShield(party, healAmount) {
+        let members = party.getAll()
+        members.forEach(target => this.healActorWithShield(target, healAmount))
     }
 
-    healParty(party, healAmount, turnExtraHPToStamina) {
-        let members = party.getAll()
-        members.forEach(target => this.healActor(target, healAmount, turnExtraHPToStamina))
+    healActorWithShield(actor, healAmount) {
+        actor.healWithShield(healAmount)
     }
+
+    healParty(party, healAmount) {
+        let members = party.getAll()
+        members.forEach(target => this.healActor(target, healAmount))
+    }
+
+    healActor(actor, healAmount) {
+        actor.heal(healAmount)
+    }
+    
 }
 
 module.exports = HealingTag;

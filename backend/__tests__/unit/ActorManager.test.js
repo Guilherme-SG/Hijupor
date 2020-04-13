@@ -1,10 +1,19 @@
 const ActorManager = require("../../src/classes/managers/ActorManager")
-
 const Actor = require("../../src/classes/actor/Actor")
+const Stats = require("../../src/classes/actor/Stats")
 
-const yendros = new Actor({ name: "Yendros", currentHP: 100 })
-const aaron = new Actor({ name: "Aaron", currentHP: 100 })
-const jane = new Actor({ name: "Jane", currentHP: 100 })
+const yendros = new Actor({ 
+    name: "Yendros", 
+    stats: new Stats({ vit: 100 })
+})
+const aaron = new Actor({ 
+    name: "Aaron", 
+    stats: new Stats({ vit: 100 })
+})
+const jane = new Actor({ 
+    name: "Jane", 
+    stats: new Stats({ vit: 100 })
+})
 
 let actorManager
 

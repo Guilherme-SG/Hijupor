@@ -1,9 +1,11 @@
 const { createId } = require("../../util")
 const Stats = require("./Stats")
 const Serializable = require("../Serializable")
-const StaminaShield = require("./StaminaShield")
+const Stamina = require("./Stamina")
 const ActionPoint = require("./ActionPoint")
+const Health = require("./Health")
 
+const RawBonus = require("../attribute/RawBonus")
 
 class Actor extends Serializable {
     constructor({
@@ -11,10 +13,6 @@ class Actor extends Serializable {
         id = createId(),        
         name = `Nameless#${id}`,
         partyId = -1,
-        currentStamina = 0,
-        totalStamina = 0,
-        totalHP,
-        currentHP,
         status = [],
         skills = []
     }) {
@@ -28,18 +26,8 @@ class Actor extends Serializable {
 
         this.status = status
 
-        if(totalHP) {
-            this.currentHP = currentHP
-            this.totalHP = totalHP
-        } else {
-            this.calculateTotalHPByStats()
-            this.regenateHPFully()
-        }
-
-        this.currentStamina = currentStamina
-        this.totalStamina = totalStamina
-
-        this.staminaShield = new StaminaShield(this)
+        this.health = new Health(this.stats.vit)
+        this.stamina = new Stamina(this.stats.res)
         this.actionPoint = new ActionPoint(this.stats.agi)
 
         this.skills = skills
@@ -54,10 +42,10 @@ class Actor extends Serializable {
             name: this.name,
             stats: this.stats.serialize(),
             partyId: this.partyId,
-            currentHP: this.currentHP,
-            totalHP: this.totalHP,
-            currentStamina: this.currentStamina,
-            totalStamina: this.totalStamina,
+            currentHP: this.health.getAvailable(),
+            totalHP: this.health.getTotal(),
+            currentStamina: this.stamina.getAvailable(),
+            totalStamina: this.stamina.getTotal(),
             status: this.status,
             skills: this.skills
         }
@@ -65,7 +53,8 @@ class Actor extends Serializable {
 
     update() {
         this.stats.update()
-        this.staminaShield.updateFromOwner()
+        this.health.update()
+        this.stamina.update()
         this.actionPoint.update()
     }
 
@@ -73,78 +62,83 @@ class Actor extends Serializable {
         this.partyId = partyId
     }
 
-    regenateHPFully() {
-        this.currentHP = this.totalHP
+    // Health
+
+    getNecessaryToBeFullHP() {
+        return this.health.getNecessaryToBeFull()
     }
 
-    calculateTotalHPByStats() {
-        this.totalHP = 100 + this.stats.get("vit") * 5
+    getAvailableHP() {
+        return this.health.getAvailable()
+    }
+
+    getTotalHP() {
+        return this.health.getTotal()
     }
 
     getPercentualHP() {
-        return this.currentHP / this.totalHP
+        return this.health.getPercentual()
     }
 
-    getPercentualShield() {
-        return this.currentStamina / this.totalStamina
+    // Stamina
+
+    getNecessaryToBeFullStamina() {
+        return this.stamina.getNecessaryToBeFull()
     }
 
-    healHP(heal, turnExtraHPToStamina) {
-        this.staminaShield.updateToOwner()
+    getAvailableStamina() {
+        return this.stamina.getAvailable()
+    }
 
-        if (this.isHealingGreaterThanTotalHP(heal)) {
-            if (turnExtraHPToStamina) {
-                this.staminaShield.heal(heal - this.totalHP + this.currentHP)
-            }
+    getTotalStamina() {
+        return this.stamina.getTotal()
+    }
 
-            this.currentHP = this.totalHP
+    getPercentualStamina() {
+        return this.stamina.getPercentual()
+    }
+
+    healWithShield(healAmount) {
+        if(healAmount > this.health.getNecessaryToBeFull()) {
+            this.stamina.heal(healAmount - this.health.getNecessaryToBeFull())
+            this.heal(this.health.getNecessaryToBeFull())
         } else {
-            this.currentHP += heal
-        }
-
-        this.staminaShield.updateFromOwner()
+            this.heal(healAmount)
+        }        
     }
 
-    canDieByDamage = damage => damage >= this.currentHP
+    heal(healAmount) {
+        this.health.heal(healAmount)
+    }
 
-    isHealingGreaterThanTotalHP = heal => heal + this.currentHP > this.totalHP
+    canDieByDamage = damage => damage >= this.health.getAvailable()
 
-    isCurrentStaminaGreaterThanTotal = () => this.currentStamina > this.totalStamina
+    takeDamage(damage) {
+        let remainingDamage
 
-    takeDamage(damage, type, attacker) {
-        let prevHP = this.currentHP
-        let prevStamina = this.currentStamina
-        let remainingDamage = damage
-
-        this.staminaShield.updateFromOwner()
-
-        if (this.staminaShield.isNotBroken()) {
-            if (this.staminaShield.canBeBroken(damage)) {
-                this.currentHP -= this.staminaShield.takeDamage(damage)
-                remainingDamage = damage - prevStamina - prevHP
+        if (this.stamina.isNotBroken()) {
+            if (this.stamina.canBeBroken(damage)) {
+                remainingDamage = this.stamina.takeDamage(damage)
+                remainingDamage = this.health.takeDamage(remainingDamage)
             } else {
-                this.staminaShield.takeDamage(damage)
+                this.stamina.takeDamage(damage)
                 remainingDamage = 0
             }
         } else {
-            this.currentHP -= damage
-            remainingDamage = damage - prevHP
+            remainingDamage = this.health.takeDamage(damage)
         }
 
         if (this.isDead()) this.die()
 
-        this.staminaShield.updateFromOwner()
-
         return remainingDamage < 0 ? 0 : remainingDamage
     }
 
-    haveShield = () => this.staminaShield.isNotBroken()
+    haveShield = () => this.stamina.isNotBroken()
 
-    isAlive = () => this.currentHP > 0
+    isAlive = () => this.health.getAvailable() > 0
     isDead = () => !this.isAlive()
 
     die() {
-        this.currentHP = 0
         this.cleanStatusList()
         this.addStatus("dead")
     }

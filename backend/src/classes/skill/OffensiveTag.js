@@ -29,6 +29,7 @@ class OffensiveTag extends SkillTag {
 
             if(extraDamageHitAnotherTarget && damageAmount > 0) {
                 let targetsParty = this.evaluator.getActorsParty(target)
+
                 damageAmount = this.distributeDamageToParty(damageAmount, targetsParty)
             }            
         }
@@ -50,7 +51,7 @@ class OffensiveTag extends SkillTag {
     }
 
     distributeDamageToParty(damageAmount, party) {
-        for (let target of party.getAll()) {
+        for (let target of party.getAll().filter( member => member.isAlive() )) {
             damageAmount = target.takeDamage(damageAmount);
             
             if (!damageAmount)

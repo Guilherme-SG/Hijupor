@@ -34,7 +34,10 @@ class Evaluator {
     }
 
     evaluateAttribute(subject, attribute) {
-        if(attribute.startsWith("get") || attribute.startsWith("is")) {
+
+        if(attribute.startsWith("get") 
+            || attribute.startsWith("is") 
+            || attribute.startsWith("have")) {
             return subject[attribute]()
         }
 

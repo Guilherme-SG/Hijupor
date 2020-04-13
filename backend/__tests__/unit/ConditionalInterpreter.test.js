@@ -7,9 +7,9 @@ const PartyManager = require("../../src/classes/managers/PartyManager")
 const Actor = require("../../src/classes/actor/Actor")
 const Party = require("../../src/classes/Party")
 
-const yendros = new Actor({ name: "Yendros", currentHP: 100 })
-const aaron = new Actor({ name: "Aaron", currentHP: 100 })
-const jane = new Actor({ name: "Jane", currentHP: 100 })
+const yendros = new Actor({ name: "Yendros"})
+const aaron = new Actor({ name: "Aaron"})
+const jane = new Actor({ name: "Jane"})
 
 const players = new Party("Players")
 players.add(yendros)
@@ -80,7 +80,7 @@ describe("Conditional Interpreter", () => {
             },
             fn: "isEqual",
             params: {
-                attribute: "currentHP",
+                attribute: "getAvailableHP",
                 reference: 100
             }
         }
@@ -100,7 +100,7 @@ describe("Conditional Interpreter", () => {
             },
             fn: "isEqual",
             params: {
-                attribute: "currentHP",
+                attribute: "getAvailableHP",
                 reference: 100
             }
         }

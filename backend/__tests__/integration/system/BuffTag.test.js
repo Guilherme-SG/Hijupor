@@ -253,13 +253,13 @@ describe("Buff Skill Interpreter", () => {
     it("Should add 1 extra action point to caster and his/her party", () => {
         actorManager.setCaster(aaron.id)
 
-        expect(aaron.actionPoint.getAvailablePoints()).toBe(3)
-        expect(yendros.actionPoint.getAvailablePoints()).toBe(3)
+        expect(aaron.actionPoint.getAvailable()).toBe(3)
+        expect(yendros.actionPoint.getAvailable()).toBe(3)
 
         buffTag.active(aaron, liderando)
 
-        expect(aaron.actionPoint.getAvailablePoints()).toBe(4)
-        expect(yendros.actionPoint.getAvailablePoints()).toBe(4)
+        expect(aaron.actionPoint.getAvailable()).toBe(4)
+        expect(yendros.actionPoint.getAvailable()).toBe(4)
     })
 
     it("Reduce cooldown in 1 turn to all skills of all party members", () => {

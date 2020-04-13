@@ -173,86 +173,102 @@ describe("Healing Skill Interpreter", () => {
     })
 
     it("Should heal (calculated by formula) a single target", () => {
-        jane.currentHP = 75
+        jane.takeDamage(25)
 
         actorManager.select(jane.id)
         healingTag.active(aaron, harmonia)
         
-        expect(jane.currentHP).toBe(100)
+        expect(jane.health.getAvailable()).toBe(100)
     })
 
     it("Should heal (calculated by formula) a single target, the caster have 100 of carism", () => {
-        yendros.currentHP = 25
+        yendros.takeDamage(75)
         aaron.stats.car.addRawBonus(new RawBonus(100))
         
 
         actorManager.select(yendros.id)
         healingTag.active(aaron, harmonia)
 
-        expect(yendros.currentHP).toBe(100)
+        expect(yendros.health.getAvailable()).toBe(100)
     })
 
     it("Should heal (calculated by foruma) an entire party, the caster have 100 of carism", () => {
-        yendros.currentHP = 25
-        aaron.currentHP = 25
+        yendros.takeDamage(75)
+        aaron.takeDamage(75)
 
         jane.stats.car.addRawBonus(new RawBonus(100))
 
         partyManager.select(players.id)
         healingTag.active(jane, healParty)
 
-        expect(yendros.currentHP).toBe(100)
-        expect(aaron.currentHP).toBe(100)
+        expect(yendros.health.getAvailable()).toBe(100)
+        expect(aaron.health.getAvailable()).toBe(100)
     })
 
     it("Should heal (calculated by formula) a single target, the caster have 100 of faith, and exceeding heal turn into stamina", () => {
-        yendros.currentHP = 85
+        yendros.takeDamage(15)
+
+        expect(yendros.health.getAvailable()).toBe(100)
+        expect(yendros.stamina.getAvailable()).toBe(85)
+
         aaron.stats.faith.addRawBonus(new RawBonus(100))
 
         actorManager.select(yendros.id)
         healingTag.active(aaron, healWithShield)
 
-        expect(yendros.currentHP).toBe(100)
-        expect(yendros.totalHP).toBe(100)
-        expect(yendros.haveShield()).toBeTruthy()
-        expect(yendros.currentStamina).toBe(20)
+        expect(yendros.health.getAvailable()).toBe(100)
+        expect(yendros.stamina.getAvailable()).toBe(100)
     })
 
     it("Should heal (calculated by formula) an entire party, the caster have 100 of faith, and exceeding heal turn into stamina", () => {
-        aaron.currentHP = 75
-        yendros.currentHP = 85
+        yendros.takeDamage(25)
+        aaron.takeDamage(15)
+
+        expect(yendros.health.getAvailable()).toBe(100)
+        expect(yendros.stamina.getAvailable()).toBe(75)
+
+        expect(aaron.health.getAvailable()).toBe(100)
+        expect(aaron.stamina.getAvailable()).toBe(85)
+
         jane.stats.faith.addRawBonus(new RawBonus(100))
 
         partyManager.select(players.id)
         healingTag.active(jane, protectionForEveryone)
 
-        expect(yendros.currentHP).toBe(100)
-        expect(yendros.haveShield()).toBeTruthy()
-        expect(yendros.currentStamina).toBe(20)
+        expect(yendros.health.getAvailable()).toBe(100)
+        expect(yendros.stamina.getAvailable()).toBe(100)
 
-        expect(aaron.currentHP).toBe(100)
-        expect(aaron.haveShield()).toBeTruthy()
-        expect(aaron.currentStamina).toBe(10)
+        expect(aaron.health.getAvailable()).toBe(100)
+        expect(aaron.stamina.getAvailable()).toBe(100)
     })
 
     it("Should heal caster 50% of damage caused by skill", () => {
         actorManager.setCaster(aaron.id)
-        aaron.currentHP = 10
+
+        aaron.stamina.break()
+        aaron.takeDamage(90)
+
         lifeSteal.damageDone = 100
 
         healingTag.active(aaron, lifeSteal)
 
-        expect(aaron.currentHP).toBe(60)
+        expect(aaron.health.getAvailable()).toBe(60)
     })
 
     it("Should heal caster and his/her party", () => {
-        aaron.currentHP = 15
-        yendros.currentHP = 24
+        aaron.stamina.break()
+        yendros.stamina.break()
+        
+        aaron.takeDamage(85)
+        yendros.takeDamage(76)
+
+        expect(aaron.health.getAvailable()).toBe(15)
+        expect(yendros.health.getAvailable()).toBe(24)
         
         actorManager.setCaster(aaron.id)
         healingTag.active(aaron, faithIsForEveryone)
 
-        expect(aaron.currentHP).toBe(25)
-        expect(yendros.currentHP).toBe(34)
+        expect(aaron.health.getAvailable()).toBe(25)
+        expect(yendros.health.getAvailable()).toBe(34)
     })
 })

@@ -121,27 +121,31 @@ describe("Skill System", () => {
     })
 
     it("Use skill with offensive and disruptive", () => {
+        aaron.stamina.break()
         actorManager.select(aaron.id)
+        
         let skillWasUsed = skillSystem.useSkill(jane.id, investida.id)
         expect(skillWasUsed).toBeTruthy()
         
         expect(aaron.status).toContain("stunned")
-        expect(aaron.currentHP).toBe(75)
+        expect(aaron.getAvailableHP()).toBe(75)
     })
 
     it("Use skill with healing", () => {
+        aaron.stamina.break()
+
         actorManager.select(aaron.id)
         
         let skillWasUsed = skillSystem.useSkill(jane.id, investida.id)
         expect(skillWasUsed).toBeTruthy()
 
         expect(aaron.status).toContain("stunned")
-        expect(aaron.currentHP).toBe(75)
+        expect(aaron.getAvailableHP()).toBe(75)
 
         skillWasUsed = skillSystem.useSkill(jane.id, harmonia.id)
         expect(skillWasUsed).toBeTruthy()
 
         expect(aaron.status).toContain("stunned")
-        expect(aaron.currentHP).toBe(100)
+        expect(aaron.getAvailableHP()).toBe(100)
     })
 })

@@ -125,26 +125,35 @@ describe("Offensive Skill Interpreter", () => {
     })
 
     it("Should deal damage (calculated by formula) to a single target", () => {
+        aaron.stamina.break()
         actorManager.select(aaron.id)
+        
         offensiveTag.active(jane, investida)
 
         expect(investida.damageDone).toBe(25)
 
-        expect(aaron.currentHP).toBe(75)
+        expect(aaron.getAvailableHP()).toBe(75)
     })
 
     it("Should deal damage to a single target, if target die the remaning damage must be distribuite to another target others members of first target's party",
         () => {
             actorManager.select(yendros.id)
             jane.stats.faith.addRawBonus(new RawBonus(100))
+
+            yendros.stamina.break()
+            aaron.stamina.break()
+
+            expect(yendros.getAvailableHP()).toBe(100)
+            expect(aaron.getAvailableHP()).toBe(100)
+            
             offensiveTag.active(jane, divinySmite)
 
             expect(divinySmite.damageDone).toBe(105)
 
-            expect(yendros.currentHP).toBe(0)
+            expect(yendros.getAvailableHP()).toBe(0)
             expect(yendros.isDead()).toBeTruthy()
 
-            expect(aaron.currentHP).toBe(95)
+            expect(aaron.getAvailableHP()).toBe(95)
     })
 
     it("Should deal damage (calculated by formula) to party", () => {
@@ -152,12 +161,15 @@ describe("Offensive Skill Interpreter", () => {
 
         jane.stats.sab.addRawBonus(new RawBonus(100))
 
+        yendros.stamina.break()
+        aaron.stamina.break()
+
         offensiveTag.active(jane, tempestade)
 
         expect(tempestade.damageDone).toBe(85)
 
-        expect(yendros.currentHP).toBe(15)
-        expect(aaron.currentHP).toBe(15)
+        expect(yendros.getAvailableHP()).toBe(15)
+        expect(aaron.getAvailableHP()).toBe(15)
     })
 
 })

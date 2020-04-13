@@ -1,46 +1,34 @@
-
 const FinalBonus = require("../attribute/FinalBonus")
 
+const DependantAttributeContainer = require("./DependantAttributeContainer")
 
-const CurrentAP = require("../actor/CurrentAP")
-const TotalAP = require("../actor/TotalAP")
-
-
-class ActionPoint {
+class ActionPoint extends DependantAttributeContainer {
     constructor(agi) {
-        this.totalAP = new TotalAP(1)
-        this.totalAP.addAttribute(agi)
-
-        let totalAPValue = this.totalAP.getFinalValue()
-        this.currentAP = new CurrentAP(totalAPValue)      
+        super(1, agi, 1, 50)
     }
 
     accumulateAP() {
-        this.totalAP.addFinalBonus(new FinalBonus(this.currentAP.getFinalValue(), 0, 1))
+        this.total.addFinalBonus(new FinalBonus(this.current.getFinalValue(), 0, 1))
     }
 
     update() {
-        this.totalAP.update()
-        if(this.currentAP.getFinalValue() > 0) {
+        this.total.update()
+        if(this.current.getFinalValue() > 0) {
             this.accumulateAP()
         }
 
-        this.currentAP.update()
-        this.currentAP.baseValue = this.totalAP.getFinalValue()
+        this.current.update()
+        this.setCurrentAsTotalFInalValue()
     }
 
-    getAvailablePoints() {
-        this.currentAP.baseValue = this.totalAP.getFinalValue()
-        return this.currentAP.getFinalValue()
-    }
-
-    getTotalPoints() {
-        return this.totalAP.getFinalValue()
+    getAvailable() {
+        this.setCurrentAsTotalFInalValue()
+        return super.getAvailable()
     }
 
     usePoints(points) {
-        if(this.currentAP.getFinalValue() >= points) {
-            this.currentAP.addFinalBonus(new FinalBonus(-points, 0, 1))
+        if(this.current.getFinalValue() >= points) {
+            this.current.addFinalBonus(new FinalBonus(-points, 0, 1))
             return true
         }
 
@@ -48,7 +36,7 @@ class ActionPoint {
     }
 
     addExtraPoint(points, duration) {
-        this.currentAP.addFinalBonus(new FinalBonus(points, 0, duration))
+        this.current.addFinalBonus(new FinalBonus(points, 0, duration))
     }
 }
 
