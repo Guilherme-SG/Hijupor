@@ -107,11 +107,36 @@ const purificacao = new Skill({
                 }
             },
             "params": {
-                "debuffs": {
+                "debuff": {
                     "removeAll": true
                 },
                 "status": {
                     "removeAll": true
+                }
+            }
+        }
+    }
+})
+
+const imunity = new Skill({
+    name: "Imunidade do Anjo",
+    description: "Concede ao aliado ou a sí imunidade a debuffs e status negativos. 9 rodadas de recarga",
+    paCost: 1,
+    cooldown: 9,
+    tags: {
+        buff: {
+            subject: {
+                type: "actor",
+                params: {
+                    selected: true
+                }
+            },
+            params: {
+                debuff: {
+                    giveImmunity: true
+                },
+                status: {
+                    giveImmunity: true
                 }
             }
         }
@@ -293,6 +318,23 @@ describe("Buff Skill Interpreter", () => {
         expect(yendros.status).toHaveLength(2)
 
         buffTag.active(aaron, purificacao)
+
+        expect(yendros.status).toHaveLength(0)
+    })
+
+    it("Should give to caster or it's ally immunity to debuffs and negative status", () => {
+        actorManager.select(yendros.id)
+
+        expect(yendros.haveImmunityToNegativeStatus()).toBeFalsy()
+        expect(yendros.haveImmunityToDebuff()).toBeFalsy()
+
+        buffTag.active(yendros, imunity)
+
+        expect(yendros.haveImmunityToNegativeStatus()).toBeTruthy()
+        expect(yendros.haveImmunityToDebuff()).toBeTruthy()
+
+        yendros.addStatus("frozen")
+        yendros.addStatus("poisoned")
 
         expect(yendros.status).toHaveLength(0)
     })

@@ -82,63 +82,84 @@
             "type": "buff",
             "cooldown": 9,
             "paCost": 1,
-            "duration": 3,
-            "target": {
-                "type": "ally",
-                "howMany": 1
-            },
-            "currentCooldown": 0,
-            "category": "classe"
+            "tags": {
+                "buff": {
+                    "subject": {
+                        "type": "actor",
+                        "params": {
+                            "selected": true
+                        }
+                    },
+                    "duration": 3
+                }
+            }
         },
         {
             "name": "Acorde Errado",
             "description": "Causa um Som estridente que é escutado por apenas um inimigo, atordoando-o por 2 rodadas. 7 rodadas de recarga.",
-            "type": "disruptive",
             "cooldown": 7,
             "paCost": 1,
             "duration": 2,
-            "target": {
-                "type": "enemy",
-                "howMany": 1
-            },
-            "currentCooldown": 0,
-            "category": "classe"
+            "tags": {
+                "disruptive": {
+                    "subject": {
+                        "type": "actor",
+                        "params": {
+                            "selected": true
+                        }
+                    },
+                    "statuslist": [{ "name": "Stunned" }]
+                }
+            }
         },
         {
             "name": "Tá tiltado? ",
             "description": "O Som do Instrumento do Bardo causa 36 (+1 cada 10 de Carisma) de Dano Mental em um inimigo. 6 rodadas de recarga.",
-            "type": "mental-offensive",
             "cooldown": 6,
             "paCost": 1,
-            "duration": 0,
-            "target": {
-                "type": "enemy",
-                "howMany": 1
-            },
-            "formula": "36 + Math.floor(stats[scaling] / 10)",
-            "scaling": "",
-            "baseValue": 36,
-            "currentCooldown": 0,
-            "category": "classe"
+            "tags": {
+                "offensive": {
+                    "subject": {
+                        "type": "actor",
+                        "params": {
+                            "selected": true
+                        }
+                    },
+                    "damageType": "mental",
+                    "damageFunction": "byFormula",
+                    "formula": "36 + Math.floor(caster.stats.get('car') / 10)"
+                }
+            }
         }
     ],
     "Bárbaro": [
         {
             "name": "Investida",
             "description": "Avança em um inimigo, causando 25 (+1 cada 7 de Força) em um inimigo e atordoando-o logo depois. 8 rodadas de recarga.",
-            "type": "physical-offensive, disruptive",
             "cooldown": 8,
             "paCost": 1,
-            "duration": 0,
-            "target": {
-                "type": "enemy",
-                "howMany": 1
-            },
-            "formula": "25 + Math.floor(stats[scaling] / 7)",
-            "scaling": "for",
-            "baseValue": 0,
-            "currentCooldown": 0,
-            "category": "classe"
+            "tags": {
+                "offensive": {
+                    "subject": {
+                        "type": "actor",
+                        "params": {
+                            "selected": true
+                        }
+                    },
+                    "damageType": "physic",
+                    "damageFunction": "byFormula",
+                    "formula": "25 + Math.floor(caster.stats.get('str') / 7)"
+                },
+                "disruptive": {
+                    "subject": {
+                        "type": "actor",
+                        "params": {
+                            "selected": true
+                        }
+                    },
+                    "statuslist": [{ "name": "Stunned" }]
+                }
+            }
         },
         {
             "name": "Acalmar-se",
@@ -146,33 +167,43 @@
             "type": "healing",
             "cooldown": 8,
             "paCost": 1,
-            "duration": 5,
-            "target": {
-                "type": "self",
-                "howMany": 1
-            },
-            "formula": "50 + floor(state[scaling] / 2)",
-            "scaling": "raiva",
-            "baseValue": 50,
-            "currentCooldown": 0,
-            "category": "classe"
+            "tags": {
+                "healing": {
+                    "subject": {
+                        "type": "caster"
+                    },
+                    "healingFunction": "byFormula",
+                    "formula": "25 + Math.floor(caster.stats.get('rage') / 2)"
+                },
+                "regeneration": {
+                    "subject": {
+                        "type": "party",
+                        "params": {
+                            "hasActor": {
+                                "type": "caster"
+                            }
+                        }
+                    },
+                    "regenerationFunction": "byRawValue",
+                    "rawValue": 0.02,
+                    "duration": 5
+                }
+            }
         },
         {
             "name": "Realocar Raiva",
             "description": "Realoca sua Raiva para Bloquear totalmente os próximos 1 (+1 cada 25 de Raiva) golpes. 9 rodadas de recarga.",
-            "type": "defensive",
             "cooldown": 9,
             "paCost": 1,
-            "duration": 0,
-            "target": {
-                "type": "",
-                "howMany": 0
-            },
-            "formula": "1 + Math.floor(stats[scaling]/25)",
-            "scaling": "raiva",
-            "baseValue": 0,
-            "currentCooldown": 0,
-            "category": "classe"
+            "tags": {
+                "deffensive": {
+                    "subject": {
+                        "type": "caster"
+                    },
+                    "blockFunction": "byFormula",
+                    "formula": "1 + Math.floor(caster.stats.get('rage') / 25)"
+                }
+            }
         },
         {
             "name": "MORRE PUTA!",
@@ -367,7 +398,7 @@
         {
             "name": "Minha Fé é meu Escudo",
             "description": "Cria um escudo em um aliado que o protege de 35 (+1 cada 4 de Fé) de dano. 6 rodadas de recarga.",
-            "type": "defensive",
+            "type": "deffensive",
             "cooldown": 6,
             "paCost": 1,
             "duration": 0,
@@ -423,14 +454,18 @@
             "cooldown": 9,
             "paCost": 1,
             "duration": 4,
-            "target": {
-                "type": "ally",
-                "howMany": "all"
-            },
-            "formula": "0.025",
-            "baseValue": 0.025,
-            "currentCooldown": 0,
-            "category": "classe"
+            "tags": {
+                "regeneration": {
+                    "subject": {
+                        "type": "party",
+                        "params": {
+                            "hasActor": {
+                                "type": "caster"
+                            }
+                        }
+                    }
+                }
+            }
         }
     ],
     "Druída": [
@@ -814,7 +849,7 @@
         {
             "name": "Desfazer Magia",
             "description": "Concentra sua Magia para fazer uma pequena esfera que libera uma energia e cancela qualquer feitiço sendo preparado ou já disparado. Pode ser usado como counter ao custo de 1 Ponto de Ação da próxima rodada. 13 rodadas de recarga.",
-            "type": "disruptive",
+            "type": "deffensive",
             "cooldown": 13,
             "paCost": 1,
             "duration": 0,
@@ -997,7 +1032,7 @@
                         }
                     },
                     "params": {
-                        "debuffs": {
+                        "debuff": {
                             "removeAll": true
                         },
                         "status": {
@@ -1042,17 +1077,22 @@
         {
             "name": "Tiro Crítico",
             "description": "Dispara uma Flecha de sua arma, causando um acerto crítico de 200% de Dano. 5 rodadas de recarga.",
-            "type": "physical-offensive",
             "cooldown": 5,
             "paCost": 1,
-            "duration": 0,
-            "target": {
-                "type": "enemy",
-                "howMany": 1
-            },
-            "formula": "3",
-            "currentCooldown": 0,
-            "category": "classe"
+            "tags": {
+                "offensive": {
+                    "subject": {
+                        "type": "actor",
+                        "params": {
+                            "selected": true
+                        }
+                    },
+                    "damageType": "physic",
+                    "damageFunction": "percentageOf",
+                    "rawPercentage": 2,
+                    "refence": "baseAttack"
+                }
+            }
         },
         {
             "name": "Colocar Armadilha",

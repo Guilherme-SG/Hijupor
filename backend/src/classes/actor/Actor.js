@@ -148,12 +148,12 @@ class Actor extends Serializable {
     }
 
     addStatus(status) {
-        if(!this.haveImmunityToNegativeStatus()) {
-            this.status.push(status)
-            return true
+        if(this.haveImmunityToNegativeStatus()) {
+            return false
         }
         
-        return false
+        this.status.push(status)
+        return true
     }
 
     cleanStatusList() {

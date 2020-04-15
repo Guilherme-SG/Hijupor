@@ -17,6 +17,7 @@ class BuffTag extends SkillTag {
 
         let target = this.evaluator.evaluateTarget(subject)
         let improvement
+
         if(buffFunction) {
             improvement = this.calculateImprovement(buffFunction, caster, skill, target)
         }
@@ -42,7 +43,8 @@ class BuffTag extends SkillTag {
             actionPoint, 
             stats, 
             skills,
-            status
+            status,
+            debuff
         } = params
 
         if(actionPoint) {
@@ -58,7 +60,11 @@ class BuffTag extends SkillTag {
         }
 
         if(status) {
-            this.removeActorStatus(actor, status)
+            this.improveActorStatus(actor, status)
+        }
+
+        if(debuff) {
+            this.improveActorDebuff(actor, debuff)
         }
     }
 
@@ -81,11 +87,27 @@ class BuffTag extends SkillTag {
         })
     }
 
-    removeActorStatus(actor, params) {
-        const { removeAll } = params
+    improveActorStatus(actor, params) {
+        const { removeAll, giveImmunity } = params
 
         if(removeAll) {
             actor.cleanStatusList()
+        }
+
+        if(giveImmunity) {
+            actor.addImmunityToNegativeStatus()
+        }
+    }
+
+    improveActorDebuff(actor, params) {
+        const { removeAll, giveImmunity } = params
+
+        if(removeAll) {
+            actor.cleanStatusList()
+        }
+
+        if(giveImmunity) {
+            actor.addImmunityToDebuff()
         }
     }
 }

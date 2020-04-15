@@ -136,7 +136,6 @@ describe("Action Point test", () => {
         expect(agi.getFinalValue()).toBe(50)
 
         expect(pa.getTotal()).toBe(2)
-        console.log("dif")
         expect(pa.getAvailable()).toBe(2)
         
     })
