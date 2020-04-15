@@ -34,6 +34,8 @@ class Actor extends Serializable {
 
         this.statusNegativeimmunity = false
         this.debuffimmunity = false
+
+        this.regenerationList = []
     }
 
     serialize() {
@@ -56,6 +58,9 @@ class Actor extends Serializable {
         this.health.update()
         this.stamina.update()
         this.actionPoint.update()
+
+        this.regenerationList
+            .forEach( regen => regen.update())
     }
 
     setParty(partyId) {
@@ -182,6 +187,16 @@ class Actor extends Serializable {
 
     removeImmunityToDebuff() {
         this.debuffimmunity = false
+    }
+
+    addRegeneration(regen) {        
+        regen.setTarget(this)
+        this.regenerationList.push(regen)
+    }
+
+    removeRegeneration(regeneration) {
+        this.regenerationList = this.regenerationList
+            .filter( regen => regen != regeneration)
     }
 }
 

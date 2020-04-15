@@ -164,7 +164,7 @@
         {
             "name": "Acalmar-se",
             "description": "Recupera 50 (+1 cada 2 de Raiva) de Hp de si mesmo, além de recuperar 2% de Hp por 5 rodadas. 8 rodadas de recarga.",
-            "type": "healing",
+            "type": "regeneration",
             "cooldown": 8,
             "paCost": 1,
             "tags": {
@@ -450,7 +450,7 @@
         {
             "name": "Devoção",
             "description": "Sua devoção é compartilhada momentâneamente com seus aliados, permitindo que eles recuperem 2,5% de Hp por rodada. Duração de 4 rodadas. 9 rodadas de recarga.",
-            "type": "healing",
+            "type": "regeneration",
             "cooldown": 9,
             "paCost": 1,
             "duration": 4,
