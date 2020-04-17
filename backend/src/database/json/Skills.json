@@ -508,14 +508,7 @@
             "description": "Invoca um Animal para lutar ao seu lado, que possui 50% dos stats do Druída e que desaparece ao ser morto. A recarga começa quando o animal morre e possui 9 rodadas de duração.",
             "type": "invocation",
             "cooldown": 9,
-            "paCost": 1,
-            "duration": -1,
-            "target": {
-                "type": "none",
-                "howMany": 0
-            },
-            "currentCooldown": 0,
-            "category": "classe"
+            "paCost": 1
         },
         {
             "name": "Morfar",
