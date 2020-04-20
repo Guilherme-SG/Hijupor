@@ -1,17 +1,21 @@
+const ActorModel = require("../models/Actor")
+
 class ActorController {
     async store(req, res) {
-        const { name } = req.body
-        return res.json({ name })
+        let actor = await ActorModel.create(req.body)
+        return res.json(actor)
     }
 
     async findByName(req, res) {
-        const { name } = request.params
-        return response.json({ name })
+        const { name } = req.query
+        const actor = await ActorModel.findOne({ name })
+        
+        return res.json(actor)
     }
 
     async findById(req, res) {
-        const { id } = request.params
-        return response.json({ id })
+        const { id } = req.params
+        return res.json({ id })
     }
 }
 

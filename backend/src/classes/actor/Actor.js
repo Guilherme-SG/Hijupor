@@ -7,7 +7,12 @@ class Actor extends BaseActor {
         name,
         partyId,
         status,
-        skills
+        skills,
+        job,
+        race,
+        age,
+        local,
+        personality
     }) {
         super({
             stats, 
@@ -17,8 +22,13 @@ class Actor extends BaseActor {
             status,
             skills
         })
+        this.job = job
+        this.race = race
+        this.age = age
+        this.local = local
+        this.personality = personality
 
-        
+        this.overControl = []
         this.summons = []
     }
 
@@ -42,6 +52,11 @@ class Actor extends BaseActor {
 
     removeSummon(summon) {
         this.summons = this.summons.filter( ally => ally != summon )
+    }
+
+    getControlOverActor(actor) {
+        actor.addStatus("controlled")
+        this.overControl.push(actor)
     }
 }
 

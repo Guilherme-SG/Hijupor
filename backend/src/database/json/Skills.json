@@ -6,32 +6,19 @@
             "type": "control",
             "cooldown": 5,
             "paCost": 1,
-            "duration": 2,
-            "target": {
-                "type": "enemy",
-                "howMany": 1
-            },
-            "currentCooldown": 0,
-            "category": "classe",
-            "onCast": {
-                "actions": {
-                    "effects": [
-                        {
-                            "caster": {
-                                "enemies": {
-                                    "_$sortBy": ["stats.int", "asc"],
-                                    "_$evalOnFirst": "target = first"
-                                }
-                            },
-                            "target": {
-                                "status": {
-                                    "_$add": ["Controlado"]
-                                }
-                            }
+            "tags": {
+                "controller": {
+                    "subject": {
+                        "type": "party",
+                        "findActor": {
+                            "fn": "minValueInArray",
+                            "attribute": "int"
                         }
-                    ]
+                    },
+                    "duration": 2
                 }
             }
+            
         },
         {
             "name": "Ritmo Acelerado",
@@ -72,7 +59,7 @@
                         }
                     },
                     "healFunction": "byFormula",
-                    "formula": "25 + Math.floor(caster.stats.car / 2)"
+                    "formula": "25 + Math.floor(caster.stats.get('car') / 2)"
                 }
             }
         },
