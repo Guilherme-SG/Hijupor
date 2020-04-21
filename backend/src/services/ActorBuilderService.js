@@ -9,8 +9,6 @@ class ActorBuilderService {
     static build(data) {
         const actor = new Actor({})
 
-        //data = JSON.parse(JSON.stringify(data))
-
         this.assign(actor, data)
         this.assignAllRecursive(actor, data)
 

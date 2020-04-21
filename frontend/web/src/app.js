@@ -1,7 +1,3 @@
-require("dotenv").config({
-    path: process.env.NODE_ENV === "test" ? ".env.test" : ".env"
-})
-
 const express = require("express")
 const http = require('http')
 
@@ -11,8 +7,14 @@ class AppController {
 
         this.middlewares()
         this.routes()
-
+        //this.static()
+        
         this.express = http.createServer(this.express)
+    }
+    
+
+    static() {
+        this.express.use('/static', this.express.static('public'))
     }
 
     middlewares() {

@@ -75,19 +75,5 @@ describe("Actor API", () => {
         expect(actorFound.name).toBe(actorCreation.name)
         expect(actorFound.getAvailableStamina()).toBe(0)
     })
-/*
-    it("Should find skill by id - GET /skill:id", async () => {
-        const responseSkill = await request(app)
-            .post("/skill")
-            .send(skillObj)
 
-        const skill = responseSkill.body
-        const response = await request(app)
-            .get("/skill/" + skill._id)
-
-        expect(response.body).toHaveProperty("_id")
-        expect(response.body).toHaveProperty("name")
-
-        expect(response.body.name).toBe(skillObj.name)
-    })*/
 })
