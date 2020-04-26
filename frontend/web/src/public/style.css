@@ -56,3 +56,23 @@ form {
     box-shadow: 5px 40px -10px rgba(0,0,0,0.57);
     transition: all 0.4s ease 0s;
 }
+
+.box {
+    width: (width - 10) !important;
+
+    padding: 5px 7px;
+
+    margin: 15px 5px;
+
+    background-color: "white";
+    
+    box-shadow: 0px 11px 3px 7.49px rgba(0,0,0,0.37);
+
+    border-radius: 5px;
+  }
+
+.container {
+    display: flex;
+    flex-direction: row;
+
+}

@@ -1,5 +1,6 @@
 const express = require("express")
 const http = require('http')
+const path = require('path')
 
 class AppController {
     constructor() {
@@ -7,18 +8,13 @@ class AppController {
 
         this.middlewares()
         this.routes()
-        //this.static()
         
         this.express = http.createServer(this.express)
-    }
-    
-
-    static() {
-        this.express.use('/static', this.express.static('public'))
     }
 
     middlewares() {
         this.express.use(express.json())
+        this.express.use(express.static(path.join(__dirname, "/public")));
     }
 
     routes() {

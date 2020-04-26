@@ -5,8 +5,10 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Hijupor</title>
-    <link rel="stylesheet" href="style.css">
-    <script src="/socket.io/socket.io.js"></script>
+    <link rel="stylesheet" href="/style.css">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
+        integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+    
 </head>
 
 <body>
@@ -19,17 +21,17 @@
 
         <div class="input-label">
             <label for="name">Nome:</label>
-            <input id="name" type="text" placeholder="Nome">
+            <input id="name" class="form-control" type="text" placeholder="Nome">
         </div>
 
         <div class="input-label">
             <label for="age">Idade:</label>
-            <input id="age" type="number" placeholder="Idade">
+            <input id="age" class="form-control" type="number" placeholder="Idade">
         </div>
 
         <div class="input-label">
             <label for="local">Local:</label>
-            <select id="local">
+            <select id="local" class="form-control">
                 <option>Arquipélago de Arquis</option>
                 <option>Vulcão de Hairi</option>
                 <option>Oceano de Ligro</option>
@@ -44,12 +46,12 @@
 
         <div class="input-label">
             <label for="race">Raça:</label>
-            <select id="race">
+            <select id="race" class="form-control">
                 <option>Arikis</option>
                 <option>Gantris</option>
                 <option>Karateris</option>
-                <option>Martaris-Celestial</option>
-                <option>Martaris-Subterrâneos</option>
+                <option>Martaris Celestial</option>
+                <option>Martaris Subterrâneo</option>
                 <option>Nereteris</option>
                 <option>Pagrius</option>
                 <option>Titaris</option>
@@ -58,7 +60,7 @@
 
         <div class="input-label">
             <label for="class">Classe:</label>
-            <select id="class">
+            <select id="class" class="form-control">
                 <option>Bárbaro</option>
                 <option>Bardo</option>
                 <option>Bruxo</option>
@@ -74,85 +76,101 @@
             </select>
         </div>
 
-        <textarea id="personality" placeholder="Personalidade"></textarea>
-        <textarea id="backstory" placeholder="Backstory"></textarea>
+        <div class="input-label">
+            <label for="personality">Personalidade:</label>
+            <textarea id="personality" class="form-control" placeholder="Personalidade"></textarea>
+        </div>
+
+        <div class="input-label">
+            <label for="backstory">Backstory:</label>
+            <textarea id="backstory" class="form-control" placeholder="Backstory"></textarea>
+        </div>
 
         <h2 class="center-center">Stats</h2>
         <p>Você tem 450 pontos para serem distribuídos inicialmente</p>
 
         <div class="input-label">
             <label for="str">Força:</label>
-            <input id="str" type="number" placeholder="Força">
+            <input id="str" class="form-control" type="number" placeholder="Força">
         </div>
         <div class="input-label">
             <label for="dex">Destreza:</label>
-            <input id="dex" type="number" placeholder="Destreza">
+            <input id="dex" class="form-control" type="number" placeholder="Destreza">
         </div>
         <div class="input-label">
             <label for="aim">Mira:</label>
-            <input id="aim" type="number" placeholder="Mira">
+            <input id="aim" class="form-control" type="number" placeholder="Mira">
         </div>
         <div class="input-label">
             <label for="res">Resistência:</label>
-            <input id="res" type="number" placeholder="Resistência">
+            <input id="res" class="form-control" type="number" placeholder="Resistência">
         </div>
         <div class="input-label">
             <label for="mr">Resistência Mágica:</label>
-            <input id="mr" type="number" placeholder="Resistência Mágica">
+            <input id="mr" class="form-control" type="number" placeholder="Resistência Mágica">
         </div>
         <div class="input-label">
             <label for="vit">Vitalidade:</label>
-            <input id="vit" type="number" placeholder="Vitalidade">
+            <input id="vit" class="form-control" type="number" placeholder="Vitalidade">
         </div>
         <div class="input-label">
             <label for="agi">Agilidade:</label>
-            <input id="agi" type="number" placeholder="Agilidade">
+            <input id="agi" class="form-control" type="number" placeholder="Agilidade">
         </div>
         <div class="input-label">
             <label for="faith">Fé:</label>
-            <input id="faith" type="number" placeholder="Fé">
+            <input id="faith" class="form-control" type="number" placeholder="Fé">
         </div>
         <div class="input-label">
             <label for="int">Inteligência:</label>
-            <input id="int" type="number" placeholder="Inteligência">
+            <input id="int" class="form-control" type="number" placeholder="Inteligência">
         </div>
         <div class="input-label">
             <label for="wis">Sabedoria:</label>
-            <input id="wis" type="number" placeholder="Sabedoria">
+            <input id="wis" class="form-control" type="number" placeholder="Sabedoria">
         </div>
         <div class="input-label">
             <label for="char">Carisma:</label>
-            <input id="char" type="number" placeholder="Carisma">
+            <input id="char" class="form-control" type="number" placeholder="Carisma">
         </div>
-
+        <br>
+        <!--
         <h2 class="center-center">Habilidades</h2>
+        <p>Escolha 6 habilidades</p>
 
+        <ul>
+            <li>Harmonia</li>
+            <li>Investida</li>
+            <li>Palavra da Morte!</li>
+            <li>A Fé é para Todos</li>
+        </ul>
+-->
         <button class="btn-creation" type="submit">
             <span>Criar</span>
         </button>
     </form>
 </body>
-
+<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
 <script type="module">
-        
-    const socket = io("http://localhost:3333")
-
-    socket.on("connect", () => {
-        console.log(`>>%c You are ${socket.id}`, 'color: #4caf50')
-    })
+    import api from "./api.js"
 
     const form = document.getElementById("creation-form")
-    form.onsubmit = e => {
+    form.onsubmit = async e => {
         e.preventDefault()
         let data = getData()
 
-        socket.emit("create-char", data)
+        const response = await api.post("actor", data)
+        alert(`O ID do seu personagem é ${response.data._id}`)
+
+        localStorage.setItem("id", response.data._id)
+        
+        window.location.assign("/battle")
     }
 
     const getData = () => {
         const $ = document.querySelector.bind(document)
         let name = $("#name").value
-        let age = $("#age").value
+        let age = parseInt($("#age").value) || 0
         let local = $("#local").value
         let job = $("#class").value
         let race = $("#race").value
@@ -175,7 +193,7 @@
             name,
             age,
             local,
-            "class": job,
+            job,
             race,
             personality,
             backstory,
@@ -198,4 +216,5 @@
         return data
     }
 </script>
+
 </html>

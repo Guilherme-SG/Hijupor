@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hijupor</title>
+    <script src="/socket.io/socket.io.js"></script>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
+        integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+</head>
+
+<body>
+    <h1 class="center-center">Hora do combate</h1>
+    <script type="module">
+        const socket = io("http://localhost:3333")
+        let id
+
+        socket.on("connect", () => {
+            console.log(`>>%c You are ${socket.id}`, 'color: #4caf50')
+            id = localStorage.getItem("id")
+            console.log("char id", id)
+            socket.emit("play", id)
+        })
+
+        socket.on("setup", actors => {
+            console.log(actors)
+
+            document.body.innerHTML = "<h1 class='center-center'>Hora do combate</h1>"
+            document.body.innerHTML += "<div class='container'>"
+            actors.forEach(buildActor)
+        })
+
+        socket.on("skill-used", info => {
+            alert(info)
+            selectedActor = null
+        })
+
+        let selectedActor = null
+        function buildActor(actor) {
+            const {
+                name,
+                age,
+                local,
+                job,
+                race,
+                health,
+                stamina,
+                actionPoint,
+                stats
+            } = actor
+
+            let html = `
+            <div class="box">
+                <h2>Nome: ${name}</h2>
+                <p>Idade: ${age}</p>
+                <p>Local: ${local}</p>
+                <p>Raça: ${race}</p>
+                <p>Classe: ${job}</p>
+                <p>HP: ${health.current.finalValue}/${health.total.finalValue}</p>
+                <p>Stamina: ${stamina.current.finalValue}/${stamina.total.finalValue}</p>
+                <p>Pontos de Ação: ${actionPoint.current.finalValue}/${actionPoint.total.finalValue}</p>
+                <h2 class="center-center">Stats</h2>
+       
+        <div class="input-label">
+            <label for="str">Força:</label>
+            <input value=${stats.str.finalValue} class="form-control" type="number" placeholder="Força" readonly>
+        </div>
+        <div class="input-label">
+            <label for="dex">Destreza:</label>
+            <input value=${stats.dex.finalValue} class="form-control" type="number" placeholder="Destreza" readonly>
+        </div>
+        <div class="input-label">
+            <label for="aim">Mira:</label>
+            <input value=${stats.aim.finalValue} class="form-control" type="number" placeholder="Mira" readonly>
+        </div>
+        <div class="input-label">
+            <label for="res">Resistência:</label>
+            <input value=${stats.res.finalValue} class="form-control" type="number" placeholder="Resistência" readonly>
+        </div>
+        <div class="input-label">
+            <label for="mr">Resistência Mágica:</label>
+            <input value=${stats.mr.finalValue} class="form-control" type="number" placeholder="Resistência Mágica" readonly>
+        </div>
+        <div class="input-label">
+            <label for="vit">Vitalidade:</label>
+            <input value=${stats.vit.finalValue} class="form-control" type="number" placeholder="Vitalidade" readonly>
+        </div>
+        <div class="input-label">
+            <label for="agi">Agilidade:</label>
+            <input value=${stats.agi.finalValue} class="form-control" type="number" placeholder="Agilidade" readonly>
+        </div>
+        <div class="input-label">
+            <label for="faith">Fé:</label>
+            <input value=${stats.fai}th" class="form-control" type="number" placeholder="Fé" readonly>
+        </div>
+        <div class="input-label">
+            <label for="int">Inteligência:</label>
+            <input value=${stats.int.finalValue} class="form-control" type="number" placeholder="Inteligência" readonly>
+        </div>
+        <div class="input-label">
+            <label for="wis">Sabedoria:</label>
+            <input value=${stats.sab.finalValue} class="form-control" type="number" placeholder="Sabedoria" readonly>
+        </div>
+        <div class="input-label">
+            <label for="char">Carisma:</label>
+            <input value=${stats.car.finalValue}" class="form-control" type="number" placeholder="Carisma" readonly>
+        </div>
+        <br>
+
+        <div>
+            <button value=${actor.id} id="select-actor">Selecionar como alvo</button>
+        </div>        
+            `
+
+            if (actor.id == id) {
+                html += `
+            <div>
+                <button id="cast-investida">Investida</button>
+                <button id="cast-missil">Míssil Mágico</button>
+                <button id="cast-harmonia">Harmonia</button>
+                <button id="cast-devocao">Devoção</button>
+            </div>
+            `
+            }
+
+            if (actor.id == id) {
+
+                document.getElementsByClassName("container")[0].innerHTML += html
+
+                document.getElementById("cast-investida").onclick = () => socket.emit("use-skill", {
+                    caster: actor.id,
+                    target: selectedActor,
+                    skill: 0
+                })
+                document.getElementById("cast-missil").onclick = () => socket.emit("use-skill", {
+                    caster: actor.id,
+                    target: selectedActor,
+                    skill: 1
+                })
+                document.getElementById("cast-harmonia").onclick = () => socket.emit("use-skill", {
+                    caster: actor.id,
+                    target: selectedActor,
+                    skill: 2
+                })
+                document.getElementById("cast-devocao").onclick = () => socket.emit("use-skill", {
+                    caster: actor.id,
+                    target: selectedActor,
+                    skill: 3
+                })
+            }
+
+            let btn = document.getElementById("select-actor")
+
+            if (btn) {
+                btn.onclick = (e) => selectedActor = e.target.value
+            }
+
+        }
+    </script>
+</body>
+
+</html>
