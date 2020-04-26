@@ -1,20 +1,20 @@
-const ActorManager = require("../../../src/classes/managers/ActorManager")
-const PartyManager = require("../../../src/classes/managers/PartyManager")
+const ActorManager = require("../../../../src/classes/managers/ActorManager")
+const PartyManager = require("../../../../src/classes/managers/PartyManager")
 
-const ControllerTag = require("../../../src/classes/skill/ControllerTag")
-const Summon = require("../../../src/classes/actor/Summon")
+const ControllerTag = require("../../../../src/classes/skill/ControllerTag")
+const Summon = require("../../../../src/classes/actor/Summon")
 
-const Actor = require("../../../src/classes/actor/Actor")
-const Party = require("../../../src/classes/Party")
-const Skill = require("../../../src/classes/skill/Skill")
-const Stats = require("../../../src/classes/actor/Stats")
+const Actor = require("../../../../src/classes/actor/Actor")
+const Party = require("../../../../src/classes/Party")
+const Skill = require("../../../../src/classes/skill/Skill")
+const Stats = require("../../../../src/classes/actor/Stats")
 
-const Evaluator = require("../../../src/classes/Evaluator")
-const ConditionalInterpreter = require("../../../src/classes/ConditionalInterpreter")
-const Filter = require("../../../src/classes/Filter")
+const Evaluator = require("../../../../src/classes/Evaluator")
+const ConditionalInterpreter = require("../../../../src/classes/ConditionalInterpreter")
+const Filter = require("../../../../src/classes/Filter")
 
-const Attribute = require("../../../src/classes/attribute/Attribute")
-const RawBonus = require("../../../src/classes/attribute/RawBonus")
+const Attribute = require("../../../../src/classes/attribute/Attribute")
+const RawBonus = require("../../../../src/classes/attribute/RawBonus")
 
 const simon = new Skill({
     "name": "O Mestre Mandou",

@@ -1,6 +1,6 @@
-const Stats = require("../../../src/classes/actor/Stats")
-const RawBonus = require("../../../src/classes/attribute/RawBonus")
-const FinalBonus = require("../../../src/classes/attribute/FinalBonus")
+const Stats = require("../../../../src/classes/actor/Stats")
+const RawBonus = require("../../../../src/classes/attribute/RawBonus")
+const FinalBonus = require("../../../../src/classes/attribute/FinalBonus")
 
 describe("Stats Representation", () => {
     it("Exists", () => {

@@ -1,18 +1,16 @@
-const ActorManager = require("../../../src/classes/managers/ActorManager")
-const PartyManager = require("../../../src/classes/managers/PartyManager")
+const ActorManager = require("../../../../src/classes/managers/ActorManager")
+const PartyManager = require("../../../../src/classes/managers/PartyManager")
 
-const BuffTag = require("../../../src/classes/skill/BuffTag")
+const BuffTag = require("../../../../src/classes/skill/BuffTag")
 
-const Actor = require("../../../src/classes/actor/Actor")
-const Party = require("../../../src/classes/Party")
-const Skill = require("../../../src/classes/skill/Skill")
-const Stats = require("../../../src/classes/actor/Stats")
+const Actor = require("../../../../src/classes/actor/Actor")
+const Party = require("../../../../src/classes/Party")
+const Skill = require("../../../../src/classes/skill/Skill")
+const Stats = require("../../../../src/classes/actor/Stats")
 
-const Evaluator = require("../../../src/classes/Evaluator")
-const ConditionalInterpreter = require("../../../src/classes/ConditionalInterpreter")
-const Filter = require("../../../src/classes/Filter")
-
-const ActionPoint = require("../../../src/classes/actor/ActionPoint")
+const Evaluator = require("../../../../src/classes/Evaluator")
+const ConditionalInterpreter = require("../../../../src/classes/ConditionalInterpreter")
+const Filter = require("../../../../src/classes/Filter")
 
 const resistirElementos = new Skill({
     "name": "Resistir Elementos",

@@ -1,17 +1,17 @@
-const ActorManager = require("../../../src/classes/managers/ActorManager")
-const PartyManager = require("../../../src/classes/managers/PartyManager")
+const ActorManager = require("../../../../src/classes/managers/ActorManager")
+const PartyManager = require("../../../../src/classes/managers/PartyManager")
 
-const OffensiveTag = require("../../../src/classes/skill/OffensiveTag")
+const OffensiveTag = require("../../../../src/classes/skill/OffensiveTag")
 
-const Actor = require("../../../src/classes/actor/Actor")
-const Party = require("../../../src/classes/Party")
-const Skill = require("../../../src/classes/skill/Skill")
+const Actor = require("../../../../src/classes/actor/Actor")
+const Party = require("../../../../src/classes/Party")
+const Skill = require("../../../../src/classes/skill/Skill")
 
-const Evaluator = require("../../../src/classes/Evaluator")
-const ConditionalInterpreter = require("../../../src/classes/ConditionalInterpreter")
-const Filter = require("../../../src/classes/Filter")
+const Evaluator = require("../../../../src/classes/Evaluator")
+const ConditionalInterpreter = require("../../../../src/classes/ConditionalInterpreter")
+const Filter = require("../../../../src/classes/Filter")
 
-const RawBonus = require("../../../src/classes/attribute/RawBonus")
+const RawBonus = require("../../../../src/classes/attribute/RawBonus")
 
 const investida = new Skill({
     "name": "Investida",

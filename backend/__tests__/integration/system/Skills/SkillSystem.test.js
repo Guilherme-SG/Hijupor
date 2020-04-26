@@ -1,18 +1,18 @@
 
-const ActorManager = require("../../../src/classes/managers/ActorManager")
-const PartyManager = require("../../../src/classes/managers/PartyManager")
-const SkillManager = require("../../../src/classes/managers/SkillManager")
+const ActorManager = require("../../../../src/classes/managers/ActorManager")
+const PartyManager = require("../../../../src/classes/managers/PartyManager")
+const SkillManager = require("../../../../src/classes/managers/SkillManager")
 
-const SkillSystem = require("../../../src/classes/skill/SkillSystem")
+const SkillSystem = require("../../../../src/classes/skill/SkillSystem")
 
-const Actor = require("../../../src/classes/actor/Actor")
-const Stats = require("../../../src/classes/actor/Stats")
-const Party = require("../../../src/classes/Party")
-const Skill = require("../../../src/classes/skill/Skill")
+const Actor = require("../../../../src/classes/actor/Actor")
+const Stats = require("../../../../src/classes/actor/Stats")
+const Party = require("../../../../src/classes/Party")
+const Skill = require("../../../../src/classes/skill/Skill")
 
-const Evaluator = require("../../../src/classes/Evaluator")
-const ConditionalInterpreter = require("../../../src/classes/ConditionalInterpreter")
-const Filter = require("../../../src/classes/Filter")
+const Evaluator = require("../../../../src/classes/Evaluator")
+const ConditionalInterpreter = require("../../../../src/classes/ConditionalInterpreter")
+const Filter = require("../../../../src/classes/Filter")
 
 const investida = new Skill({
     "name": "Investida",
@@ -82,7 +82,7 @@ describe("Skill System", () => {
         conditionalInterpreter = new ConditionalInterpreter(evaluator)
         filter = new Filter(conditionalInterpreter)
 
-        skillSystem = new SkillSystem(evaluator, conditionalInterpreter, filter, skillManager, actorManager)
+        skillSystem = new SkillSystem(evaluator, conditionalInterpreter, filter)
         skillManager.add(investida)
         skillManager.add(harmonia)
     })
@@ -124,7 +124,7 @@ describe("Skill System", () => {
         aaron.stamina.break()
         actorManager.select(aaron.id)
         
-        let skillWasUsed = skillSystem.useSkill(jane.id, investida.id)
+        let skillWasUsed = skillSystem.useSkill(jane, investida)
         expect(skillWasUsed).toBeTruthy()
         
         expect(aaron.status).toContain("stunned")
@@ -135,14 +135,13 @@ describe("Skill System", () => {
         aaron.stamina.break()
 
         actorManager.select(aaron.id)
-        
-        let skillWasUsed = skillSystem.useSkill(jane.id, investida.id)
+        let skillWasUsed = skillSystem.useSkill(jane, investida)
         expect(skillWasUsed).toBeTruthy()
 
         expect(aaron.status).toContain("stunned")
         expect(aaron.getAvailableHP()).toBe(75)
 
-        skillWasUsed = skillSystem.useSkill(jane.id, harmonia.id)
+        skillWasUsed = skillSystem.useSkill(jane, harmonia)
         expect(skillWasUsed).toBeTruthy()
 
         expect(aaron.status).toContain("stunned")
