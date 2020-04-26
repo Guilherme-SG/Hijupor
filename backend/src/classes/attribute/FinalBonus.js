@@ -18,15 +18,16 @@ class FinalBonus extends BaseAttribute {
         }
 
         if(!this.duration) {
-            this.parent.deleteFinalBonus(this)
+            this.selfDelete(this)
         }
             
     }
 
-    delete() {
-        if(this.parent) {
-            this.parent.deleteFinalBonus(this)
-        }
+    selfDelete() {
+        this.notify({
+            type: "deleteFinalBonus",
+            reference: this
+        })
     }
 }
 
