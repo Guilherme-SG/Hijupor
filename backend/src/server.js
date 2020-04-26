@@ -1,36 +1,37 @@
 const app = require("./app")
 const socketio = require("socket.io")
 
-const ActorBuilderService = require("./services/ActorBuilderService")
-const Actor = require("./classes/actor/Actor")
-const Stats = require("./classes/actor/Stats")
+const GameController = require("./controllers/GameController")
 
 const sockets = socketio(app)
 
 
-sockets.on("connection", socket => {
+sockets.on("connection", async socket => {
     console.log(`>> Logged ${socket.id}`)
 
-    socket.on('disconnect', () => {
-        console.log(`>> Player ${socket.id} disconnected`)
-    });
+    socket.on("registerPlayer", async id => {
+        socket.on('disconnect', () => {
+            console.log(`>> Player ${socket.id} disconnected`)
+            GameController.registerPlayer(id)
+        })        
+        
+        GameController.registerPlayer(id)        
 
-    socket.on("create-char", (data) => {
-        console.log(socket.id, data)
+        sockets.emit("setup", GameController.setup)
+    })
 
-        const actor = new Actor({
-            ...data,
-            job: data.class,
-            stats: new Stats(data.stats)
-        })
-
-        console.log(actor)
+    socket.on("use-skill", data => {
+        if(!data.target) {
+            socket.emit("skill-used", "Alvo não selecionado")
+        } else {
+            const skills = ["Investida", "Míssil Mágico", "Harmonia", "Devoção"]
+            const caster = actorManager.get(data.caster)
+            const target = actorManager.get(data.target)
+            sockets.emit("skill-used", `${caster.name} usou ${skills[data.skill]} em ${target.name}`)
+        }
     })
 })
 
-sockets.on("create-char", (socket, data) => {
-    console.log(socket.id, data)
-})
 
 app.listen(3333, () => {
     console.log("Connected on port 3333")

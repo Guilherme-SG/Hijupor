@@ -1,4 +1,5 @@
 const Actor = require("../classes/actor/Actor")
+const Stats = require("../classes/actor/Stats")
 const Summon = require("../classes/actor/Summon")
 const Skill = require("../classes/skill/Skill")
 const RawBonus = require("../classes/attribute/RawBonus")
@@ -11,8 +12,15 @@ class ActorBuilderService {
 
         this.assign(actor, data)
         this.assignAllRecursive(actor, data)
-
+        data.id = data._id
         return data
+    }
+
+    static buildFromJSON(data) {
+        return new Actor({
+            ...data,
+            stats: new Stats(data.stats)
+        })
     }
 
     static assignAllRecursive(source, target) {

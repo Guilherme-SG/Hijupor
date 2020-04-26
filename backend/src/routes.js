@@ -14,6 +14,7 @@ routes.get("/skill-use", SkillController.use)
 routes.post("/skill", SkillController.store)
 
 routes.get("/actor/", ActorController.findByName)
+routes.get("/actor/:id", ActorController.findById)
 routes.post("/actor", ActorController.store)
 
 module.exports = routes
