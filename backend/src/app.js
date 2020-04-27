@@ -4,6 +4,7 @@ require("dotenv").config({
 
 const express = require("express")
 const http = require('http')
+const cors = require("cors")
 
 class AppController {
     constructor() {
@@ -16,6 +17,9 @@ class AppController {
     }
 
     middlewares() {
+        this.express.use(cors({
+            origin: "*"
+        }))
         this.express.use(express.json())
     }
 

@@ -27,7 +27,12 @@ class Attribute extends BaseAttribute {
     }
 
     addFinalBonus(finalBonus) {
-        finalBonus.setParent(this)
+        finalBonus.subscribe( ({type, reference}) => {
+            if(this[type] instanceof Function) {
+                this[type](reference)
+            }
+        })
+
         this.finalBonuses.push(finalBonus)
     }
 

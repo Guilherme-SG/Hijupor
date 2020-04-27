@@ -17,6 +17,13 @@ class PartyManager extends CollectionManager {
     getSelected() {
         return this.get(this.selectedPartyId)
     }
+
+    delete(id) {
+        this.get(id)
+            .deleteAll()
+
+        super.delete(id)
+    }
 }
 
 

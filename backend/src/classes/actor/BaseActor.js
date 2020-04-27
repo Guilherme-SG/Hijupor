@@ -62,6 +62,24 @@ class BaseActor {
         this.partyId = partyId
     }
 
+    // Action Point
+
+    getNecessaryToBeFullAP() {
+        return this.actionPoint.getNecessaryToBeFull()
+    }
+
+    getAvailableAP() {
+        return this.actionPoint.getAvailable()
+    }
+
+    getTotalAP() {
+        return this.actionPoint.getTotal()
+    }
+
+    getPercentualAP() {
+        return this.actionPoint.getPercentual()
+    }
+
     // Health
 
     getNecessaryToBeFullHP() {

@@ -10,9 +10,9 @@ const RawBonus = require("../../../src/classes/attribute/RawBonus")
 const FinalBonus = require("../../../src/classes/attribute/FinalBonus")
 
 describe("Actor API", () => {
-    const actorCreation = new Actor({
+    const actorCreation = {
         name: "Yendros",
-        stats: new Stats({
+        stats: {
             str: 60,
             dex: 60,
             aim: 0,
@@ -24,13 +24,13 @@ describe("Actor API", () => {
             int: 100,
             sab: 0,
             car: 0
-        }),
+        },
         job: "Mage",
         race: "Pagrius",
         age: 28,
         local: "O Norte",
         personality: "Lawful Evil"
-    })
+    }
 
     beforeAll(async () => {
         await ActorModel.deleteMany({})
@@ -57,8 +57,6 @@ describe("Actor API", () => {
     
     it("Should find actor by name - GET /actor?name=", async () => {
         actorCreation.name = "Josias"
-        actorCreation.stamina.break()
-        actorCreation.takeDamage(100)
 
         await request(app)
             .post("/actor")
@@ -75,5 +73,7 @@ describe("Actor API", () => {
         expect(actorFound.name).toBe(actorCreation.name)
         expect(actorFound.getAvailableStamina()).toBe(0)
     })
+
+    
 
 })
